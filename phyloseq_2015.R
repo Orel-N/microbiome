@@ -6,15 +6,12 @@
 #Loading packages
 library(phyloseq); packageVersion("phyloseq")
 library(ggplot2); packageVersion("ggplot2")
-if (packageVersion("devtools") < 1.6) {
-  install.packages("devtools")
-}
-devtools::install_github("hadley/lazyeval")
-devtools::install_github("hadley/dplyr")
 library(dplyr)
 library(rstatix); packageVersion("rstatix")
 library(ggpubr); packageVersion("ggpubr")
 library(vegan); packageVersion("vegan")
+library(iNEXT); packageVersion("iNEXT")
+
 theme_set(theme_bw())
 
 ##################################
@@ -47,12 +44,13 @@ ps <- merge_phyloseq(ps, ps2)
 taxa_names(ps) <- paste0("ASV", seq(ntaxa(ps)))
 ps
 
+#remove unobserved ASVs
+ps<- prune_taxa(taxa_sums(ps)>0, ps)
+ps
 
 ##################################
 #Generate an overview table
 ##################################
-
-summary_table <- data.frame()
 
 #metadata
 meta <- as(sample_data(ps), "data.frame")
@@ -68,36 +66,37 @@ ps_euk <- as(sample_sums(subset_taxa(ps, Kingdom %in% c("Eukaryota"))),"vector")
 ps_uncl <- as(sample_sums(subset_taxa(ps, Phylum %in% c("Bacteria_uncl","Archaea_uncl","NA_uncl"))),"vector")
 ps_chl <- as(sample_sums(subset_taxa(ps, Order %in% c("Chloroplast"))),"vector")
 ps_mit <- as(sample_sums(subset_taxa(ps, Family %in% c("Mitochondria"))),"vector")
+ps_euk <- as(sample_sums(subset_taxa(ps, Kingdom %in% c("Eukaryota"))),"vector")
+ps_arch <- as(sample_sums(subset_taxa(ps, Kingdom %in% c("Archaea"))),"vector")
 
 ps_chl
 ps_mit
+ps_arch
 
-pruned_seq_sums <- data.frame(Chloroplast = ps_chl,Mitochondria = ps_mit)
+pruned_seq_sums <- data.frame(Chloroplast = ps_chl,Mitochondria = ps_mit, Archaea = ps_arch)
 pruned_seq_sums$Row.names <- paste("X",row.names(pruned_seq_sums), sep ="")
 
-#remove unclassified on phylum level, chloroplast and Mitochondrial sequence variants
-phy_obj0 <- subset_taxa(ps, !Kingdom %in% c("Eukaryota") &!Phylum %in% c("Bacteria_uncl","Archaea_uncl","NA_uncl") & !Order %in% c("Chloroplast") & !Family %in% c("Mitochondria") )
+#remove unclassified on phylum level, chloroplast, Mitochondrial and Archaeal sequence variants
+phy_obj0 <- subset_taxa(ps, !Kingdom %in% c("Eukaryota") &!Phylum %in% c("Bacteria_uncl","Archaea_uncl","NA_uncl") & !Order %in% c("Chloroplast") & !Family %in% c("Mitochondria") & !Kingdom %in% c("Archaea"))
 
 #alpha diversity indeces
 ps0_alpha <- estimate_richness(phy_obj0, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
 ps0_alpha$Row.names<-rownames(ps0_alpha)
 
 #merge all together
-ps0_summary_table <- merge(meta,reads.tab,by ="Row.names") %>%
+summary_table <- merge(meta,reads.tab,by ="Row.names") %>%
   merge(pruned_seq_sums,by ="Row.names")%>%
   merge(ps0_alpha,by ="Row.names")%>%
-  mutate_if(is.numeric, round, 2) %>%
-  mutate(Seq.prop = round(nonchim/input,2),
-         Chloroplast.Seq.prop = round(Chloroplast/nonchim,2),
-         Mitochondria.Seq.prop = round(Mitochondria/nonchim,2)) %>%
   select("Location","Season", #metadata
          "input","filtered", "merged", "nonchim", #dada2 
-         "Chloroplast","Mitochondria", #taxa
+         "Chloroplast","Mitochondria", "Archaea", #taxa
          "Observed","Chao1","Shannon","InvSimpson") #alpha div
 
-summary_table <- rbind(summary_table,ps0_summary_table)
 
-write.table(summary_table, "./Microbiome_overview_table.txt" , sep = "\t", quote = F)
+#save the summary table
+
+write.table(summary_table, "./Micro_overview_table.txt" , sep = "\t", quote = F)
+
 
 #Statistical comparison by type of samples
 
@@ -120,8 +119,50 @@ InvSimpson_Wilcox <- summary_table   %>%
 #Plot rarefaction
 ####################################
 
+phy_obj <- phy_obj0
+
+ps0.iNEXT <- iNEXT(as.data.frame(otu_table(phy_obj)), q=0, datatype="abundance", knots = 40)
+
+ps0.iNEXT.rare <-fortify(ps0.iNEXT, type=1)
+ps0.iNEXT.meta <- as(sample_data(phy_obj), "data.frame")
+ps0.iNEXT.meta$site <- rownames(ps0.iNEXT.meta)
+
+ps0.iNEXT.rare$Location <- ps0.iNEXT.meta$Location[match(ps0.iNEXT.rare$site, ps0.iNEXT.meta$site)] 
+ps0.iNEXT.rare$SampleName <- ps0.iNEXT.meta$sample_title[match(ps0.iNEXT.rare$site, ps0.iNEXT.meta$site)] 
+
+ps0.iNEXT.rare.point <- ps0.iNEXT.rare[which(ps0.iNEXT.rare$method == "observed"),]
+ps0.iNEXT.rare.line <- ps0.iNEXT.rare[which(ps0.iNEXT.rare$method != "observed"),]
+ps0.iNEXT.rare.line$method <- factor (ps0.iNEXT.rare.line$method,
+                                      c("interpolated", "extrapolated"),
+                                      c("interpolation", "extrapolation"))
+
+ps0.iNEXT.rare.line$Primer <- p
+ps0.iNEXT.rare.point$Primer <- p
+
+iNEXT.rare.line <- rbind(iNEXT.rare.line,ps0.iNEXT.rare.line)
+iNEXT.rare.point <- rbind(iNEXT.rare.point,ps0.iNEXT.rare.point)
 
 
+
+iNEXT.rare.line$Type <- factor(iNEXT.rare.line$Type, levels = c("Sea ice", "Surface water", "Deep water", "Sediment trap","Sediment"))
+iNEXT.rare.point$Type <- factor(iNEXT.rare.point$Type, levels = c("Sea ice", "Surface water", "Deep water", "Sediment trap","Sediment"))
+
+rare.p <- ggplot(iNEXT.rare.line, aes(x=x, y=y, shape = site))+
+  geom_line(aes(linetype = method, colour = Primer), lwd = 0.5, data= iNEXT.rare.line)+
+  geom_point(shape = 21, size =3, colour = "black", data= iNEXT.rare.point)+
+  labs(x = "Sample size", y = "Species richness")+
+  xlim(0,3e5)+
+  theme_classic(base_size = 12)+theme(legend.position="none")+
+  facet_grid(Type~Primer, scales = "free",as.table = TRUE)+
+  geom_hline(aes(yintercept=-Inf)) + 
+  geom_vline(aes(xintercept=-Inf)) + 
+  coord_cartesian(clip="off")
+
+
+ggsave("Figures/rarefactions.pdf", rare.p)
+###
+
+################################################
 #Alpha diversity
 plot_richness(phy_obj0, x="Season", measures=c("Shannon", "Simpson"), color="Location")
 ggsave("AlphaDiversity_seasons.pdf", last_plot(), device = "pdf")
