@@ -105,6 +105,7 @@ rownames(taxa.print) <- NULL
 head(taxa.print)
 
 
+
 #Analysis of microbiome data with phyloseq
 library(phyloseq); packageVersion("phyloseq")
 library(ggplot2); packageVersion("ggplot2")
