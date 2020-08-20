@@ -220,6 +220,5 @@ dim(seqtab1)
 save.image("16S_2015_2020_DADA2_2.Rdata")
 
 
-
 #quit R
 q()
