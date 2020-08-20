@@ -4,16 +4,23 @@
 
 
 #Make working directories
-mkdir 16S_2020_DADA2
-cd 16S_2020_DADA2
+mkdir 16S_2015_2020_DADA2
+cd 16S_2015_2020_DADA2
 mkdir Original
 
 #copy fastq files to directory Original
+find ../raw_2015 -type f -name "*.bz2" -exec cp {} Original \;
 find ../raw_2020 -type f -name "*.bz2" -exec cp {} Original \;
 
+#Delete directories with multiplex seq
+rm NGS703_R2.fastq.bz2
+rm NGS703_R1-fastq.bz2
+rm 341F-785R-P1_R1.fastq.bz2
+rm 341F-785R-P1_R2.fastq.bz2
+
 # set variables, program and script locations
-FILELOCATION="/DATA/mikrobiom/16S_2020_DADA2"
-NSAMPLE="40"
+FILELOCATION="/DATA/mikrobiom/16S_2015_2020_DADA2"
+NSAMPLE="51"
 
 cd $FILELOCATION
 
@@ -40,11 +47,14 @@ cp ${i} ./Renamed/${new}"_R2.fastq.bz2"
 done
 
 # check that the renaming was done correctly
-ls -1v ./Renamed/[0-9]*_R1.fastq.bz2 > ./renamedR1
-ls -1v ./Renamed/[0-9]*_R2.fastq.bz2  > ./renamedR2
+ls -1v ./Renamed/[0-90]*_R1.fastq.bz2 > ./renamedR1
+ls -1v ./Renamed/[0-90]*_R2.fastq.bz2  > ./renamedR2
 
 paste ./originalR1 ./renamedR1 > ./fileID_R1
 paste ./originalR2 ./renamedR2 > ./fileID_R2
+cat fileID_R1
+cat fileID_R2
+
 
 #the following commands schould not give any output
 while read line ; do
@@ -88,7 +98,7 @@ mkdir Logfiles
 ## through the same processes and any sequences discarded match between outputs.
 ## If primer is not found and no trimming is done, both R1 and R2 are discarded
 ## temporary, log, and information files are placed in the sample directory... 
-for SGE_TASK_ID in `seq 1 40`;
+for SGE_TASK_ID in `seq 1 51`;
 do cutadapt --minimum-length 1  --no-indels -O ${OFWD} -g ${FBC} -e ${ERROR} -j 0 --info-file ./Clipped/${SGE_TASK_ID}"_clip_fr.R1.info" -o ./Clipped/${SGE_TASK_ID}"_clip_R1.TMP.fastq" -p ./Clipped/${SGE_TASK_ID}"_clip_R2.TMP.fastq" ./Renamed/${SGE_TASK_ID}"_R1.fastq.bz2" ./Renamed/${SGE_TASK_ID}"_R2.fastq.bz2" --untrimmed-o /dev/null --untrimmed-p /dev/null > ./Clipped/${SGE_TASK_ID}"_clip_fr.R1.cutadapt.log" 2>&1
 
 ## Using the output of the previous command (the TMP files), we'll now look for the reverse primer in R2, bringing R1 along for the ride.
