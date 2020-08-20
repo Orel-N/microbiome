@@ -208,17 +208,34 @@ seqtab<- mergeSequenceTables(table1=makeSequenceTable(mergers_15),
 
 save.image("16S_2015_2020_DADA2.Rdata")
 
-load("16S_2015_2020_DADA2.Rdata")
-
-saveRDS("16S_2015_2020_DADA2.rds")
-
 #Combine together sequences that are identical (run as separate script) 
 ##run as a seperate script
+load("16S_2015_2020_DADA2.Rdata")
 seqtab1 <- collapseNoMismatch(seqtab, verbose = TRUE)
 dim(seqtab1)
 
 save.image("16S_2015_2020_DADA2_2.Rdata")
 
+# Inspect distribution of sequence lengths
+table(nchar(getSequences(seqtab1)))
+
+seqtab.nochim <- removeBimeraDenovo(seqtab1, method="consensus", multithread=TRUE, verbose=TRUE)
+dim(seqtab.nochim)
+
+#proportion of chimeras
+sum(seqtab.nochim)/sum(seqtab1)
+
+# inspect output: remove singletons and 'junk' sequences
+# read lengths modified for V34 amplicons / based upon output table where majority of reads occurs
+seqtab.nochim2 <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) %in% c(380:430) & colSums(seqtab.nochim) > 1]
+dim(seqtab.nochim2)
+summary(rowSums(seqtab.nochim2)/rowSums(seqtab.nochim))
+
+#assign taxonomy
+taxa <- assignTaxonomy(seqtab.nochim2, "../16S_2015_DADA2/silva_nr_v138_train_set.fa.gz", multithread=TRUE, tryRC = TRUE, verbose = TRUE)
+taxa <- addSpecies(taxa, "../16S_2015_DADA2/silva_species_assignment_v138.fa.gz", tryRC = TRUE, verbose = TRUE)
+
+save.image("16S_2015_2020_DADA2_2.Rdata")
 
 #quit R
 q()
