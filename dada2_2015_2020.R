@@ -80,6 +80,12 @@ mergers_15 <- mergePairs(dadaFs_15, filtFs_15, dadaRs_15, filtRs_15, verbose=TRU
 
 mergers_15_2 <- mergePairs(dadaFs_15_2, filtFs_15_2, dadaRs_15_2, filtRs_15_2, verbose=TRUE, minOverlap = 10)
 
+#make sequence table and save it
+seqtab_15 <- makeSequenceTable(mergers_15)
+saveRDS(seqtab_15, "seqtab_15.rds")
+
+
+
 #Plot error profiles
 plot.errF_15 <- plotErrors(errF_15, nominalQ=TRUE)+ggtitle("Error rates F 2015")
 ggsave("plotErrorsFs2015.pdf", plot.errF_15, device="pdf")
@@ -137,6 +143,10 @@ mergers_20 <- mergePairs(dadaFs_20, filtFs_20, dadaRs_20, filtRs_20, verbose=TRU
 
 mergers_20_2 <- mergePairs(dadaFs_20_2, filtFs_20_2, dadaRs_20_2, filtRs_20_2, verbose=TRUE, minOverlap = 10)
 
+#make sequence table and save it
+seqtab_20_2 <- makeSequenceTable(mergers_20_2)
+saveRDS(seqtab_20_2, "seqtab_20_2.rds")
+
 #Plot error profiles
 plot.errF_15 <- plotErrors(errF_15, nominalQ=TRUE)+ggtitle("Error rates F 2015")
 ggsave("plotErrorsFs2015.pdf", plot.errF_15, device="pdf")
@@ -191,16 +201,25 @@ write.table(track_20, "Overview_20.txt" , sep = "\t", quote = F)
 write.table(track_15_2, "Overview_15_2.txt" , sep = "\t", quote = F)
 write.table(track_20_2, "Overview_20_2.txt" , sep = "\t", quote = F)
 
+
 #merge the hiseq and miseq into a single sequence table
 seqtab<- mergeSequenceTables(table1=makeSequenceTable(mergers_15),
                              table2=makeSequenceTable(mergers_20_2))
 
-#Combine together sequences that are identical 
+save.image("16S_2015_2020_DADA2.Rdata")
+
+load("16S_2015_2020_DADA2.Rdata")
+
+saveRDS("16S_2015_2020_DADA2.rds")
+
+#Combine together sequences that are identical (run as separate script) 
+##run as a seperate script
 seqtab1 <- collapseNoMismatch(seqtab, verbose = TRUE)
 dim(seqtab1)
 
+save.image("16S_2015_2020_DADA2_2.Rdata")
 
-save.image("16S_2015_2020_DADA2.Rdata")
+
 
 #quit R
 q()
