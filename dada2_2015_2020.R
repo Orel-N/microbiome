@@ -42,7 +42,7 @@ filtRs <- file.path("Filtered", paste0(sample.names, "_R_filt.fastq.gz"))
 names(filtFs) <- sample.names
 names(filtRs) <- sample.names
 
-#separate the different runs
+#separate different datasets
 #2015
 fnFs_15<- sort(file.path("Clipped",paste(c(1:11), "_clip_R1.fastq", sep = "")))
 fnRs_15<- sort(file.path("Clipped",paste(c(1:11), "_clip_R2.fastq", sep = ""))) 
@@ -218,8 +218,24 @@ dim(seqtab1)
 
 save.image("16S_2015_2020_DADA2_2.Rdata")
 
-# Inspect distribution of sequence lengths
+# Inspect distribution of sequence lengths - merged table
 table(nchar(getSequences(seqtab1)))
+
+reads.per.seqlen <- tapply(colSums(seqtab1), factor(nchar(getSequences(seqtab1))), sum)
+df <- data.frame(length=as.numeric(names(reads.per.seqlen)), count=reads.per.seqlen)
+ggplot(data=df, aes(x=length, y=count)) + geom_col()
+
+# Inspect distribution of sequence lengths - 2020
+table(nchar(getSequences(seqtab_20_2)))
+reads.per.seqlen <- tapply(colSums(seqtab_20_2), factor(nchar(getSequences(seqtab_20_2))), sum)
+df <- data.frame(length=as.numeric(names(reads.per.seqlen)), count=reads.per.seqlen)
+ggplot(data=df, aes(x=length, y=count)) + geom_col()
+
+table(nchar(getSequences(seqtab_15)))
+reads.per.seqlen <- tapply(colSums(seqtab_15), factor(nchar(getSequences(seqtab_15))), sum)
+df <- data.frame(length=as.numeric(names(reads.per.seqlen)), count=reads.per.seqlen)
+ggplot(data=df, aes(x=length, y=count)) + geom_col()
+
 
 seqtab.nochim <- removeBimeraDenovo(seqtab1, method="consensus", multithread=TRUE, verbose=TRUE)
 dim(seqtab.nochim)
@@ -229,7 +245,7 @@ sum(seqtab.nochim)/sum(seqtab1)
 
 # inspect output: remove singletons and 'junk' sequences
 # read lengths modified for V34 amplicons / based upon output table where majority of reads occurs
-seqtab.nochim2 <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) %in% c(380:430) & colSums(seqtab.nochim) > 1]
+seqtab.nochim2 <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) %in% c(400:430) & colSums(seqtab.nochim) > 1]
 dim(seqtab.nochim2)
 summary(rowSums(seqtab.nochim2)/rowSums(seqtab.nochim))
 rownames(seqtab.nochim2) <- sample.names
@@ -239,19 +255,18 @@ saveRDS(seqtab.nochim2, file.path("./dada2", "seqtab15_20.rds"))
 total <- rbind(track_15, track_20_2)
 total <- as.data.frame(total)
 
+total$nochim<-rowSums(seqtab.nochim)
 
-total$nochim<-colSums(seqtab.nochim)
-
-write.table(total, "./data/Overview_dada2_15_20.txt" , sep = "\t", quote = F)
+write.table(total, "./dada2/Overview_dada2_15_20_2.txt" , sep = "\t", quote = F)
 
 #assign taxonomy
 taxa <- assignTaxonomy(seqtab.nochim2, "../16S_2015_DADA2/silva_nr_v138_train_set.fa.gz", multithread=TRUE, tryRC = TRUE, verbose = TRUE)
 taxa <- addSpecies(taxa, "../16S_2015_DADA2/silva_species_assignment_v138.fa.gz", tryRC = TRUE, verbose = TRUE)
-saveRDS(taxa, file.path("./data", "taxa15_20.rds"))
+saveRDS(taxa, file.path("./dada2", "taxa15_20.rds"))
 
 ##Write output
-write.table(taxa, "dada2/dada2_taxonomy_table.txt", sep = "\t", quote = F)
-write.table(t(seqtab.nochim2), "dada2/dada2_seqtab_nochim2.txt", quote = F, sep = "\t")
+write.table(taxa, "dada2/dada2_taxonomy_table_2.txt", sep = "\t", quote = F)
+write.table(t(seqtab.nochim2), "dada2/dada2_seqtab_nochim2_2.txt", quote = F, sep = "\t")
 
 save.image("16S_2015_2020_DADA2_2.Rdata")
 
