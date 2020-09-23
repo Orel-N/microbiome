@@ -9,7 +9,7 @@ BiocManager::install('phyloseq')
 install.packages("dplyr")
 install.packages("rstatix")
 install.packages("iNEXT")
-library("dplyr")
+library(dplyr)
 library(ggplot2)
 library(phyloseq)
 library(ggpubr)
@@ -22,21 +22,21 @@ theme_set(theme_bw())
 ##################################
 
 #Import Sample Data - "metadata"(data.frame)
-meta <- read.table("./data/Metadata_16S_2015_2020.txt", header=TRUE)
+meta <- read.table("./data/Metadata_16S_2015_2020_2.txt", header=TRUE)
 rownames(meta)<- paste("X",meta$SampleID, sep ="")
 meta
 
 #Import "ASV table" (matrix)
 seqtab.nochim <- read.csv("./dada2/dada2_seqtab_nochim2_2.txt", h=T, sep="\t")
+library(data.table)
+seqtab.nochim <- transpose(seqtab.nochim)
 
 #Import taxonomy table (matrix)
 taxa <- as.matrix(read.csv("./dada2/dada2_taxonomy_table_2.txt", h=T,sep = "\t"))
 
-
 #Check order
 all.equal(rownames(seqtab.nochim), rownames(taxa))
 all.equal(colnames(seqtab.nochim), rownames(meta))
-
 
 #Create a phyloseq object from the OTU table/ASV table and taxonomy assigned by DADA2
 ps <-phyloseq(otu_table(seqtab.nochim, taxa_are_rows=TRUE), sample_data(meta), tax_table(taxa))
