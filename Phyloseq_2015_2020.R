@@ -27,17 +27,15 @@ rownames(meta)<- paste("X",meta$SampleID, sep ="")
 meta
 
 #Import "ASV table" (matrix)
-seqtab.nochim <- read.csv("./dada2/dada2_seqtab_nochim2.txt", h=T, sep="\t")
-colnames(seqtab.nochim)<-sample.names
-
+seqtab.nochim <- read.csv("./dada2/dada2_seqtab_nochim2_2.txt", h=T, sep="\t")
 
 #Import taxonomy table (matrix)
-taxa <- as.matrix(read.csv("./dada2/dada2_taxonomy_table.txt", h=T,sep = "\t"))
+taxa <- as.matrix(read.csv("./dada2/dada2_taxonomy_table_2.txt", h=T,sep = "\t"))
 
 
 #Check order
 all.equal(rownames(seqtab.nochim), rownames(taxa))
-all.equal(names(seqtab.nochim), rownames(meta))
+all.equal(colnames(seqtab.nochim), rownames(meta))
 
 
 #Create a phyloseq object from the OTU table/ASV table and taxonomy assigned by DADA2
