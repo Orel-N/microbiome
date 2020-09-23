@@ -5,6 +5,9 @@
 R
 
 #load libraries and set random seed
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install("dada2", version = "3.11")
 library(ggplot2); packageVersion("ggplot2")
 library(dada2); packageVersion("dada2")
 set.seed(123)
@@ -206,7 +209,6 @@ write.table(track_20_2, "Overview_20_2.txt" , sep = "\t", quote = F)
 seqtab<- mergeSequenceTables(table1=makeSequenceTable(mergers_15),
                              table2=makeSequenceTable(mergers_20_2))
 
-save.image("16S_2015_2020_DADA2.Rdata")
 
 #Combine together sequences that are identical (run as separate script) 
 ##run as a seperate script
@@ -230,10 +232,26 @@ sum(seqtab.nochim)/sum(seqtab1)
 seqtab.nochim2 <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) %in% c(380:430) & colSums(seqtab.nochim) > 1]
 dim(seqtab.nochim2)
 summary(rowSums(seqtab.nochim2)/rowSums(seqtab.nochim))
+rownames(seqtab.nochim2) <- sample.names
+saveRDS(seqtab.nochim2, file.path("./dada2", "seqtab15_20.rds"))
+
+#Generate overview table - all together
+total <- rbind(track_15, track_20_2)
+total <- as.data.frame(total)
+
+
+total$nochim<-colSums(seqtab.nochim)
+
+write.table(total, "./data/Overview_dada2_15_20.txt" , sep = "\t", quote = F)
 
 #assign taxonomy
 taxa <- assignTaxonomy(seqtab.nochim2, "../16S_2015_DADA2/silva_nr_v138_train_set.fa.gz", multithread=TRUE, tryRC = TRUE, verbose = TRUE)
 taxa <- addSpecies(taxa, "../16S_2015_DADA2/silva_species_assignment_v138.fa.gz", tryRC = TRUE, verbose = TRUE)
+saveRDS(taxa, file.path("./data", "taxa15_20.rds"))
+
+##Write output
+write.table(taxa, "dada2/dada2_taxonomy_table.txt", sep = "\t", quote = F)
+write.table(t(seqtab.nochim2), "dada2/dada2_seqtab_nochim2.txt", quote = F, sep = "\t")
 
 save.image("16S_2015_2020_DADA2_2.Rdata")
 

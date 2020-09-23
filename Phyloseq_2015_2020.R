@@ -22,18 +22,23 @@ theme_set(theme_bw())
 ##################################
 
 #Import Sample Data - "metadata"(data.frame)
-meta <- read.table("./data/Metadata_16S_2015_2020.txt", header=TRUE,row.names=1)
+meta <- read.table("./data/Metadata_16S_2015_2020.txt", header=TRUE)
+rownames(meta)<- paste("X",meta$SampleID, sep ="")
 meta
 
 #Import "ASV table" (matrix)
-seqtab.nochim <- readRDS ("./data/seqtab15_20.rds")
-seqtab.nochim <- t(seqtab.nochim)
+seqtab.nochim <- read.csv("./dada2/dada2_seqtab_nochim2.txt", h=T, sep="\t")
+colnames(seqtab.nochim)<-sample.names
+
 
 #Import taxonomy table (matrix)
-taxa <- readRDS ("./data/taxa15_20.rds")
+taxa <- as.matrix(read.csv("./dada2/dada2_taxonomy_table.txt", h=T,sep = "\t"))
+
 
 #Check order
 all.equal(rownames(seqtab.nochim), rownames(taxa))
+all.equal(names(seqtab.nochim), rownames(meta))
+
 
 #Create a phyloseq object from the OTU table/ASV table and taxonomy assigned by DADA2
 ps <-phyloseq(otu_table(seqtab.nochim, taxa_are_rows=TRUE), sample_data(meta), tax_table(taxa))
