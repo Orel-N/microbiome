@@ -56,12 +56,11 @@ ps
 ##################################
 
 #metadata
-meta2 <- read.table("./data/Metadata_16S_2015_2020.txt", header=TRUE,row.names=1)
-meta2$SampleID<-paste(row.names(meta2))
-meta2$Row.names<-paste("X",row.names(meta2), sep ="")
+meta2 <- meta
+meta2$Row.names<-paste(row.names(meta))
 
 #summary of dada2 workflow
-reads.tab <- read.csv2(file.path("./data/Overview_dada2_15_20.txt"),header = TRUE, sep = "\t")
+reads.tab <- read.csv2(file.path("./dada2/Overview_dada2_15_20_2.txt"),header = TRUE, sep = "\t")
 reads.tab$Row.names <-paste("X",row.names(reads.tab), sep ="")
 
 #Show available ranks in the dataset
@@ -72,7 +71,6 @@ table(tax_table(ps)[, "Phylum"], exclude = NULL)
 
 #check how many ASVs were unclassified on phylum level, or assigned to chloroplast and Mitochondria
 ps_euk <- as(sample_sums(subset_taxa(ps, Kingdom %in% c("Eukaryota"))),"vector")
-ps_uncl <- as(sample_sums(subset_taxa(ps, Phylum %in% c("Bacteria_uncl","Archaea_uncl","NA_uncl"))),"vector")
 ps_chl <- as(sample_sums(subset_taxa(ps, Order %in% c("Chloroplast"))),"vector")
 ps_mit <- as(sample_sums(subset_taxa(ps, Family %in% c("Mitochondria"))),"vector")
 ps_arch <- as(sample_sums(subset_taxa(ps, Kingdom %in% c("Archaea"))),"vector")
@@ -125,7 +123,7 @@ summary_table2 <- merge(meta2,reads.tab,by ="Row.names") %>%
          "Chloroplast","Mitochondria", "Archaea", #taxa
          "Observed","Chao1","Shannon","InvSimpson") #alpha div
 
-write.table(summary_table2, "./tables/16S_15_20_overview_table.txt" , sep = "\t", quote = F)
+write.table(summary_table2, "./tables/16S_15_20_overview_table_2.txt" , sep = "\t", quote = F)
 
 ####################################
 #Plot rarefaction
