@@ -28,7 +28,6 @@ meta
 
 #Import "ASV table" (matrix)
 seqtab.nochim <- read.csv("./dada2/dada2_seqtab_nochim2_2.txt", h=T, sep="\t")
-library(data.table)
 
 #Import taxonomy table (matrix)
 taxa <- as.matrix(read.csv("./dada2/dada2_taxonomy_table_2.txt", h=T,sep = "\t"))
