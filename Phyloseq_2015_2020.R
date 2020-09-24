@@ -81,13 +81,15 @@ ps_mit
 ps_arch
 
 pruned_seq_sums <- data.frame(Eukaryota = ps_euk,Chloroplast = ps_chl,Mitochondria = ps_mit, Archaea = ps_arch)
-pruned_seq_sums$Row.names <- paste("X",row.names(pruned_seq_sums), sep ="")
+pruned_seq_sums$Row.names <- paste(row.names(pruned_seq_sums))
 pruned_seq_sums
 
 #remove unclassified on phylum level, chloroplast, Mitochondrial and Archaeal sequence variants
 ps0 <- subset_taxa(ps, !Kingdom %in% c("Eukaryota") &!Phylum %in% c("Bacteria_uncl","Archaea_uncl","NA_uncl") & !Order %in% c("Chloroplast") & !Family %in% c("Mitochondria") & !Kingdom %in% c("Archaea"))
 ps0
-
+#Create phyloseq object with seq assigned to Chloroplast
+ps0_chl <- subset_taxa(ps, Order == "Chloroplast")
+ps0_chl
 
 #alpha diversity indeces
 ps0_alpha <- estimate_richness(ps0, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
