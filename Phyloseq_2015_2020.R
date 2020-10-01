@@ -21,7 +21,7 @@ theme_set(theme_bw())
 #Import dada2 output into phyloseq
 ##################################
 
-#Import Sample Data - "metadata"(data.frame)
+#Import Sample Data - "metadata"
 meta <- read.table("./data/Metadata_16S_2015_2020_2.txt", header=TRUE)
 rownames(meta)<- paste("X",meta$SampleID, sep ="")
 meta
@@ -34,7 +34,7 @@ taxa <- as.matrix(read.csv("./dada2/dada2_taxonomy_table_2.txt", h=T,sep = "\t")
 
 #Check order
 all.equal(rownames(seqtab.nochim), rownames(taxa))
-all.equal(colnames(seqtab.nochim), rownames(meta))
+all.equal(names(seqtab.nochim), rownames(meta))
 
 #Create a phyloseq object from the OTU table/ASV table and taxonomy assigned by DADA2
 ps <-phyloseq(otu_table(seqtab.nochim, taxa_are_rows=TRUE), sample_data(meta), tax_table(taxa))
@@ -87,13 +87,14 @@ pruned_seq_sums
 #remove unclassified on phylum level, chloroplast, Mitochondrial and Archaeal sequence variants
 ps0 <- subset_taxa(ps, !Kingdom %in% c("Eukaryota") &!Phylum %in% c("Bacteria_uncl","Archaea_uncl","NA_uncl") & !Order %in% c("Chloroplast") & !Family %in% c("Mitochondria") & !Kingdom %in% c("Archaea"))
 ps0
-#Create phyloseq object with seq assigned to Chloroplast
+#Create separate phyloseq object with seq assigned to Chloroplast
 ps0_chl <- subset_taxa(ps, Order == "Chloroplast")
 ps0_chl
 
 #alpha diversity indeces
 ps0_alpha <- estimate_richness(ps0, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
 ps0_alpha$Row.names<-rownames(ps0_alpha)
+
 
 
 #merge all together
@@ -130,19 +131,54 @@ write.table(summary_table2, "./tables/16S_15_20_overview_table_2.txt" , sep = "\
 ####################################
 #Plot rarefaction
 ####################################
-
-#https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.html
-
 library(iNEXT)
 ps0.iNEXT <- iNEXT(as.data.frame(otu_table(ps0)), q=0, datatype="abundance", knots = 40)
 
+#Plot all together
 ggiNEXT(ps0.iNEXT, type = 1)
 ggsave("./output_graphs/16S_15_20_rarefactions.pdf", plot=last_plot())
 
 ggiNEXT(ps0.iNEXT, type = 1, facet.var="site")
-
 ggiNEXT(ps0.iNEXT, type = 2)
 ggsave("./output_graphs/16S_15_20_rarefactions_coverage.pdf", plot=last_plot())
+
+
+#Plot seperatly Depth~Location
+ps0.iNEXT.rare <-fortify(ps0.iNEXT, type=1)
+ps0.iNEXT.meta <- as(sample_data(ps0), "data.frame")
+ps0.iNEXT.meta$site <- rownames(ps0.iNEXT.meta)
+
+ps0.iNEXT.rare$Location <- ps0.iNEXT.meta$Location[match(ps0.iNEXT.rare$site, ps0.iNEXT.meta$site)]
+ps0.iNEXT.rare$Depth <- ps0.iNEXT.meta$Depth[match(ps0.iNEXT.rare$site, ps0.iNEXT.meta$site)]
+ps0.iNEXT.rare$Season <- ps0.iNEXT.meta$Season[match(ps0.iNEXT.rare$site, ps0.iNEXT.meta$site)] 
+
+ps0.iNEXT.rare.point <- ps0.iNEXT.rare[which(ps0.iNEXT.rare$method == "observed"),]
+ps0.iNEXT.rare.line <- ps0.iNEXT.rare[which(ps0.iNEXT.rare$method != "observed"),]
+ps0.iNEXT.rare.line$method <- factor (ps0.iNEXT.rare.line$method,
+                                      c("interpolated", "extrapolated"),
+                                      c("interpolation", "extrapolation"))
+iNEXT.rare.line <- data.frame()
+iNEXT.rare.point<- data.frame()
+
+iNEXT.rare.line <- rbind(iNEXT.rare.line,ps0.iNEXT.rare.line)
+iNEXT.rare.point <- rbind(iNEXT.rare.point,ps0.iNEXT.rare.point)
+
+iNEXT.rare.line$Season <- factor(iNEXT.rare.line$Season, levels = c("autumn", "winter", "spring", "summer"))
+iNEXT.rare.point$Season <- factor(iNEXT.rare.point$Season, levels = c("autumn", "winter", "spring", "summer"))
+
+rare.p <- ggplot(iNEXT.rare.line, aes(x=x, y=y, shape = site))+
+  geom_line(aes(linetype = method, colour = Season), lwd = 1, data= iNEXT.rare.line)+
+  geom_point(shape = 21, size =3, colour = "black", data= iNEXT.rare.point)+
+  labs(x = "Sample size", y = "Species richness")+
+  xlim(0,3e5)+
+  theme_classic(base_size = 12)+theme(legend.position="top")+
+  facet_grid(Depth~Location, scales = "fixed",as.table = TRUE)+
+  geom_hline(aes(yintercept=-Inf)) + 
+  geom_vline(aes(xintercept=-Inf)) + 
+  coord_cartesian(clip="off")
+rare.p
+
+ggsave("./output_graphs/16S_15_20_rarefactions_location_depth.pdf", plot=last_plot())
 
 
 ##################################
@@ -154,8 +190,8 @@ ggsave("./output_graphs/16S_15_20_rarefactions_coverage.pdf", plot=last_plot())
 
 # Create table, number of features for each phyla
 table_phyla <- table(tax_table(ps0)[, "Phylum"], exclude = NULL)
-write.table(table_phyla, "./tables/TablePhyla.csv", quote = F)
-write.table(table_phyla, "./tables/TablePhyla.txt", sep = "\t", quote = F)
+write.table(table_phyla, "./tables/TablePhyla2.csv", quote = F)
+write.table(table_phyla, "./tables/TablePhyla2.txt", sep = "\t", quote = F)
 
 
 #Remove features with a Phylum NA
@@ -172,6 +208,12 @@ prev = apply(X = otu_table(phy_obj2),
 prevdf = data.frame(Prevalence = prev,
                     TotalAbundance = taxa_sums(phy_obj2),
                     tax_table(phy_obj2))
+ggplot(prevdf, aes(TotalAbundance, Prevalence / nsamples(phy_obj2),color=Phylum)) +
+  # Include a guess for parameter
+  geom_hline(yintercept = 0.05, alpha = 0.5, linetype = 2) + geom_point(size = 2, alpha = 0.7) +
+  scale_x_log10() +  xlab("Total Abundance") + ylab("Prevalence [Frac. Samples]") +
+  facet_wrap(~Phylum) + theme(legend.position="none")
+ggsave("./output_graphs/TaxaPrevalenceVsTotalCounts_BeforeF.pdf", last_plot())
 
 prev_sum_phylum <- plyr::ddply(prevdf, "Phylum", function(df1){cbind(Samples=mean(df1$Prevalence),Abundance=sum(df1$TotalAbundance))})%>%
   arrange(desc(Abundance))%>%
@@ -179,10 +221,8 @@ prev_sum_phylum <- plyr::ddply(prevdf, "Phylum", function(df1){cbind(Samples=mea
 prev_sum_phylum
 write.table(prev_sum_phylum, "./tables/prev_sum_phylum.txt", sep = "\t", quote = F)
 
-
 #Define phyla to filter (observed only one feature)
-
-fliterPhyla = c("Zixibacteria", "WS2", "LCP-89", "Modulibacteria", "Fermentibacterota", "Abditibacteriota", "Armatimonadota", "Halanaerobiaeota", "Acetothermia", "Caldisericota", "Deferrisomatota")
+fliterPhyla = c("Sumerlaeota", "Cloacimonadota", "Schekmanbacteria", "Hydrogenedentes", "Deinococcota", "Thermotogota","Calditrichota","Zixibacteria", "WS2", "LCP-89", "Modulibacteria", "Fermentibacterota", "Abditibacteriota", "Armatimonadota", "Halanaerobiaeota", "Acetothermia", "Caldisericota", "Deferrisomatota")
 #filter phyla
 phy_obj3 = subset_taxa (phy_obj2, !Phylum %in% fliterPhyla)
 phy_obj3
@@ -195,51 +235,42 @@ ggplot(prevdf3, aes(TotalAbundance, Prevalence / nsamples(phy_obj3),color=Phylum
   scale_x_log10() +  xlab("Total Abundance") + ylab("Prevalence [Frac. Samples]") +
   facet_wrap(~Phylum) + theme(legend.position="none") 
 
-ggsave("./output_graphs/TaxaPrevalenceVsTotalCounts.pdf", last_plot())
+ggsave("./output_graphs/TaxaPrevalenceVsTotalCounts_AfterF.pdf", last_plot())
+saveRDS(phy_obj3, "./phyloseqFiltered.RDS")
 
+####################################
+#Alpha diversity plot
+####################################
 
-#Prevalence filtering
-########################
+#Create table
+phy_obj3_alpha <- estimate_richness(phy_obj3, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
+df <- data.frame(sample_data(phy_obj3), phy_obj3_alpha)
+write.table(df, "./tables/AlphaDiversity.txt")
 
-#Define prevalence treshold as 1 sample 
-prevdf2 <- prevdf3 %>% filter (Prevalence>1)
-prevdf2
+#Plot all together
+p = plot_richness(phy_obj3, measures=c("Chao1", "InvSimpson", "Shannon"), x = "Location", color = "Season", nrow=1, sortby = "Chao1") + geom_boxplot()
+newOrder = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall")
+p$data$Location <- as.character(p$data$Location)
+p$data$Location <- factor(p$data$Location, levels=newOrder)
+print(p)
+ggsave("./output_graphs/AlphaDiversity.pdf")
 
-#Remove phyla that have less than 0.01% of seq
-# First agglomerate by phylum to define the phyla you want to keep.
-physeqPhylum = tax_glom(phy_obj3, "Phylum")
-physeqPhylumRA = transform_sample_counts(physeqPhylum, function(x) x/sum(x))
-physeqPhylumRAF = filter_taxa(physeqPhylumRA, function(x) mean(x) > 0.0001, TRUE)
+#Separate bottom - surface
+phy_obj3.surface = subset_samples(phy_obj3, Depth == "surface")
+phy_obj3.bottom = subset_samples(phy_obj3, Depth == "bottom")
 
-# Define the vector of phyla names that are still present after your filter
-keepPhyla = get_taxa_unique(physeqPhylumRAF, "Phylum")
-# Like in the first question, subset to just the phyla that you want, using the original phyloseq object
-phy_obj4 = subset_taxa(phy_obj3, Phylum  %in% keepPhyla) 
-phy_obj4
-prevdf4 = subset(prevdf, Phylum %in% get_taxa_unique(phy_obj4, "Phylum"))
-ggplot(prevdf4, aes(TotalAbundance, Prevalence / nsamples(phy_obj4),color=Phylum)) +
-  # Include a guess for parameter
-  geom_hline(yintercept = 0.05, alpha = 0.5, linetype = 2) + geom_point(size = 2, alpha = 0.7) +
-  scale_x_log10() +  xlab("Total Abundance") + ylab("Prevalence [Frac. Samples]") +
-  facet_wrap(~Phylum) + theme(legend.position="none")
+a<-plot_richness(phy_obj3.surface, measures=c("Chao1", "InvSimpson", "Shannon"), x = "Location", color = "Season", nrow=1)
+newOrder = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall")
+a$data$Location <- as.character(a$data$Location)
+a$data$Location <- factor(a$data$Location, levels=newOrder)
+b<-plot_richness(phy_obj3.bottom, measures=c("Chao1", "InvSimpson", "Shannon"), x = "Location", color = "Season", nrow=1)
+newOrder = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall")
+b$data$Location <- as.character(b$data$Location)
+b$data$Location <- factor(b$data$Location, levels=newOrder)
 
-#Remove phyla that have less than 0.1% of seq
-# First agglomerate by phylum to define the phyla you want to keep.
-physeqPhylum = tax_glom(phy_obj3, "Phylum")
-physeqPhylumRA = transform_sample_counts(physeqPhylum, function(x) x/sum(x))
-physeqPhylumRAF = filter_taxa(physeqPhylumRA, function(x) mean(x) > 0.001, TRUE)
-
-# Define the vector of phyla names that are still present after your filter
-keepPhyla = get_taxa_unique(physeqPhylumRAF, "Phylum")
-# Like in the first question, subset to just the phyla that you want, using the original phyloseq object
-phy_obj5 = subset_taxa(phy_obj3, Phylum  %in% keepPhyla) 
-phy_obj5
-prevdf5 = subset(prevdf, Phylum %in% get_taxa_unique(phy_obj5, "Phylum"))
-ggplot(prevdf5, aes(TotalAbundance, Prevalence / nsamples(phy_obj5),color=Phylum)) +
-  # Include a guess for parameter
-  geom_hline(yintercept = 0.05, alpha = 0.5, linetype = 2) + geom_point(size = 2, alpha = 0.7) +
-  scale_x_log10() +  xlab("Total Abundance") + ylab("Prevalence [Frac. Samples]") +
-  facet_wrap(~Phylum) + theme(legend.position="none")
+c<-ggarrange(a,b, nrow=2, common.legend = TRUE)
+c
+ggsave("./output_graphs/AlphaDiversity_depth.pdf")
 
 
 #####################################
@@ -250,23 +281,17 @@ ggplot(prevdf5, aes(TotalAbundance, Prevalence / nsamples(phy_obj5),color=Phylum
 prevdf_sum_phylum <- plyr::ddply(prevdf3, "Phylum", function(prevdf3){cbind(Samples=mean(prevdf3$Prevalence),Abundance=sum(prevdf3$TotalAbundance))})%>%
   arrange(desc(Abundance))%>%
   mutate(Proportion = 100*Abundance / sum(Abundance))
-prevdf_sum_phylum4 <- plyr::ddply(prevdf4, "Phylum", function(prevdf4){cbind(Samples=mean(prevdf4$Prevalence),Abundance=sum(prevdf4$TotalAbundance))})%>%
-  arrange(desc(Abundance))%>%
-  mutate(Proportion = 100*Abundance / sum(Abundance))
-prevdf_sum_phylum5 <- plyr::ddply(prevdf5, "Phylum", function(prevdf5){cbind(Samples=mean(prevdf5$Prevalence),Abundance=sum(prevdf5$TotalAbundance))})%>%
-  arrange(desc(Abundance))%>%
-  mutate(Proportion = 100*Abundance / sum(Abundance))
+
 
 #Explore results on class level
 prevdf_sum_class <- plyr::ddply(prevdf3, "Class", function(prevdf3){cbind(Samples=mean(prevdf3$Prevalence),Abundance=sum(prevdf3$TotalAbundance))})%>%
   arrange(desc(Abundance))%>%
   mutate(Proportion = 100*Abundance / sum(Abundance))
-prevdf_sum_class4 <- plyr::ddply(prevdf4, "Class", function(prevdf4){cbind(Samples=mean(prevdf4$Prevalence),Abundance=sum(prevdf4$TotalAbundance))})%>%
+
+prevdf_sum_genus <- plyr::ddply(prevdf3, "Genus", function(prevdf3){cbind(Samples=mean(prevdf3$Prevalence),Abundance=sum(prevdf3$TotalAbundance))})%>%
   arrange(desc(Abundance))%>%
   mutate(Proportion = 100*Abundance / sum(Abundance))
-prevdf_sum_class5 <- plyr::ddply(prevdf5, "Class", function(prevdf5){cbind(Samples=mean(prevdf5$Prevalence),Abundance=sum(prevdf5$TotalAbundance))})%>%
-  arrange(desc(Abundance))%>%
-  mutate(Proportion = 100*Abundance / sum(Abundance))
+
 #define top class
 top_class <- prevdf_sum_class %>% 
   top_n(10, Proportion)
@@ -275,91 +300,65 @@ top_class
 ##############################
 #Preparation of data for taxonomic comparison
 ##############################
+
 #Abundance value transformation
 phy_obj3ra = transform_sample_counts(phy_obj3, function (otu) {otu/sum(otu)})
-phy_obj4ra = transform_sample_counts(phy_obj4, function (otu) {otu/sum(otu)})
-phy_obj5ra = transform_sample_counts(phy_obj5, function (otu) {otu/sum(otu)})
+ps0_chl_ra = transform_sample_counts(ps0_chl, function (otu) {otu/sum(otu)})
 
 #Melt data
 phy_obj3ra.melt <- psmelt(phy_obj3ra)
-phy_obj4ra.melt <- psmelt(phy_obj4ra)
-phy_obj5ra.melt <- psmelt(phy_obj5ra)
-write.table(phy_obj5ra.melt, "./tables/phy_obj5ra.melt.txt")
+write.table(phy_obj3ra.melt, "./tables/phy_obj3ra.melt.txt")
+ps0_chl_ra.melt <- psmelt(ps0_chl_ra)
+write.table(ps0_chl_ra.melt, "./tables/ps0_chl_ra.melt.txt")
 
 #Calculate abundance for each taxa
-phy_obj5_melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family+Genus, phy_obj5ra.melt,
+phy_obj3_melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family+Genus, phy_obj3ra.melt,
                                                   FUN = function(x) c(sum = sum(x), count=length(x)))))
-phy_obj5_melt.agg.genus$Abundance <- phy_obj5_melt.agg.genus$Abundance.sum*100
-phy_obj5_melt.agg.genus<- phy_obj5_melt.agg.genus[phy_obj5_melt.agg.genus$Abundance.sum>0,]
+phy_obj3_melt.agg.genus$Abundance <- phy_obj3_melt.agg.genus$Abundance.sum*100
+phy_obj3_melt.agg.genus<- phy_obj3_melt.agg.genus[phy_obj3_melt.agg.genus$Abundance.sum>0,]
 
 
 ##calculate abundance for each Family
-phy_obj5_melt.agg.family <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, phy_obj5ra.melt,
+phy_obj3_melt.agg.family <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, phy_obj3ra.melt,
                                                    FUN = function(x) c(sum = sum(x), count=length(x)))))
+phy_obj3_melt.agg.family$Abundance <- phy_obj3_melt.agg.family$Abundance.sum*100
+phy_obj3_melt.agg.family<- phy_obj3_melt.agg.family[phy_obj3_melt.agg.family$Abundance.sum>0,]
 
-#phy_obj5_melt.agg.family <- aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, phy_obj5ra.melt, FUN="sum")
-phy_obj5_melt.agg.family$Abundance <- phy_obj5_melt.agg.family$Abundance.sum*100
-phy_obj5_melt.agg.family<- phy_obj5_melt.agg.family[phy_obj5_melt.agg.family$Abundance.sum>0,]
-#aggregate different samplings in one season
-#phy_obj5_melt.agg.family<- aggregate(Abundance~Location+Depth+Season+Class+Order+Family, phy_obj5_melt.agg.family, FUN="mean")
-
-
-Campyl.melt <- subset(phy_obj5_melt.agg.family , subset = Class == "Campylobacteria")
-
-Vibrio<-subset(phy_obj5_melt.agg.genus, subset = Genus == "Vibrio")
-write.csv(Vibrio)
 
 ###########################
 #Taxonomic compositions on class level
 ###########################
 #Calculate abundance for each Class
-phy_obj5_melt.agg.class <- aggregate (Abundance~Location+Season+Date+Depth+Class, phy_obj5ra.melt, FUN="sum")
-phy_obj5_melt.agg.class$Abundance <- phy_obj5_melt.agg.class$Abundance*100
-phy_obj5_melt.agg.class<- phy_obj5_melt.agg.class[phy_obj5_melt.agg.class$Abundance>0,]
+phy_obj3_melt.agg.class <- aggregate (Abundance~Location+Season+Date+Depth+Class, phy_obj3ra.melt, FUN="sum")
+phy_obj3_melt.agg.class$Abundance <- phy_obj3_melt.agg.class$Abundance*100
+phy_obj3_melt.agg.class<- phy_obj3_melt.agg.class[phy_obj3_melt.agg.class$Abundance>0,]
 
 #remove below 3% ra
 threshold<- 3
-phy_obj5_melt.agg.class$Class <- as.character(phy_obj5_melt.agg.class$Class)
-taxa_classes <- unique(phy_obj5_melt.agg.class$Class[!phy_obj5_melt.agg.class$Abundance<threshold])
-phy_obj5_melt.agg.class$Class[phy_obj5_melt.agg.class$Abundance<threshold] <- "Other taxa"
-phy_obj5_melt.agg.class$Class <- factor(phy_obj5_melt.agg.class$Class,
+phy_obj3_melt.agg.class$Class <- as.character(phy_obj3_melt.agg.class$Class)
+taxa_classes <- unique(phy_obj3_melt.agg.class$Class[!phy_obj3_melt.agg.class$Abundance<threshold])
+phy_obj3_melt.agg.class$Class[phy_obj3_melt.agg.class$Abundance<threshold] <- "Other taxa"
+phy_obj3_melt.agg.class$Class <- factor(phy_obj3_melt.agg.class$Class,
                                         levels=c(taxa_classes,"Other taxa"))
-phy_obj5_melt.agg.class.table <- aggregate (Abundance~Location+Season+Date+Depth+Class, phy_obj5_melt.agg.class, FUN="sum")
-write.csv(phy_obj5_melt.agg.class.table, "./tables/Class.csv")
-
-
-#Plot Class(Location)
-phy_obj5_melt.agg.class$Location = factor(phy_obj5_melt.agg.class$Location, levels=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
-ggplot(phy_obj5_melt.agg.class, aes(x = Abundance, y = Season, fill = Class))+
-  facet_grid(Location~., space= "fixed")+
-  geom_bar(stat = "identity", position="fill") +
-  scale_y_discrete(limits = c('autumn', 'winter','summer','spring'))
-ggsave("./output_graphs/Class5_location.pdf", last_plot())
-
-
-#Plot Class(Season)
-colourCount = length(unique(phy_obj5_melt.agg.class$Class))
-getPalette = colorRampPalette(brewer.pal(8, "Set2"))
-phy_obj5_melt.agg.class$Season_f = factor(phy_obj5_melt.agg.class$Season, levels=c('autumn','winter', 'summer','spring'))
-ggplot(phy_obj5_melt.agg.class, aes(x = Abundance, y = Location, fill = Class))+
-  facet_grid(Season_f~Depth, space= "fixed")+
-  geom_bar(stat = "identity", position="fill")+
-  scale_fill_manual(values=getPalette(colourCount))+
-  scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
-ggsave("./output_graphs/Class5_season_depth.pdf", last_plot())
+phy_obj3_melt.agg.class.table <- aggregate (Abundance~Location+Season+Date+Depth+Class, phy_obj3_melt.agg.class, FUN="sum")
+write.csv(phy_obj3_melt.agg.class.table, "./tables/Class.csv")
 
 
 #Plot Class(Date)
-phy_obj5_melt.agg.class$Season = factor(phy_obj5_melt.agg.class$Date, levels=c( '15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
-ggplot(phy_obj5_melt.agg.class, aes(x = Abundance, y = Location, fill = Class))+
+colourCount = length(unique(phy_obj3_melt.agg.class$Class))
+getPalette = colorRampPalette(brewer.pal(8, "Set2"))
+phy_obj3_melt.agg.class$Season = factor(phy_obj3_melt.agg.class$Date, levels=c( '15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
+ggplot(phy_obj3_melt.agg.class, aes(x = Abundance, y = Location, fill = Class))+
   facet_grid(Season~Depth, space= "fixed")+
   geom_bar(stat = "identity", position="fill")+
   scale_fill_manual(values=getPalette(colourCount))+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
-ggsave("./output_graphs/Class5_Date.pdf", last_plot())
+ggsave("./output_graphs/Class3_Date.pdf", last_plot())
 
 
-#Subsets by taxonomy - Campylobacteria (position stack/positiona fill)
+###Subsets by taxonomy - Campylobacteria (position stack/position fill)
+Campyl.melt <- subset(phy_obj3_melt.agg.family , subset = Class == "Campylobacteria")
+
 Campyl.melt$Date_f = factor(Campyl.melt$Date, levels=c('15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
 ggplot(Campyl.melt, aes(x = Abundance, y = Location, fill = Family))+
   facet_grid(Date_f~Depth, space= "fixed")+
@@ -367,21 +366,13 @@ ggplot(Campyl.melt, aes(x = Abundance, y = Location, fill = Family))+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
 ggsave("./output_graphs/Campylobacteria.pdf", last_plot())
 
-phy_obj5_melt.agg.class$Season = factor(phy_obj5_melt.agg.class$Date, levels=c( '15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
-ggplot(phy_obj5_melt.agg.class, aes(x = Abundance, y = Location, fill = Class))+
-  facet_grid(Season~Depth, space= "fixed")+
-  geom_bar(stat = "identity", position="fill")+
-  scale_fill_manual(values=getPalette(colourCount))+
-  scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
-ggsave("./output_graphs/Class5_Date.pdf", last_plot())
 
-
-#Subsets by taxonomy - Alphaproteobacteria 
-Alpha.melt <- subset(x=phy_obj5_melt.agg.family , subset = Class == "Alphaproteobacteria")
+###Subsets by taxonomy - Alphaproteobacteria 
+Alpha.melt <- subset(x=phy_obj3_melt.agg.family , subset = Class == "Alphaproteobacteria")
 Alpha.melt$Date_f = factor(Alpha.melt$Date, levels=c('15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
 
 colourCount = length(unique(Alpha.melt$Order))
-getPalette = colorRampPalette(brewer.pal(8, "Set1"))
+getPalette = colorRampPalette(brewer.pal(8, "Set2"))
 
 #remove below 1% ra
 threshold<- 1
@@ -391,7 +382,6 @@ Alpha.melt$Order[Alpha.melt$Abundance<threshold] <- "Other taxa"
 Alpha.melt$Order <- factor(Alpha.melt$Order,
                                         levels=c(taxa_classes,"Other taxa"))
 
-
 ggplot(Alpha.melt, aes(x = Abundance, y = Location, fill = Order))+
   facet_grid(Date_f~Depth, space= "fixed")+
   geom_bar(stat = "identity", position="stack")+
@@ -399,8 +389,8 @@ ggplot(Alpha.melt, aes(x = Abundance, y = Location, fill = Order))+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
 ggsave("./output_graphs/Alphaproteobacteria.pdf", last_plot())
 
-#Subsets by taxonomy - Gammaproteobacteria 
-Gamma.melt <- subset(x=phy_obj5_melt.agg.family , subset = Class == "Gammaproteobacteria")
+###Subsets by taxonomy - Gammaproteobacteria 
+Gamma.melt <- subset(x=phy_obj3_melt.agg.family , subset = Class == "Gammaproteobacteria")
 Gamma.melt$Date_f = factor(Gamma.melt$Date, levels=c('15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
 
 
@@ -423,8 +413,8 @@ ggplot(Gamma.melt, aes(x = Abundance, y = Location, fill = Order))+
 ggsave("./output_graphs/Gammaproteobacteria.pdf", last_plot())
 
 
-#Subsets by taxonomy - Bacteroidia
-Bacter.melt <- subset(phy_obj5_melt.agg.family , subset = Class == "Bacteroidia")
+###Subsets by taxonomy - Bacteroidia
+Bacter.melt <- subset(phy_obj3_melt.agg.family , subset = Class == "Bacteroidia")
 Bacter.melt$Date_f = factor(Bacter.melt$Date, levels=c('15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
 
 ggplot(Bacter.melt, aes(x = Abundance, y = Location, fill = Order))+
@@ -434,8 +424,8 @@ ggplot(Bacter.melt, aes(x = Abundance, y = Location, fill = Order))+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
 ggsave("./output_graphs/Bacteroidia.pdf", last_plot())
 
-#Subsets by taxonomy - Bacilli
-Bacilli.melt <- subset(phy_obj5_melt.agg.family , subset = Class == "Bacilli")
+###Subsets by taxonomy - Bacilli
+Bacilli.melt <- subset(phy_obj3_melt.agg.family , subset = Class == "Bacilli")
 Bacilli.melt$Date_f = factor(Bacilli.melt$Date, levels=c('15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
 
 ggplot(Bacilli.melt, aes(x = Abundance, y = Location, fill = Order))+
@@ -445,8 +435,8 @@ ggplot(Bacilli.melt, aes(x = Abundance, y = Location, fill = Order))+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
 ggsave("./output_graphs/Bacteroidia.pdf", last_plot())
 
-#Subsets by taxonomy - Clostridia
-Clost.melt <- subset(phy_obj5_melt.agg.family , subset = Class == "Clostridia")
+###Subsets by taxonomy - Clostridia
+Clost.melt <- subset(phy_obj3_melt.agg.family , subset = Class == "Clostridia")
 Clost.melt$Date_f = factor(Clost.melt$Date, levels=c('15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
 
 ggplot(Clost.melt, aes(x = Abundance, y = Location, fill = Order))+
@@ -456,8 +446,44 @@ ggplot(Clost.melt, aes(x = Abundance, y = Location, fill = Order))+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
 ggsave("./output_graphs/Clostridia.pdf", last_plot())
 
+###Vibrio
+Vibrio<-subset(phy_obj3_melt.agg.genus, subset = Genus == "Vibrio")
 
+##################################
+#Microbial pollution indicators
+##################################
+
+ps_Mic_Ind_ra <- subset_taxa(phy_obj3ra, Family %in% c(Mic_Ind$Family))
+
+#Melt data
+ps_Mic_Ind_ra.melt <- psmelt(ps_Mic_Ind_ra)
+write.table(ps_Mic_Ind_ra.melt, "./tables/ps_Mic_Ind_ra.melt.txt")
+
+#Calculate abundance for each taxa
+ps_Mic_Ind_ra.melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, ps_Mic_Ind_ra.melt,
+                                                           FUN = function(x) c(sum = sum(x), count=length(x)))))
+ps_Mic_Ind_ra.melt.agg.genus$Abundance <- ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum*100
+ps_Mic_Ind_ra.melt.agg.genus<- ps_Mic_Ind_ra.melt.agg.genus[ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum>0,]
+
+ps_Mic_Ind_ra.melt.agg.genus$Date_f = factor(ps_Mic_Ind_ra.melt.agg.genus$Date, levels=c('15.10.2019','25.11.2015','4.12.2018','4.02.2016','24.03.2015','25.04.2019','18.06.2019','15.07.2015'))
+colourCount = length(unique(ps_Mic_Ind_ra.melt.agg.genus$Family))
+getPalette = colorRampPalette(brewer.pal(8, "Set2"))
+ggplot(ps_Mic_Ind_ra.melt.agg.genus, aes(x = Abundance, y = Location, fill = Family))+
+  facet_grid(Date_f~Depth, space= "fixed")+
+  scale_fill_manual(values=getPalette(colourCount))+
+  geom_bar(stat = "identity", position="stack")+
+  scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1','R-Mouth'))
+ggsave("./output_graphs/MicrobialInidicators.pdf", last_plot())
+
+# Heatmap
+ps_Mic_Ind_ra_glom = tax_glom(ps_Mic_Ind_ra, taxrank="Family")
+fig <- plot_heatmap(ps_Mic_Ind_ra_glom, "Family", taxa.label = "Family", sample.label="Season", taxa.order="Class", sample.order="Season")
+fig
+
+
+#################################
 #Plot nMDS
+#################################
 phy_obj5ra.surface.2020 = subset_samples(phy_obj5ra, Depth == "surface" & Dataset=="2020")
 phy_obj5.nmds <- ordinate(phy_obj5ra.surface.2020, method = "NMDS", 
                           distance = "jsd")
@@ -480,8 +506,6 @@ plot_ordination(phy_obj5ra.bottom.2020, phy_obj5.nmds, color = "Season")+
 
 ggsave("./output_graphs/nMDS_bottom_2020.pdf", last_plot())
 
-
-
 ###############
 #SESeq2
 ###############
@@ -497,7 +521,7 @@ packageVersion("DESeq2")
 #The DESeq function does the rest of the testing, in this case with default testing framework
 #Comparison on Location 00RI and 000K (ERI2 was excluded)
 
-head(sample_data(phy_obj5)$Location)
+head(sample_data(phy_obj4)$Location)
 
 phy_obj5.ds = subset_samples(phy_obj3, Location%in%c("R-Estuary-1", "NS-Marine")&Depth == "surface"&Dataset==2020)
 head(sample_data(phy_obj5.ds)$Location)
