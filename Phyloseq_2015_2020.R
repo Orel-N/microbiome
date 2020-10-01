@@ -482,23 +482,62 @@ fig
 
 
 #################################
-#Plot nMDS
+#Plot nMDS / RDA
 #################################
-phy_obj5ra.surface.2020 = subset_samples(phy_obj5ra, Depth == "surface" & Dataset=="2020")
-phy_obj5.nmds <- ordinate(phy_obj5ra.surface.2020, method = "NMDS", 
+# load the libraries
+library(phyloseq)
+library("DESeq2")
+
+
+# test the ordination before transformation
+phy_obj3.nmds <- ordinate(phy_obj3ra, method = "NMDS", "bray")
+plot_ordination(phy_obj3ra, phy_obj3.nmds, color = "Season", shape="Location")
+
+# DESeq conversion 
+gm_mean = function(x, na.rm=TRUE){
+  exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
+}
+phy_obj3.dds <- phyloseq_to_deseq2(phy_obj3, ~1)
+geoMeans = apply(counts(phy_obj3.dds), 1, gm_mean)
+
+# DESeq2 Variance Stabilization
+phy_obj3.dds = estimateSizeFactors(phy_obj3.dds, geoMeans = geoMeans)
+phy_obj3.dds <- estimateDispersions(phy_obj3.dds)
+otu.vst <- getVarianceStabilizedData(phy_obj3.dds)
+
+#make sure that the dimensions of the OTU table and the DEseq object are matching
+dim(otu.vst)
+dim(otu_table(phy_obj3))
+Dor_ps.prev.vst<-phy_obj3
+otu_table(Dor_ps.prev.vst)<- otu_table(otu.vst, taxa_are_rows = TRUE)
+
+# Now, we re-do the ordination
+phy_obj3.vst.nmds <- ordinate(Dor_ps.prev.vst, "NMDS", "euclidean")
+plot_ordination(Dor_ps.prev.vst, phy_obj3.vst.nmds, shape = "Location", color = "Season")+facet_wrap(~Depth)
+
+phy_obj3.vst.nmds <- ordinate(Dor_ps.prev.vst, "RDA", "euclidean")
+plot_ordination(Dor_ps.prev.vst, phy_obj3.vst.nmds, shape = "Location", color = "Season")+facet_wrap(~Depth)
+
+
+
+
+
+##################################################
+phy_obj3ra.surface.2020 = subset_samples(phy_obj3ra, Depth == "surface" & Dataset=="2020")
+phy_obj3.nmds <- ordinate(phy_obj3ra.surface.2020, method = "NMDS", 
                           distance = "jsd")
 
-plot_ordination(phy_obj5ra.surface.2020, phy_obj5.nmds, color = "Season")+
+plot_ordination(phy_obj3ra.surface.2020, phy_obj3.nmds, color = "Season")+
   stat_ellipse(type="norm")+
   geom_point(aes(shape = Location),color ="black", size = 5)+
   geom_point(aes(shape = Location), size = 4)+
   coord_fixed()
 ggsave("./output_graphs/nMDS_2020_surface.pdf", last_plot())
 
-phy_obj5ra.bottom.2020 = subset_samples(phy_obj5ra, Depth == "bottom" & Dataset=="2020")
-phy_obj5.nmds <- ordinate(phy_obj5ra.bottom.2020, method = "NMDS", 
+phy_obj3ra.bottom.2020 = subset_samples(phy_obj3ra, Depth == "bottom" & Dataset=="2020")
+phy_obj3.nmds <- ordinate(phy_obj3ra.bottom.2020, method = "NMDS", 
                           distance = "jsd")
-plot_ordination(phy_obj5ra.bottom.2020, phy_obj5.nmds, color = "Season")+
+plot_ordination(phy_obj3ra.bottom.2020, phy_obj3.nmds, color = "Season")+
   stat_ellipse(type="norm")+
   geom_point(aes(shape = Location),color ="black", size = 5)+
   geom_point(aes(shape = Location), size = 4)+
