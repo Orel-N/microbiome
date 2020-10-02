@@ -453,6 +453,7 @@ Vibrio<-subset(phy_obj3_melt.agg.genus, subset = Genus == "Vibrio")
 #Microbial pollution indicators
 ##################################
 
+Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
 ps_Mic_Ind_ra <- subset_taxa(phy_obj3ra, Family %in% c(Mic_Ind$Family))
 
 #Melt data
@@ -488,7 +489,6 @@ fig
 library(phyloseq)
 library("DESeq2")
 
-
 # test the ordination before transformation
 phy_obj3.nmds <- ordinate(phy_obj3ra, method = "NMDS", "bray")
 plot_ordination(phy_obj3ra, phy_obj3.nmds, color = "Season", shape="Location")
@@ -511,42 +511,74 @@ dim(otu_table(phy_obj3))
 Dor_ps.prev.vst<-phy_obj3
 otu_table(Dor_ps.prev.vst)<- otu_table(otu.vst, taxa_are_rows = TRUE)
 
-# Now, we re-do the ordination
+# Re-do the ordination with variance stabilized data
 phy_obj3.vst.nmds <- ordinate(Dor_ps.prev.vst, "NMDS", "euclidean")
-plot_ordination(Dor_ps.prev.vst, phy_obj3.vst.nmds, shape = "Location", color = "Season")+facet_wrap(~Depth)
+plot_ordination(Dor_ps.prev.vst, phy_obj3.vst.nmds, shape = "Location", color = "Season")+facet_wrap(~Depth)+geom_point(size=4)
+ggsave("./output_graphs/nMDS_var.pdf")
 
-phy_obj3.vst.nmds <- ordinate(Dor_ps.prev.vst, "RDA", "euclidean")
-plot_ordination(Dor_ps.prev.vst, phy_obj3.vst.nmds, shape = "Location", color = "Season")+facet_wrap(~Depth)
+phy_obj3.vst.rda <- ordinate(Dor_ps.prev.vst, "RDA", "euclidean")
+plot_ordination(Dor_ps.prev.vst, phy_obj3.vst.rda, shape = "Location", color = "Season")+facet_wrap(~Depth)+geom_point(size=4)
+ggsave("./output_graphs/RDA_var.pdf")
+plot_ordination(Dor_ps.prev.vst, phy_obj3.vst.rda, type="taxa", color="Phylum", title="taxa")
+
+#########################
+#Microbial indicators
+
+ps_Mic_Ind <- subset_taxa(phy_obj3, Family %in% c(Mic_Ind$Family))
+
+# DESeq conversion 
+gm_mean = function(x, na.rm=TRUE){
+  exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
+}
+phy_ind.dds <- phyloseq_to_deseq2(ps_Mic_Ind, ~1)
+geoMeans = apply(counts(phy_ind.dds), 1, gm_mean)
+
+# DESeq2 Variance Stabilization
+phy_ind.dds = estimateSizeFactors(phy_ind.dds, geoMeans = geoMeans)
+phy_ind.dds <- estimateDispersions(phy_ind.dds)
+otu.ind.vst <- getVarianceStabilizedData(phy_ind.dds)
+
+#make sure that the dimensions of the OTU table and the DEseq object are matching
+dim(otu.ind.vst)
+dim(otu_table(ps_Mic_Ind))
+Dor_ps.ind.vst<-ps_Mic_Ind
+otu_table(Dor_ps.ind.vst)<- otu_table(otu.ind.vst, taxa_are_rows = TRUE)
+
+# Re-do the ordination with variance stabilized data
+phy_ind.vst.nmds <- ordinate(Dor_ps.ind.vst, "NMDS", "euclidean")
+plot_ordination(Dor_ps.ind.vst, phy_ind.vst.nmds, color = "Location")+facet_wrap(~Depth)+geom_point(size=4)
+ggsave("./output_graphs/nMDS_Ind_var.pdf")
+
+phy_ind.vst.rda <- ordinate(Dor_ps.ind.vst, "RDA", "euclidean")
+plot_ordination(Dor_ps.ind.vst, phy_ind.vst.rda, color = "Location")+facet_wrap(~Depth)+geom_point(size=4)
+ggsave("./output_graphs/RDA_Ind_var.pdf")
+plot_ordination(Dor_ps.ind.vst, phy_ind.vst.rda, type="taxa", color="Family", title="taxa")+ facet_wrap(~Class, 3)
+
+plot_ordination(Dor_ps.ind.vst, phy_ind.vst.rda, type="split", color="Family", title="taxa", label="Location")+ facet_wrap(Depth~Phylum, 3)
 
 
+###########################
+#Statistical significance of the groups
+library(vegan)
 
+#statistical significance of the groups
+df <- as(sample_data(Dor_ps.prev.vst), "data.frame")
+d <- phyloseq::distance(Dor_ps.prev.vst, "euclidean")
+adonis_all <- adonis2(d ~ Location+Season , data= df, perm = 999)
+adonis_all
 
+df <- as(sample_data(Dor_ps.ind.vst), "data.frame")
+d <- phyloseq::distance(Dor_ps.ind.vst, "euclidean")
+adonis_all <- adonis(d ~ Location+Season , data= df, perm = 999)
+adonis_all
 
-##################################################
-phy_obj3ra.surface.2020 = subset_samples(phy_obj3ra, Depth == "surface" & Dataset=="2020")
-phy_obj3.nmds <- ordinate(phy_obj3ra.surface.2020, method = "NMDS", 
-                          distance = "jsd")
-
-plot_ordination(phy_obj3ra.surface.2020, phy_obj3.nmds, color = "Season")+
-  stat_ellipse(type="norm")+
-  geom_point(aes(shape = Location),color ="black", size = 5)+
-  geom_point(aes(shape = Location), size = 4)+
-  coord_fixed()
-ggsave("./output_graphs/nMDS_2020_surface.pdf", last_plot())
-
-phy_obj3ra.bottom.2020 = subset_samples(phy_obj3ra, Depth == "bottom" & Dataset=="2020")
-phy_obj3.nmds <- ordinate(phy_obj3ra.bottom.2020, method = "NMDS", 
-                          distance = "jsd")
-plot_ordination(phy_obj3ra.bottom.2020, phy_obj3.nmds, color = "Season")+
-  stat_ellipse(type="norm")+
-  geom_point(aes(shape = Location),color ="black", size = 5)+
-  geom_point(aes(shape = Location), size = 4)+
-  coord_fixed()
-
-ggsave("./output_graphs/nMDS_bottom_2020.pdf", last_plot())
+coef <- coefficients(adonis_all)["group1",]
+top.coef <- coef[rev(order(abs(coef)))[1:20]]
+par(mar = c(3, 14, 2, 1))
+barplot(sort(coef), horiz = T, las = 1, main = "Top taxa")
 
 ###############
-#SESeq2
+#DESeq2
 ###############
 
 BiocManager::install("DESeq2")
