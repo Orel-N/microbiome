@@ -558,24 +558,26 @@ plot_ordination(Dor_ps.ind.vst, phy_ind.vst.rda, type="split", color="Family", t
 
 
 ###########################
-#Statistical significance of the groups
+#PERMANOVA
+
 library(vegan)
 
 #statistical significance of the groups
 df <- as(sample_data(Dor_ps.prev.vst), "data.frame")
 d <- phyloseq::distance(Dor_ps.prev.vst, "euclidean")
-adonis_all <- adonis2(d ~ Location+Season , data= df, perm = 999)
+adonis_all <- adonis2(d ~ Location+Season+Depth , data= df, perm = 999)
 adonis_all
+#Post-hoc test (??)
+phoc <- with(df, betadisper(d, Season))
+TukeyHSD(phoc)
 
 df <- as(sample_data(Dor_ps.ind.vst), "data.frame")
 d <- phyloseq::distance(Dor_ps.ind.vst, "euclidean")
-adonis_all <- adonis(d ~ Location+Season , data= df, perm = 999)
+adonis_all <- adonis2(d ~ Location+Season+Depth , data= df, perm = 999)
 adonis_all
-
-coef <- coefficients(adonis_all)["group1",]
-top.coef <- coef[rev(order(abs(coef)))[1:20]]
-par(mar = c(3, 14, 2, 1))
-barplot(sort(coef), horiz = T, las = 1, main = "Top taxa")
+#Post-hoc test (??)
+phoc <- with(df, betadisper(d, Season))
+TukeyHSD(phoc)
 
 ###############
 #DESeq2
