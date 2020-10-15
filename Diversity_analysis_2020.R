@@ -287,12 +287,14 @@ ps_Mic_Ind_ra.melt <- psmelt(ps_Mic_Ind_ra)
 write.table(ps_Mic_Ind_ra.melt, "./tables/ps_Mic_Ind_ra.melt.txt")
 
 #Calculate abundance for each taxa
-ps_Mic_Ind_ra.melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, ps_Mic_Ind_ra.melt,
+ps_Mic_Ind_ra.melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Sample+Season+Date+Class+Order+Family+Genus, ps_Mic_Ind_ra.melt,
                                                                 FUN = function(x) c(sum = sum(x), count=length(x)))))
 ps_Mic_Ind_ra.melt.agg.genus$Abundance <- ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum*100
 ps_Mic_Ind_ra.melt.agg.genus<- ps_Mic_Ind_ra.melt.agg.genus[ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum>0,]
 
 ps_Mic_Ind_ra.melt.agg.genus$Season_f = factor(ps_Mic_Ind_ra.melt.agg.genus$Season, levels=c('winter','spring','summer','autumn'))
+ps_Mic_Ind_ra.melt.agg.genus$Location_f = factor(ps_Mic_Ind_ra.melt.agg.genus$Location, levels=c('R-Estuary-1','R-Estuary-2', 'NS-Marine', 'OS-Marine', 'SM-Outfall'))
+
 colourCount = length(unique(ps_Mic_Ind_ra.melt.agg.genus$Family))
 getPalette = colorRampPalette(brewer.pal(8, "Set2"))
 ggplot(ps_Mic_Ind_ra.melt.agg.genus, aes(x = Abundance, y = Location, fill = Family))+
@@ -301,6 +303,114 @@ ggplot(ps_Mic_Ind_ra.melt.agg.genus, aes(x = Abundance, y = Location, fill = Fam
   geom_bar(stat = "identity", position="stack")+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1'))
 ggsave("./output_graphs/MicrobialInidicators.pdf", last_plot())
+
+#Separated graphs
+Mic_Ind_1 <- subset(ps_Mic_Ind_ra.melt.agg.genus, (Family %in% c("Arcobacteraceae", "Aeromonadaceae", "Pseudomonadaceae")))
+Mic_Ind_2 <- subset(ps_Mic_Ind_ra.melt.agg.genus, (Family %in% c("Clostridiaceae", "Enterobacteriaceae")))
+Mic_Ind_3 <- subset(ps_Mic_Ind_ra.melt.agg.genus, (Family %in% c("Legionellaceae", "Leptospiraceae", "Mycobacteriaceae")))
+Mic_Ind_4 <- subset(ps_Mic_Ind_ra.melt.agg.genus, (Family %in% c("Chlamydiaceae", "Moraxellaceae")))
+Mic_Ind_5 <- subset(ps_Mic_Ind_ra.melt.agg.genus, (Family %in% c("Enterobacteriaceae", "Enterococcaceae")))
+
+
+colourCount = length(unique(ps_Mic_Ind_ra.melt.agg.genus$Family))
+getPalette = colorRampPalette(brewer.pal(8, "Set1"))
+ggplot(Mic_Ind_1, aes(x = Season_f, y = Abundance, fill = Family)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Depth~Family+Location_f, strip.position = "bottom", nrow = 2, drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  
+
+s1 <- ggplot(Mic_Ind_1[Mic_Ind_1$Depth=="surface",], aes(x = Season_f, y = Abundance, fill = Genus)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+s1
+
+b1 <- ggplot(Mic_Ind_1[Mic_Ind_1$Depth=="bottom",], aes(x = Season_f, y = Abundance, fill = Genus)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+b1
+
+ggarrange(s1, b1, nrow=2)
+
+s2 <- ggplot(Mic_Ind_2[Mic_Ind_2$Depth=="surface",], aes(x = Season_f, y = Abundance, fill = Genus)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+s2
+
+b2 <- ggplot(Mic_Ind_2[Mic_Ind_2$Depth=="bottom",], aes(x = Season_f, y = Abundance, fill = Genus)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+b2
+
+ggarrange(s2, b2, nrow=2)
+
+s3 <- ggplot(Mic_Ind_3[Mic_Ind_3$Depth=="surface",], aes(x = Season_f, y = Abundance, fill = Genus)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+s3
+
+b3 <- ggplot(Mic_Ind_3[Mic_Ind_3$Depth=="bottom",], aes(x = Season_f, y = Abundance, fill = Genus)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+b3
+
+ggarrange(s3, b3, nrow=2)
+
+s4 <- ggplot(Mic_Ind_4[Mic_Ind_4$Depth=="surface",], aes(x = Season_f, y = Abundance, fill = Family)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+s4
+
+b4 <- ggplot(Mic_Ind_4[Mic_Ind_4$Depth=="bottom",], aes(x = Season_f, y = Abundance, fill = Family)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+b4
+
+ggarrange(s4, b4, nrow=2)
+
+s5 <- ggplot(Mic_Ind_5[Mic_Ind_5$Depth=="surface",], aes(x = Season_f, y = Abundance, fill = Genus)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+s5
+
+b5 <- ggplot(Mic_Ind_5[Mic_Ind_5$Depth=="bottom",], aes(x = Season_f, y = Abundance, fill = Genus)) +
+  geom_bar(stat = "identity", position="stack") +
+  facet_wrap(Family~Location_f, nrow=1, strip.position = "bottom", drop=FALSE) +
+  theme_classic() +
+  theme(strip.placement = "outside") +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+b5
+
+ggarrange(s5, b5, nrow=2)
 
 # Heatmap
 ps_Mic_Ind_ra_glom = tax_glom(ps_Mic_Ind_ra, taxrank="Family")
