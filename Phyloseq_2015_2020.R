@@ -4,11 +4,8 @@
 #instal phyloseq
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-BiocManager::install('phyloseq')
+BiocManager::install(c("phyloseq","dplyr", "rstatix", "iNEXT"))
 
-install.packages("dplyr")
-install.packages("rstatix")
-install.packages("iNEXT")
 library(dplyr)
 library(ggplot2)
 library(phyloseq)
@@ -37,7 +34,8 @@ all.equal(rownames(seqtab.nochim), rownames(taxa))
 all.equal(colnames(seqtab.nochim), rownames(meta))
 
 #Create a phyloseq object from the OTU table/ASV table and taxonomy assigned by DADA2
-ps <-phyloseq(otu_table(seqtab.nochim, taxa_are_rows=TRUE), sample_data(meta), tax_table(taxa))
+ps <-phyloseq(otu_table(seqtab.nochim, taxa_are_rows=TRUE), 
+              sample_data(meta), tax_table(taxa))
 ps
 
 #add reference sequence and replace variants with ASVs
