@@ -4,7 +4,6 @@
 #Data: project MICROBIOME, dataset 2015 and 2020 together
 
 ############################################################################
-
 #Set working directory
 setwd("C:/Users/nezao/Documents/5-R/Microbiome2015_2020")
 
@@ -316,6 +315,8 @@ fig <- plot_heatmap(ps_Mic_Ind_ra_glom, "Family", taxa.label = "Family", sample.
 fig
 
 
+
+
 #################################
 #Plot nMDS / RDA
 #################################
@@ -379,5 +380,43 @@ df <- as(sample_data(df_ps.ind.vst), "data.frame")
 d <- phyloseq::distance(df_ps.ind.vst, "euclidean")
 adonis_all <- adonis2(d ~ Location+Season+Depth+Dataset, data= df, perm = 999)
 adonis_all
+
 #Post-hoc test (??)
+
+#Compare only surface
+phy_obj3s <- subset_samples(phy_obj3, Depth == "surface")
+
+# DESeq conversion 
+gm_mean = function(x, na.rm=TRUE){
+  exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
+}
+phy_obj3.dds <- phyloseq_to_deseq2(phy_obj3s, ~1)
+geoMeans = apply(counts(phy_obj3.dds), 1, gm_mean)
+
+# DESeq2 Variance Stabilization
+phy_obj3.dds = estimateSizeFactors(phy_obj3.dds, geoMeans = geoMeans)
+phy_obj3.dds <- estimateDispersions(phy_obj3.dds)
+otu.vst <- getVarianceStabilizedData(phy_obj3.dds)
+
+#make sure that the dimensions of the OTU table and the DEseq object are matching
+dim(otu.vst)
+dim(otu_table(phy_obj3s))
+ps.vst<-phy_obj3s
+otu_table(ps.vst)<- otu_table(otu.vst, taxa_are_rows = TRUE)
+
+# Do the ordination with variance stabilized data
+phy_obj3.vst.nmds <- ordinate(ps.vst, "NMDS", "euclidean")
+plot_ordination(ps.vst, phy_obj3.vst.nmds, shape = "Location", color = "Season")+facet_wrap(~Depth)+geom_point(size=4)
+ggsave("./output_graphs/nMDS_var.pdf")
+
+phy_obj3.vst.rda <- ordinate(ps.vst, "RDA", "euclidean")
+plot_ordination(ps.vst, phy_obj3.vst.rda, shape = "Location", color = "Season")+facet_wrap(~Depth)+geom_point(size=4)
+ggsave("./output_graphs/RDA_var.pdf")
+plot_ordination(ps.vst, phy_obj3.vst.rda, type="taxa", color="Phylum", title="taxa")
+
+df <- as(sample_data(ps.vst), "data.frame")
+d <- phyloseq::distance(ps.vst, "euclidean")
+adonis_all <- adonis2(d ~ Location+Season+Dataset, data= df, perm = 999)
+adonis_all
+
 

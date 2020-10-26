@@ -14,6 +14,10 @@ library(ggplot2)
 library(phyloseq)
 library(ggpubr)
 library(RColorBrewer)
+library(iNEXT)
+library(DESeq2)
+library(rstatix)
+library(vegan)
 
 theme_set(theme_bw())
 
@@ -22,9 +26,7 @@ theme_set(theme_bw())
 ##################################
 
 #Import Sample Data - "metadata"
-meta <- read.table("./data/Metadata_16S_2015_2020_2.txt", header=TRUE)
-rownames(meta)<- paste("X",meta$SampleID, sep ="")
-meta
+meta <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ",")
 
 #Import "ASV table" (matrix)
 seqtab.nochim <- read.csv("./dada2/dada2_seqtab_nochim2_2.txt", h=T, sep="\t")
@@ -32,9 +34,22 @@ seqtab.nochim <- read.csv("./dada2/dada2_seqtab_nochim2_2.txt", h=T, sep="\t")
 #Import taxonomy table (matrix)
 taxa <- as.matrix(read.csv("./dada2/dada2_taxonomy_table_2.txt", h=T,sep = "\t"))
 
+#Edit metadata
+# Checking data structure
+summary(meta)
+str(meta)
+
+rownames(meta)<- paste("X",meta$SampleID, sep ="")
+meta
+meta[,'DIN']=round(meta[,'DIN'],1)
+meta[,'Depth_m']=round(meta[,'Depth_m'],0)
+meta[,'Coliform_bacteria']=round(meta[,'Coliform_bacteria'],0)
+meta[,'Cyanobacteria_STDEV']=round(meta[,'Cyanobacteria_STDEV'],0)
+
+meta$Dataset <- ifelse(meta$SampleID < 12, "2015", "2020")
+                                  
 #Check order
 all.equal(rownames(seqtab.nochim), rownames(taxa))
-all.equal(names(seqtab.nochim), rownames(meta))
 
 #Create a phyloseq object from the OTU table/ASV table and taxonomy assigned by DADA2
 ps <-phyloseq(otu_table(seqtab.nochim, taxa_are_rows=TRUE), sample_data(meta), tax_table(taxa))
@@ -50,6 +65,7 @@ ps
 #remove unobserved ASVs
 ps<- prune_taxa(taxa_sums(ps)>0, ps)
 ps
+
 
 ##################################
 #Generate an overview table
@@ -85,17 +101,275 @@ pruned_seq_sums$Row.names <- paste(row.names(pruned_seq_sums))
 pruned_seq_sums
 
 #remove unclassified on phylum level, chloroplast, Mitochondrial and Archaeal sequence variants
-ps0 <- subset_taxa(ps, !Kingdom %in% c("Eukaryota") &!Phylum %in% c("Bacteria_uncl","Archaea_uncl","NA_uncl") & !Order %in% c("Chloroplast") & !Family %in% c("Mitochondria") & !Kingdom %in% c("Archaea"))
+ps0 <- subset_taxa(ps, !Kingdom %in% c("Eukaryota") & !is.na(Phylum) & !Phylum %in% c("", "uncharacterized") & !Order %in% c("Chloroplast") & !Family %in% c("Mitochondria") & !Kingdom %in% c("Archaea"))
 ps0
+
 #Create separate phyloseq object with seq assigned to Chloroplast
 ps0_chl <- subset_taxa(ps, Order == "Chloroplast")
 ps0_chl
 
-#alpha diversity indeces
-ps0_alpha <- estimate_richness(ps0, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
+
+###########################################
+#Alpha diversity
+###########################################
+
+#Dataset 2015 and 2020 together
+####################################
+
+#Create Alphadiversity table
+ps0_alpha  <- estimate_richness(ps0, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
+alpha_df_15.20 <- data.frame(sample_data(ps0), ps0_alpha)
+write.table(alpha_df_15.20, "./tables/AlphaDiversity15_20.txt")
 ps0_alpha$Row.names<-rownames(ps0_alpha)
 
+#Edit table
+alpha_df_15.20$Season <- factor(alpha_df_15.20$Season, levels = c("winter", "spring", "summer", "autumn"))
+alpha_df_15.20$Location <- factor(alpha_df_15.20$Location, levels = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+alpha_df_15.20$Depth <- factor(alpha_df_15.20$Depth, levels = c("bottom", "surface"))
+alpha_df_15.20$Pollution <- ifelse(alpha_df_15.20$Location == "OS-Marine", "Unpolluted", 
+                                   ifelse(alpha_df_15.20$Location == "NS-Marine", "Unpolluted", "Polluted"))
+#Plot Chao1 - separate for depth
+Chao.p <- ggplot(data = alpha_df_15.20) +
+  geom_boxplot(mapping=aes(x=Location, y=Chao1, color=Location)) +
+  geom_point(mapping=aes(x=Location, y=Chao1, color=Location, shape = Season), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+Chao.p
+ggsave("./output_graphs/Chao_15_20.pdf")
 
+#Plot Shannon d.i. - separate for depth
+Shannon.p <- ggplot(data = alpha_df_15.20) +
+  geom_boxplot(mapping=aes(x=Location, y=Shannon, color=Location)) +
+  geom_point(mapping=aes(x=Location, y=Shannon, color=Location, shape = Season), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+Shannon.p
+ggsave("./output_graphs/Shannon_15_20.pdf")
+
+#Plot InvSimpson - separate for depth
+InvSimpson.p <- ggplot(data = alpha_df_15.20) +
+  geom_boxplot(mapping=aes(x=Location, y=InvSimpson, color=Location)) +
+  geom_point(mapping=aes(x=Location, y=InvSimpson, color=Location, shape = Season), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+InvSimpson.p
+ggsave("./output_graphs/InvSimpsin_15_20.pdf")
+
+ggarrange(Chao.p, Shannon.p, InvSimpson.p, nrow=1, common.legend = TRUE)
+
+###Statistic
+
+#Shapiro-Wilk's test
+hist(alpha_df_15.20$Chao1)
+qqnorm(alpha_df_15.20$Chao1)
+qqline(alpha_df_15.20$Chao1)
+hist(alpha_df_15.20$Shannon)
+qqnorm(alpha_df_15.20$Shannon)
+qqline(alpha_df_15.20$Shannon)
+
+alpha_df_15.20 %>% shapiro_test(Chao1, Shannon, InvSimpson)
+
+anova.Ch.15.20 <- aov(alpha_df_15.20$Chao1 ~ Dataset+Depth+Season+Pollution+Location, data=alpha_df_15.20)
+summary(anova.Ch.15.20)
+TukeyHSD(anova.Ch.15.20)
+
+kruskal.test(alpha_df_15.20$Shannon ~ Season, data = alpha_df_15.20) 
+kruskal.test(alpha_df_15.20$Shannon ~ Depth, data = alpha_df_15.20) 
+kruskal.test(alpha_df_15.20$Shannon ~ Location, data = alpha_df_15.20)
+kruskal.test(alpha_df_15.20$Shannon ~ Dataset, data = alpha_df_15.20)
+kruskal.test(alpha_df_15.20$Shannon ~ Pollution, data = alpha_df_15.20)
+
+kruskal.test(alpha_df_15.20$InvSimpson ~ Season, data = alpha_df_15.20) 
+kruskal.test(alpha_df_15.20$InvSimpson ~ Depth, data = alpha_df_15.20) 
+kruskal.test(alpha_df_15.20$InvSimpson ~ Location, data = alpha_df_15.20)
+kruskal.test(alpha_df_15.20$InvSimpson ~ Dataset, data = alpha_df_15.20)
+kruskal.test(alpha_df_15.20$InvSimpson ~ Pollution, data = alpha_df_15.20)
+
+pairwise.wilcox.test(alpha_df_15.20$InvSimpson, alpha_df_15.20$Season,
+                     p.adjust.method = "BH")
+
+#Comparing just surface samples from both datasets
+alpha_df_15.20.s <- filter(alpha_df_15.20, Depth == "surface")
+alpha_df_15.20.s %>% shapiro_test(Chao1, Shannon, InvSimpson)
+anova.Ch.15.20.s <- aov(alpha_df_15.20.s$Chao1 ~ Dataset+Season+Pollution+Location, data=alpha_df_15.20.s)
+summary(anova.Ch.15.20.s)
+anova.Sh.15.20.s <- aov(alpha_df_15.20.s$Shannon ~ Dataset+Season+Pollution+Location, data=alpha_df_15.20.s)
+summary(anova.Sh.15.20.s)
+kruskal.test(alpha_df_15.20.s$InvSimpson ~ Dataset, data = alpha_df_15.20.s)
+
+#Dataset 2020
+####################################
+
+ps0_20 <- subset_samples(ps0, Dataset == "2020")
+
+#Create Alphadiversity table 2020
+alpha_df_2 <- estimate_richness(ps0_20, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
+alpha_df_20 <- data.frame(sample_data(ps0_20), alpha_df_2)
+write.table(alpha_df_20, "./tables/AlphaDiversity_20.txt")
+
+
+#Edit table 2020
+alpha_df_20$Season <- factor(alpha_df_20$Season, levels = c("winter", "spring", "summer", "autumn"))
+alpha_df_20$Location <- factor(alpha_df_20$Location, levels = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+alpha_df_20$Depth <- factor(alpha_df_20$Depth, levels = c("bottom", "surface"))
+alpha_df_20$Pollution <- ifelse(alpha_df_20$Location == "OS-Marine", "Unpolluted", 
+                                ifelse(alpha_df_20$Location == "NS-Marine", "Unpolluted", "Polluted"))
+
+#Plot Chao1 - separate for depth 2020
+Chao.20.p <- ggplot(data = alpha_df_20) +
+  geom_boxplot(mapping=aes(x=Location, y=Chao1, color=Location)) +
+  geom_point(mapping=aes(x=Location, y=Chao1, color=Location, shape = Season), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+Chao.20.p
+ggsave("./output_graphs/Chao_20.pdf")
+
+#Plot Shannon d.i. - separate for depth 2020
+Shannon.20.p <- ggplot(data = alpha_df_20) +
+  geom_boxplot(mapping=aes(x=Location, y=Shannon, color=Location)) +
+  geom_point(mapping=aes(x=Location, y=Shannon, color=Location, shape = Season), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+Shannon.20.p
+ggsave("./output_graphs/Shannon_20.pdf")
+
+#Plot InvSimpson - separate for depth 2020
+InvSimpson.20.p <- ggplot(data = alpha_df_20) +
+  geom_boxplot(mapping=aes(x=Location, y=InvSimpson, color=Location)) +
+  geom_point(mapping=aes(x=Location, y=InvSimpson, color=Location, shape = Season), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+InvSimpson.20.p
+ggsave("./output_graphs/InvSimpsin_20.pdf")
+
+alpha.20 <- ggarrange(Chao.20.p, Shannon.20.p, InvSimpson.20.p, nrow=1, common.legend = TRUE)
+alpha.20
+
+###Statistic 2020
+#Subsetting data 2020 - bottom vs.surface
+alpha_df_20b <- filter(alpha_df_20, Depth == "bottom")
+alpha_df_20s <- filter(alpha_df_20, Depth == "surface")
+
+#Shapiro-Wilk's test
+hist(alpha_df_20$Chao1)
+qqnorm(alpha_df_20$Chao1)
+qqline(alpha_df_20$Chao1)
+hist(alpha_df_20$Shannon)
+qqnorm(alpha_df_20$Shannon)
+qqline(alpha_df_20$Shannon)
+
+alpha_df_20 %>% shapiro_test(Chao1, Shannon, InvSimpson)
+alpha_df_20b %>% shapiro_test(Chao1, Shannon, InvSimpson)
+alpha_df_20s %>% shapiro_test(Chao1, Shannon, InvSimpson)
+
+#ANOVA or Kruskal-Wallis test
+anova.Ch.20 <- aov(alpha_df_20$Chao1 ~ Depth+Season+Pollution+Location, data=alpha_df_20)
+summary(anova.Ch.20)
+TukeyHSD(anova.Ch.20)
+anova.Ch.20 <- aov(alpha_df_20b$Chao1 ~ Season+Pollution+Location, data=alpha_df_20b)
+summary(anova.Ch.20)
+anova.Ch.20 <- aov(alpha_df_20s$Chao1 ~ Season+Pollution+Location, data=alpha_df_20s)
+summary(anova.Ch.20)
+
+kruskal.test(alpha_df_20$Shannon ~ Season, data = alpha_df_20) 
+kruskal.test(alpha_df_20$Shannon ~ Depth, data = alpha_df_20) 
+kruskal.test(alpha_df_20$Shannon ~ Location, data = alpha_df_20)
+kruskal.test(alpha_df_20$Shannon ~ Pollution, data = alpha_df_20)
+anova.Ch.20 <- aov(alpha_df_20b$Shannon ~ Season+Pollution+Location, data=alpha_df_20b)
+summary(anova.Ch.20)
+anova.Ch.20 <- aov(alpha_df_20s$Shannon ~ Season+Pollution+Location, data=alpha_df_20s)
+summary(anova.Ch.20)
+TukeyHSD(anova.Ch.20)
+
+anova.InvS.20 <- aov(alpha_df_20$InvSimpson ~ Depth+Season+Pollution+Location, data=alpha_df_20)
+summary(anova.InvS.20)
+anova.InvS.20b <- aov(alpha_df_20b$InvSimpson ~ Season+Pollution+Location, data=alpha_df_20b)
+summary(anova.InvS.20b)
+anova.InvS.20s <- aov(alpha_df_20s$InvSimpson ~ Season+Pollution+Location, data=alpha_df_20s)
+summary(anova.InvS.20s)
+
+
+
+#Dataset 2015
+####################################
+
+ps0_15 <- subset_samples(ps0, Dataset == "2015")
+
+
+#Create Alphadiversity table 2015
+alpha_df_3 <- estimate_richness(ps0_15, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
+alpha_df_15 <- data.frame(sample_data(ps0_15), alpha_df_3)
+write.table(alpha_df_15, "./tables/AlphaDiversity_15.txt")
+
+
+#Edit table 2015
+alpha_df_15$Season <- factor(alpha_df_15$Season, levels = c("winter", "spring", "summer", "autumn"))
+alpha_df_15$Location <- factor(alpha_df_15$Location, levels = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+alpha_df_15$Depth <- factor(alpha_df_15$Depth, levels = c("bottom", "surface"))
+alpha_df_15$Pollution <- ifelse(alpha_df_15$Location == "OS-Marine", "Unpolluted", 
+                                ifelse(alpha_df_15$Location == "NS-Marine", "Unpolluted", "Polluted"))
+
+#Plot Chao1 - separate for depth 2015
+Chao.15.p <- ggplot(data = alpha_df_15) +
+  geom_boxplot(mapping=aes(x=Location, y=Chao1, color=Location)) +
+  geom_point(mapping=aes(x=Location, y=Chao1, color=Location, shape = Season), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+Chao.15.p
+ggsave("./output_graphs/Chao_15.pdf")
+
+#Plot Shannon d.i. - separate for depth 2015
+Shannon.15.p <- ggplot(data = alpha_df_15) +
+  geom_boxplot(mapping=aes(x=Location, y=Shannon, color=Location)) +
+  geom_point(mapping=aes(x=Location, y=Shannon, color=Location, shape = Season), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+Shannon.15.p
+ggsave("./output_graphs/Shannon_15.pdf")
+
+#Plot InvSimpson - separate for depth 2015
+InvSimpson.15.p <- ggplot(data = alpha_df_15) +
+  geom_boxplot(mapping=aes(x=Location, y=InvSimpson, color=Location)) +
+  geom_point(mapping=aes(x=Location, y=InvSimpson, color=Location, shape = Season), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+InvSimpson.15.p
+ggsave("./output_graphs/InvSimpsin_15.pdf")
+
+alpha.15 <- ggarrange(Chao.15.p, Shannon.15.p, InvSimpson.15.p, nrow=1, common.legend = TRUE)
+alpha.15
+
+###Statistic 2015
+
+#Shapiro-Wilk's test
+hist(alpha_df_15$Chao1)
+qqnorm(alpha_df_15$Chao1)
+qqline(alpha_df_15$Chao1)
+hist(alpha_df_15$Shannon)
+qqnorm(alpha_df_15$Shannon)
+qqline(alpha_df_15$Shannon)
+
+alpha_df_15 %>% shapiro_test(Chao1, Shannon, InvSimpson)
+
+#ANOVA or Kruskal-Wallis test
+anova.Ch.15 <- aov(alpha_df_15$Chao1 ~ Pollution+Location+Season, data=alpha_df_15)
+summary(anova.Ch.15)
+TukeyHSD(anova.Ch.15)
+
+anova.Sh.15 <- aov(alpha_df_15$Shannon ~ Pollution+Location+Season, data=alpha_df_15)
+summary(anova.Sh.15)
+TukeyHSD(anova.Sh.15)
+
+kruskal.test(alpha_df_15$InvSimpson ~ Season, data = alpha_df_15) 
+kruskal.test(alpha_df_15$InvSimpson ~ Location, data = alpha_df_15)
+kruskal.test(alpha_df_15$InvSimpson ~ Pollution, data = alpha_df_15)
+
+
+##################
+#Overview table
+
+ps0_alpha <- estimate_richness(ps0, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
+ps0_alpha$Row.names<-rownames(ps0_alpha)
 
 #merge all together
 summary_table <- merge(meta2,reads.tab,by ="Row.names") %>%
@@ -131,7 +405,6 @@ write.table(summary_table2, "./tables/16S_15_20_overview_table_2.txt" , sep = "\
 ####################################
 #Plot rarefaction
 ####################################
-library(iNEXT)
 ps0.iNEXT <- iNEXT(as.data.frame(otu_table(ps0)), q=0, datatype="abundance", knots = 40)
 
 #Plot all together
@@ -193,11 +466,7 @@ table_phyla <- table(tax_table(ps0)[, "Phylum"], exclude = NULL)
 write.table(table_phyla, "./tables/TablePhyla2.csv", quote = F)
 write.table(table_phyla, "./tables/TablePhyla2.txt", sep = "\t", quote = F)
 
-
-#Remove features with a Phylum NA
-phy_obj2 <- subset_taxa(ps0, !is.na(Phylum) & !Phylum %in% c("", "uncharacterized"))
-phy_obj2
-
+phy_obj2 <- ps0
 
 #Explore feature prevalence in the dataset - number of samples in which a taxa appears at least once
 # Compute prevalence of each feature, store as data.frame
@@ -236,41 +505,11 @@ ggplot(prevdf3, aes(TotalAbundance, Prevalence / nsamples(phy_obj3),color=Phylum
   facet_wrap(~Phylum) + theme(legend.position="none") 
 
 ggsave("./output_graphs/TaxaPrevalenceVsTotalCounts_AfterF.pdf", last_plot())
+
+#Save filtered phyloseq object
 saveRDS(phy_obj3, "./phyloseqFiltered.RDS")
-
-####################################
-#Alpha diversity plot
-####################################
-
-#Create table
-phy_obj3_alpha <- estimate_richness(phy_obj3, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
-df <- data.frame(sample_data(phy_obj3), phy_obj3_alpha)
-write.table(df, "./tables/AlphaDiversity.txt")
-
-#Plot all together
-p = plot_richness(phy_obj3, measures=c("Chao1", "InvSimpson", "Shannon"), x = "Location", color = "Season", nrow=1, sortby = "Chao1") + geom_boxplot()
-newOrder = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall")
-p$data$Location <- as.character(p$data$Location)
-p$data$Location <- factor(p$data$Location, levels=newOrder)
-print(p)
-ggsave("./output_graphs/AlphaDiversity.pdf")
-
-#Separate bottom - surface
-phy_obj3.surface = subset_samples(phy_obj3, Depth == "surface")
-phy_obj3.bottom = subset_samples(phy_obj3, Depth == "bottom")
-
-a<-plot_richness(phy_obj3.surface, measures=c("Chao1", "InvSimpson", "Shannon"), x = "Location", color = "Season", nrow=1)
-newOrder = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall")
-a$data$Location <- as.character(a$data$Location)
-a$data$Location <- factor(a$data$Location, levels=newOrder)
-b<-plot_richness(phy_obj3.bottom, measures=c("Chao1", "InvSimpson", "Shannon"), x = "Location", color = "Season", nrow=1)
-newOrder = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall")
-b$data$Location <- as.character(b$data$Location)
-b$data$Location <- factor(b$data$Location, levels=newOrder)
-
-c<-ggarrange(a,b, nrow=2, common.legend = TRUE)
-c
-ggsave("./output_graphs/AlphaDiversity_depth.pdf")
+saveRDS(prevdf3, "./prevdfFiltered.RDS")
+saveRDS(ps0_chl, "./chloroplasts.RDS")
 
 
 #####################################
@@ -288,6 +527,7 @@ prevdf_sum_class <- plyr::ddply(prevdf3, "Class", function(prevdf3){cbind(Sample
   arrange(desc(Abundance))%>%
   mutate(Proportion = 100*Abundance / sum(Abundance))
 
+#Explore results on genus level
 prevdf_sum_genus <- plyr::ddply(prevdf3, "Genus", function(prevdf3){cbind(Samples=mean(prevdf3$Prevalence),Abundance=sum(prevdf3$TotalAbundance))})%>%
   arrange(desc(Abundance))%>%
   mutate(Proportion = 100*Abundance / sum(Abundance))
@@ -562,14 +802,16 @@ plot_ordination(Dor_ps.ind.vst, phy_ind.vst.rda, type="split", color="Family", t
 
 library(vegan)
 
+df.sub <- subset_samples(Dor_ps.prev.vst, Dataset == "2020")
 #statistical significance of the groups
-df <- as(sample_data(Dor_ps.prev.vst), "data.frame")
-d <- phyloseq::distance(Dor_ps.prev.vst, "euclidean")
-adonis_all <- adonis2(d ~ Location+Season+Depth , data= df, perm = 999)
+df <- as(sample_data(df.sub), "data.frame")
+d <- phyloseq::distance(df.sub, "euclidean")
+adonis_all <- adonis2(d ~ Location+Season+Depth+Dataset, data= df, perm = 999)
 adonis_all
 #Post-hoc test (??)
 phoc <- with(df, betadisper(d, Season))
 TukeyHSD(phoc)
+
 
 df <- as(sample_data(Dor_ps.ind.vst), "data.frame")
 d <- phyloseq::distance(Dor_ps.ind.vst, "euclidean")
