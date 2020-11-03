@@ -1,0 +1,271 @@
+#MICROBIOME - Shared OTUs between different Locations
+#Neža Orel, neza.orel@nib.si
+#Script for comparison of bacterial community composition between different locations and seasons
+#based on presence/absence of an OTU
+#Data was collected during in situ survey 2020, project MIKROBIOM
+
+############################################################################
+
+
+#Set working directory
+setwd("C:/Users/nezao/Documents/5-R/Microbiome2015_2020")
+
+install.packages('VennDiagram')
+install.packages('UpSetR')
+
+#Load packages
+library(phyloseq); packageVersion("phyloseq")
+library(UpSetR); packageVersion("UpSetR")
+library(ggplot2); packageVersion("ggplot2")
+library(gridExtra); packageVersion("gridExtra")
+library(VennDiagram); packageVersion("VennDiagram")
+library(dplyr)
+
+source("./scripts/pres_abs_matrix.R")
+
+#Import data
+BAC_pruned <- readRDS("./phyloseqFiltered.RDS")
+
+#####################################
+#Diagram of bacterial OTU overlap between different groups 
+#####################################
+
+#ALL SEASONS TOGETHER
+BAC_pruned <- subset_samples(BAC_pruned, Dataset == "2020")
+BAC_pruned <- prune_taxa(taxa_sums(BAC_pruned)>0, BAC_pruned)
+BAC_ERI2 <- subset_samples(BAC_pruned, Location == "R-Estuary-1")
+BAC_ERI2 <- prune_taxa(taxa_sums(BAC_ERI2)>0, BAC_ERI2)
+BAC_0014 <- subset_samples(BAC_pruned, Location == "R-Estuary-2")
+BAC_0014 <- prune_taxa(taxa_sums(BAC_0014)>0, BAC_0014)
+BAC_000K <- subset_samples(BAC_pruned, Location == "NS-Marine")
+BAC_000K <- prune_taxa(taxa_sums(BAC_000K)>0, BAC_000K)
+BAC_00BF <- subset_samples(BAC_pruned, Location == "OS-Marine")
+BAC_00BF <- prune_taxa(taxa_sums(BAC_00BF)>0, BAC_00BF)
+BAC_CN01 <- subset_samples(BAC_pruned, Location == "SM-Outfall")
+BAC_CN01 <- prune_taxa(taxa_sums(BAC_CN01)>0, BAC_CN01)
+
+#WINTER
+BAC_pruned <- subset_samples(BAC_pruned, Dataset == "2020")
+BAC_pruned <- prune_taxa(taxa_sums(BAC_pruned)>0, BAC_pruned)
+BAC_w <- subset_samples(BAC_pruned, Season == "winter")
+BAC_w <- prune_taxa(taxa_sums(BAC_w)>0, BAC_w)
+BAC_ERI2.w <- subset_samples(BAC_w, Location == "R-Estuary-1")
+BAC_ERI2.w <- prune_taxa(taxa_sums(BAC_ERI2.w)>0, BAC_ERI2.w)
+BAC_0014.w <- subset_samples(BAC_w, Location == "R-Estuary-2")
+BAC_0014.w <- prune_taxa(taxa_sums(BAC_0014.w)>0, BAC_0014.w)
+BAC_000K.w <- subset_samples(BAC_w, Location == "NS-Marine")
+BAC_000K.w <- prune_taxa(taxa_sums(BAC_000K.w)>0, BAC_000K.w)
+BAC_00BF.w <- subset_samples(BAC_w, Location == "OS-Marine")
+BAC_00BF.w <- prune_taxa(taxa_sums(BAC_00BF.w)>0, BAC_00BF.w)
+BAC_CN01.w <- subset_samples(BAC_w, Location == "SM-Outfall")
+BAC_CN01.w <- prune_taxa(taxa_sums(BAC_CN01.w)>0, BAC_CN01.w)
+
+#SPRING
+BAC_s <- subset_samples(BAC_pruned, Season == "spring")
+BAC_s <- prune_taxa(taxa_sums(BAC_s)>0, BAC_s)
+BAC_ERI2.s <- subset_samples(BAC_s, Location == "R-Estuary-1")
+BAC_ERI2.s <- prune_taxa(taxa_sums(BAC_ERI2.s)>0, BAC_ERI2.s)
+BAC_0014.s <- subset_samples(BAC_s, Location == "R-Estuary-2")
+BAC_0014.s <- prune_taxa(taxa_sums(BAC_0014.s)>0, BAC_0014.s)
+BAC_000K.s <- subset_samples(BAC_s, Location == "NS-Marine")
+BAC_000K.s <- prune_taxa(taxa_sums(BAC_000K.s)>0, BAC_000K.s)
+BAC_00BF.s <- subset_samples(BAC_s, Location == "OS-Marine")
+BAC_00BF.s <- prune_taxa(taxa_sums(BAC_00BF.s)>0, BAC_00BF.s)
+BAC_CN01.s <- subset_samples(BAC_s, Location == "SM-Outfall")
+BAC_CN01.s <- prune_taxa(taxa_sums(BAC_CN01.s)>0, BAC_CN01.s)
+
+#SUMMER
+BAC_su <- subset_samples(BAC_pruned, Season == "summer")
+BAC_su <- prune_taxa(taxa_sums(BAC_su)>0, BAC_su)
+BAC_ERI2.su <- subset_samples(BAC_su, Location == "R-Estuary-1")
+BAC_ERI2.su <- prune_taxa(taxa_sums(BAC_ERI2.su)>0, BAC_ERI2.su)
+BAC_0014.su <- subset_samples(BAC_su, Location == "R-Estuary-2")
+BAC_0014.su <- prune_taxa(taxa_sums(BAC_0014.su)>0, BAC_0014.su)
+BAC_000K.su <- subset_samples(BAC_su, Location == "NS-Marine")
+BAC_000K.su <- prune_taxa(taxa_sums(BAC_000K.su)>0, BAC_000K.su)
+BAC_00BF.su <- subset_samples(BAC_su, Location == "OS-Marine")
+BAC_00BF.su <- prune_taxa(taxa_sums(BAC_00BF.su)>0, BAC_00BF.su)
+BAC_CN01.su <- subset_samples(BAC_su, Location == "SM-Outfall")
+BAC_CN01.su <- prune_taxa(taxa_sums(BAC_CN01.su)>0, BAC_CN01.su)
+
+#AUTUMN
+BAC_a <- subset_samples(BAC_pruned, Season == "autumn")
+BAC_a <- prune_taxa(taxa_sums(BAC_a)>0, BAC_a)
+BAC_ERI2.a <- subset_samples(BAC_a, Location == "R-Estuary-1")
+BAC_ERI2.a <- prune_taxa(taxa_sums(BAC_ERI2.a)>0, BAC_ERI2.a)
+BAC_0014.a <- subset_samples(BAC_a, Location == "R-Estuary-2")
+BAC_0014.a <- prune_taxa(taxa_sums(BAC_0014.a)>0, BAC_0014.a)
+BAC_000K.a <- subset_samples(BAC_a, Location == "NS-Marine")
+BAC_000K.a <- prune_taxa(taxa_sums(BAC_000K.a)>0, BAC_000K.a)
+BAC_00BF.a <- subset_samples(BAC_a, Location == "OS-Marine")
+BAC_00BF.a <- prune_taxa(taxa_sums(BAC_00BF.a)>0, BAC_00BF.a)
+BAC_CN01.a <- subset_samples(BAC_a, Location == "SM-Outfall")
+BAC_CN01.a <- prune_taxa(taxa_sums(BAC_CN01.a)>0, BAC_CN01.a)
+
+
+#make a list
+y <- list()
+y[["R-Estuary-1"]] <- as.character(row.names(otu_table(BAC_ERI2)))
+y[["R-Estuary-2"]] <- as.character(row.names(otu_table(BAC_0014)))
+y[["NS-Marine"]] <- as.character(row.names(otu_table(BAC_000K)))
+y[["OS-Marine"]] <- as.character(row.names(otu_table(BAC_00BF)))
+y[["SM-Outfall"]] <- as.character(row.names(otu_table(BAC_CN01)))
+
+y2 <- list ()
+y2[["R-Estuary-1.a"]] <- as.character(row.names(otu_table(BAC_ERI2.a)))
+y2[["R-Estuary-2.a"]] <- as.character(row.names(otu_table(BAC_0014.a)))
+y2[["NS-Marine.a"]] <- as.character(row.names(otu_table(BAC_000K.a)))
+y2[["OS-Marine.a"]] <- as.character(row.names(otu_table(BAC_00BF.a)))
+y2[["SM-Outfall.a"]] <- as.character(row.names(otu_table(BAC_CN01.a)))
+
+y2[["R-Estuary-1.w"]] <- as.character(row.names(otu_table(BAC_ERI2.w)))
+y2[["R-Estuary-2.w"]] <- as.character(row.names(otu_table(BAC_0014.w)))
+y2[["NS-Marine.w"]] <- as.character(row.names(otu_table(BAC_000K.w)))
+y2[["OS-Marine.w"]] <- as.character(row.names(otu_table(BAC_00BF.w)))
+y2[["SM-Outfall.w"]] <- as.character(row.names(otu_table(BAC_CN01.w)))
+
+y2[["R-Estuary-1.s"]] <- as.character(row.names(otu_table(BAC_ERI2.s)))
+y2[["R-Estuary-2.s"]] <- as.character(row.names(otu_table(BAC_0014.s)))
+y2[["NS-Marine.s"]] <- as.character(row.names(otu_table(BAC_000K.s)))
+y2[["OS-Marine.s"]] <- as.character(row.names(otu_table(BAC_00BF.s)))
+y2[["SM-Outfall.s"]] <- as.character(row.names(otu_table(BAC_CN01.s)))
+
+y2[["R-Estuary-1.su"]] <- as.character(row.names(otu_table(BAC_ERI2.su)))
+y2[["R-Estuary-2.su"]] <- as.character(row.names(otu_table(BAC_0014.su)))
+y2[["NS-Marine.su"]] <- as.character(row.names(otu_table(BAC_000K.su)))
+y2[["OS-Marine.su"]] <- as.character(row.names(otu_table(BAC_00BF.su)))
+y2[["SM-Outfall.su"]] <- as.character(row.names(otu_table(BAC_CN01.su)))
+
+#generate presence/abscence matrix
+otu_overlaps <- pres_abs_matrix(y)    
+otu_overlaps$OTU <- rownames(otu_overlaps)
+
+otu_overlaps2 <- pres_abs_matrix(y2)    
+otu_overlaps2$OTU <- rownames(otu_overlaps2)
+
+
+#####################################
+#Explore overlaping OTU
+#####################################
+taxonomy <- as.data.frame(tax_table(BAC_pruned))
+taxonomy$OTU <- rownames(taxonomy)
+
+otu_overlaps_merged <- full_join(taxonomy,otu_overlaps, by = c("OTU"))
+otu_overlaps_merged2 <- full_join(taxonomy,otu_overlaps2, by = c("OTU"))
+
+
+#####################################
+#Relative abundance of overlaping OTU
+#####################################
+#add abundance in each fraction
+#transform data
+BAC_pruned.ra <- transform_sample_counts(BAC_pruned, function(x) x / sum(x))
+
+#calculate mean abundance for each OTU
+BAC_pruned.ra.long <- psmelt(BAC_pruned.ra)
+BAC_pruned.ra.long.agg <- aggregate(Abundance~OTU+Season, BAC_pruned.ra.long, FUN = mean)
+BAC_pruned.ra.long.agg$Abundance <- BAC_pruned.ra.long.agg$Abundance*100
+
+#All seasons together
+otu_overlaps_merged <- full_join(otu_overlaps_merged, BAC_pruned.ra.long.agg, by = "OTU")
+
+
+#Separate by season
+otu_overlaps_merged2 <- full_join(otu_overlaps_merged2, BAC_pruned.ra.long.agg[BAC_pruned.ra.long.agg$Season=="winter",], by = "OTU")
+otu_overlaps_merged2 <- full_join(otu_overlaps_merged2, BAC_pruned.ra.long.agg[BAC_pruned.ra.long.agg$Season=="summer",], by = "OTU")
+otu_overlaps_merged2 <- full_join(otu_overlaps_merged2, BAC_pruned.ra.long.agg[BAC_pruned.ra.long.agg$Season=="autumn",], by = "OTU")
+otu_overlaps_merged2 <- full_join(otu_overlaps_merged2, BAC_pruned.ra.long.agg[BAC_pruned.ra.long.agg$Season=="spring",], by = "OTU")
+
+colnames(otu_overlaps_merged2)[30] <- "Abundance.w"
+colnames(otu_overlaps_merged2)[32] <- "Abundance.su"
+colnames(otu_overlaps_merged2)[34] <- "Abundance.a"
+colnames(otu_overlaps_merged2)[36] <- "Abundance.s"
+
+
+#set metadata
+sets <- names(y)
+metadata <- as.data.frame(sets)
+
+sets2 <- names(y2)
+metadata2 <- as.data.frame(cbind(sets2, rep(c("R-Estuary-1", "R-Estuary-2", "NS-Marine", "OS-Marine", "SM-Outfall"),4),
+                          c(rep("autumn",5), rep("winter",5), rep("spring",5), rep("summer",5))))
+names(metadata2) <- c("sets", "Location","Season")
+
+#plot
+upset(otu_overlaps_merged, number.angles = 30,
+      sets = as.vector(metadata$sets),
+      keep.order = TRUE,
+      mainbar.y.label = "No. of overlaping OTU",
+      order.by = "freq",
+      boxplot.summary = c("Abundance"),
+      empty.intersections = "on",
+      queries = list(list(query = intersects, 
+                          params = list("R-Estuary-1", "R-Estuary-2", "NS-Marine", "OS-Marine", "SM-Outfall"), 
+                          color = "yellow"),
+                     list(query = intersects, 
+                          params = list("R-Estuary-1", "R-Estuary-2"), 
+                          color = "red"),
+                     list(query = intersects, 
+                          params = list("OS-Marine", "SM-Outfall"), 
+                          color = "blue")))
+
+upset(otu_overlaps_merged2, number.angles = 30,
+      sets = as.vector(metadata2$sets),
+      keep.order = TRUE, 
+      mainbar.y.label = "No. of overlaping OTU",
+      order.by = "freq",
+      boxplot.summary = c("Abundance.s", "Abundance.a"),
+      set.metadata = list(data = metadata2, plots = list(list(type = "matrix_rows", 
+                                                             column = "Season", colors = c(summer = "red", spring = "yellow", winter ="blue", autumn="brown"), 
+                                                             alpha = 0.5))))
+
+dev.off()
+
+#plot relative abundance of shared OTUs - all seasons together     
+BAC_pruned.ra.long.shared <- BAC_pruned.ra.long[BAC_pruned.ra.long$OTU %in% rownames(pres_abs_matrix(y))[rowSums(pres_abs_matrix(y))==5],]
+
+#aggregate by taxonomy
+BAC_pruned.ra.long.shared.agg <- aggregate(Abundance~Location+Season+Depth+Class, BAC_pruned.ra.long.shared, FUN= sum)
+BAC_pruned.ra.long.shared.agg$Abundance <- BAC_pruned.ra.long.shared.agg$Abundance*100
+
+#remove beloew 0.5% ra
+BAC_pruned.ra.long.shared.agg <- BAC_pruned.ra.long.shared.agg[BAC_pruned.ra.long.shared.agg$Abundance>0.5,]
+
+colourCount = length(unique(BAC_pruned.ra.long.shared.agg$Class))
+getPalette = colorRampPalette(brewer.pal(11, "Set2"))
+
+#plot
+BAC_pruned.ra.long.shared.agg$Location <- factor(BAC_pruned.ra.long.shared.agg$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+
+BAC_shared.otu.plot <- ggplot(BAC_pruned.ra.long.shared.agg, aes(x = Location, y = Abundance, fill = Class)) + 
+  facet_grid(Depth~Season, space= "fixed") +
+  geom_col()+
+  theme(legend.position = "bottom")+ 
+  guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
+  ylab("Relative Abundance of shared OTU") +
+  scale_fill_manual(values=getPalette(colourCount))+
+  theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
+BAC_shared.otu.plot
+
+#plot relative abundance of shared OTUs - Seasons separated     
+BAC_pruned.ra.long.shared2 <- BAC_pruned.ra.long[BAC_pruned.ra.long$OTU %in% rownames(pres_abs_matrix(y2))[rowSums(pres_abs_matrix(y2))==20],]
+
+#aggregate by taxonomy
+BAC_pruned.ra.long.shared.agg2 <- aggregate(Abundance~Location+Season+Depth+Class, BAC_pruned.ra.long.shared2, FUN= sum)
+
+BAC_pruned.ra.long.shared.agg2$Abundance <- BAC_pruned.ra.long.shared.agg2$Abundance*100
+
+
+#plot 
+BAC_pruned.ra.long.shared.agg2$Location <- factor(BAC_pruned.ra.long.shared.agg2$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+
+BAC_shared.otu.plot2 <- ggplot(BAC_pruned.ra.long.shared.agg2, aes(x = Location, y = Abundance, fill = Class)) + 
+  facet_grid(Depth~Season, space= "fixed") +
+  geom_col()+
+  theme(legend.position = "bottom")+ 
+  guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
+  ylab("Relative Abundance of shared OTU") +
+  scale_fill_manual(values=getPalette(colourCount))+
+  theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
+BAC_shared.otu.plot2
+
