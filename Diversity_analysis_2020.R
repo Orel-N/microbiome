@@ -1,7 +1,7 @@
-#MICROBIOME - Diversity analysis separate for 2015 and 2020 dataset
+#MICROBIOME - Diversity analysis separate for 2020 dataset
 #Neža Orel, neza.orel@nib.si
 #Script for alpha and beta diversity analyses: graphs and statistic
-#Data: project MICROBIOME, dataset 2015 and 2020 seperatelly
+#Data: project MICROBIOME, dataset 2020 seperatelly
 
 ############################################################################
 
@@ -26,101 +26,6 @@ phy_obj3
 #Edit data - subset based on dataset
 phy_obj3_20 <- subset_samples(phy_obj3, Dataset == "2020")
 
-####################################
-#Alpha diversity plot
-####################################
-
-#Create Alphadiversity table 2020
-alpha_df <- estimate_richness(phy_obj3_20, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
-alpha_df_20 <- data.frame(sample_data(phy_obj3_20), alpha_df)
-write.table(alpha_df_20, "./tables/AlphaDiversity_20.txt")
-
-
-#Edit table 2020
-alpha_df_20$Season <- factor(alpha_df_20$Season, levels = c("winter", "spring", "summer", "autumn"))
-alpha_df_20$Location <- factor(alpha_df_20$Location, levels = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
-alpha_df_20$Depth <- factor(alpha_df_20$Depth, levels = c("bottom", "surface"))
-alpha_df_20$Pollution <- ifelse(alpha_df_20$Location == "OS-Marine", "Unpolluted", 
-                                   ifelse(alpha_df_20$Location == "NS-Marine", "Unpolluted", "Polluted"))
-
-#Plot Chao1 - separate for depth 2020
-Chao.20.p <- ggplot(data = alpha_df_20) +
-  geom_boxplot(mapping=aes(x=Location, y=Chao1, color=Location)) +
-  geom_point(mapping=aes(x=Location, y=Chao1, color=Location, shape = Season), size = 3, stat = 'identity') +
-  facet_wrap(~Depth) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-Chao.20.p
-ggsave("./output_graphs/Chao_20.pdf")
-
-#Plot Shannon d.i. - separate for depth 2020
-Shannon.20.p <- ggplot(data = alpha_df_20) +
-  geom_boxplot(mapping=aes(x=Location, y=Shannon, color=Location)) +
-  geom_point(mapping=aes(x=Location, y=Shannon, color=Location, shape = Season), size = 3, stat = 'identity') +
-  facet_wrap(~Depth) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-Shannon.20.p
-ggsave("./output_graphs/Shannon_20.pdf")
-
-#Plot InvSimpson - separate for depth 2020
-InvSimpson.20.p <- ggplot(data = alpha_df_20) +
-  geom_boxplot(mapping=aes(x=Location, y=InvSimpson, color=Location)) +
-  geom_point(mapping=aes(x=Location, y=InvSimpson, color=Location, shape = Season), size = 3, stat = 'identity') +
-  facet_wrap(~Depth) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-InvSimpson.20.p
-ggsave("./output_graphs/InvSimpsin_20.pdf")
-
-alpha.20 <- ggarrange(Chao.20.p, Shannon.20.p, InvSimpson.20.p, nrow=1, common.legend = TRUE)
-alpha.20
-
-###Statistic 2020
-#Subsetting data 2020 - bottom vs.surface
-alpha_df_20b <- filter(alpha_df_20, Depth == "bottom")
-alpha_df_20s <- filter(alpha_df_20, Depth == "surface")
-
-#Shapiro-Wilk's test
-hist(alpha_df_20$Chao1)
-qqnorm(alpha_df_20$Chao1)
-qqline(alpha_df_20$Chao1)
-hist(alpha_df_20$Shannon)
-qqnorm(alpha_df_20$Shannon)
-qqline(alpha_df_20$Shannon)
-
-alpha_df_20 %>% shapiro_test(Chao1, Shannon, InvSimpson)
-alpha_df_20b %>% shapiro_test(Chao1, Shannon, InvSimpson)
-alpha_df_20s %>% shapiro_test(Chao1, Shannon, InvSimpson)
-
-#ANOVA or Kruskal-Wallis test
-anova.Ch.20 <- aov(alpha_df_20$Chao1 ~ Depth+Season+Pollution+Location, data=alpha_df_20)
-summary(anova.Ch.20)
-TukeyHSD(anova.Ch.20)
-anova.Ch.20 <- aov(alpha_df_20b$Chao1 ~ Season+Pollution+Location, data=alpha_df_20b)
-summary(anova.Ch.20)
-anova.Ch.20 <- aov(alpha_df_20s$Chao1 ~ Season+Pollution+Location, data=alpha_df_20s)
-summary(anova.Ch.20)
-
-kruskal.test(alpha_df_20$Shannon ~ Season, data = alpha_df_20) 
-kruskal.test(alpha_df_20$Shannon ~ Depth, data = alpha_df_20) 
-kruskal.test(alpha_df_20$Shannon ~ Location, data = alpha_df_20)
-kruskal.test(alpha_df_20$Shannon ~ Pollution, data = alpha_df_20)
-anova.Ch.20 <- aov(alpha_df_20b$Shannon ~ Season+Pollution+Location, data=alpha_df_20b)
-summary(anova.Ch.20)
-anova.Ch.20 <- aov(alpha_df_20s$Shannon ~ Season+Pollution+Location, data=alpha_df_20s)
-summary(anova.Ch.20)
-TukeyHSD(anova.Ch.20)
-
-kruskal.test(alpha_df_20$InvSimpson ~ Season, data = alpha_df_20) 
-kruskal.test(alpha_df_20$InvSimpson ~ Location, data = alpha_df_20)
-kruskal.test(alpha_df_20$InvSimpson ~ Pollution, data = alpha_df_20)
-anova.InvS.20 <- aov(alpha_df_20$InvSimpson ~ Season+Pollution+Location, data=alpha_df_20)
-summary(anova.InvS.20)
-
-anova.InvS.20b <- aov(alpha_df_20b$InvSimpson ~ Season+Pollution+Location, data=alpha_df_20b)
-summary(anova.InvS.20b)
-
-kruskal.test(alpha_df_20s$InvSimpson ~ Season, data = alpha_df_20s) 
-kruskal.test(alpha_df_20s$InvSimpson ~ Location, data = alpha_df_20s)
-kruskal.test(alpha_df_20s$InvSimpson ~ Pollution, data = alpha_df_20s)
 
 
 ##############################
@@ -449,10 +354,13 @@ plot_ordination(ps.vst, phy_obj3.vst.rda, shape = "Location", color = "Season")+
 ggsave("./output_graphs/RDA_var.pdf")
 plot_ordination(ps.vst, phy_obj3.vst.rda, type="taxa", color="Phylum", title="taxa")
 
+saveRDS(ps.vst, "./data/ps.vst.RDS")
+
 #########################
 #Microbial indicators
 
 ps.ind.vst <- subset_taxa(ps.vst, Family %in% c(Mic_Ind$Family))
+
 
 # Do the ordination with variance stabilized data
 phy_ind.vst.nmds <- ordinate(ps.ind.vst, "NMDS", "euclidean")
@@ -466,10 +374,12 @@ plot_ordination(ps.ind.vst, phy_ind.vst.rda, type="taxa", color="Family", title=
 
 plot_ordination(ps.ind.vst, phy_ind.vst.rda, type="split", color="Family", title="taxa", label="Location")+ facet_wrap(~Phylum, 3)
 
+
 ###########################
 #PERMANOVA
+###########################
 
-#statistical significance of the groups
+###statistical significance of the groups
 df <- as(sample_data(ps.vst), "data.frame")
 df$Pollution <- ifelse(df$Location == "OS-Marine", "Unpolluted", 
                                 ifelse(df$Location == "NS-Marine", "Unpolluted", "Polluted"))
@@ -477,14 +387,35 @@ d <- phyloseq::distance(ps.vst, "euclidean")
 adonis_all <- adonis2(d ~ Pollution+Location+Season+Depth, data= df, perm = 999)
 adonis_all
 
-#Post-hoc test (??)
+#Post-hoc test 
+#posthoc to check which seasons are different
+groups <- df[["Season"]]
+mod <- betadisper(d, groups)
+permutest(mod)
+#dispersion is different between groups
+plot(mod)
+boxplot(mod)
+mod.HSD <- TukeyHSD(mod)
+mod.HSD
+plot(mod.HSD)
 
 
+
+###statistical significance of the groups - Microbial indicators
 df <- as(sample_data(ps.ind.vst), "data.frame")
 df$Pollution <- ifelse(df$Location == "OS-Marine", "Unpolluted", 
                        ifelse(df$Location == "NS-Marine", "Unpolluted", "Polluted"))
 d <- phyloseq::distance(ps.ind.vst, "euclidean")
 adonis_all <- adonis2(d ~ Pollution+Location+Season+Depth+Dataset, data= df, perm = 999)
 adonis_all
-#Post-hoc test (??)
 
+#Post-hoc test
+groups <- df[["Season"]]
+mod <- betadisper(d, groups)
+permutest(mod)
+#dispersion is different between groups
+plot(mod)
+boxplot(mod)
+mod.HSD <- TukeyHSD(mod)
+mod.HSD
+plot(mod.HSD)
