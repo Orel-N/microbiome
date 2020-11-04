@@ -10,4 +10,5 @@ Files:
 - Diversity_analysis_2020: beta diversity analyses (barplot, nMDS), microbial pollution indicators (dataset 2020)
 - Diversity_analysis_2015: beta diversity analyses (barplot, nMDS), microbial pollution indicators (dataset 2015)
 - RDA_ordination_of_bacterial_community: correlation between env. parameters and RDA ordination of bacterial community composition (dataset 2020)
-- Shared_OTUs: Script for comparison of bacterial community composition between different locations and seasons based on presence/absence of an ASV
+- Shared_ASVs: Script for comparison of bacterial community composition between different locations and seasons based on presence/absence of an ASV
+- Arcobacter_phylogeny: Phylogenetic tree of Arcobacter family
