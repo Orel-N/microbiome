@@ -1,7 +1,7 @@
-#MICROBIOME - Shared OTUs between different Locations
+#MICROBIOME - Shared ASVs between different Locations
 #Neža Orel, neza.orel@nib.si
 #Script for comparison of bacterial community composition between different locations and seasons
-#based on presence/absence of an OTU
+#based on presence/absence of an ASVs
 #Data was collected during in situ survey 2020, project MIKROBIOM
 
 ############################################################################
@@ -10,9 +10,6 @@
 #Set working directory
 setwd("C:/Users/nezao/Documents/5-R/Microbiome2015_2020")
 
-install.packages('VennDiagram')
-install.packages('UpSetR')
-
 #Load packages
 library(phyloseq); packageVersion("phyloseq")
 library(UpSetR); packageVersion("UpSetR")
@@ -20,11 +17,13 @@ library(ggplot2); packageVersion("ggplot2")
 library(gridExtra); packageVersion("gridExtra")
 library(VennDiagram); packageVersion("VennDiagram")
 library(dplyr)
+library(RColorBrewer)
 
 source("./scripts/pres_abs_matrix.R")
 
 #Import data
 BAC_pruned <- readRDS("./phyloseqFiltered.RDS")
+Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
 
 #####################################
 #Diagram of bacterial OTU overlap between different groups 
@@ -43,6 +42,20 @@ BAC_00BF <- subset_samples(BAC_pruned, Location == "OS-Marine")
 BAC_00BF <- prune_taxa(taxa_sums(BAC_00BF)>0, BAC_00BF)
 BAC_CN01 <- subset_samples(BAC_pruned, Location == "SM-Outfall")
 BAC_CN01 <- prune_taxa(taxa_sums(BAC_CN01)>0, BAC_CN01)
+
+#Mic indicators - all seasons together
+Mic_pruned <- subset_taxa(BAC_pruned, Family %in% c(Mic_Ind$Family))
+Mic_pruned <- prune_taxa(taxa_sums(Mic_pruned)>0, Mic_pruned)
+Mic_ERI2 <- subset_samples(Mic_pruned, Location == "R-Estuary-1")
+Mic_ERI2 <- prune_taxa(taxa_sums(Mic_ERI2)>0, Mic_ERI2)
+Mic_0014 <- subset_samples(Mic_pruned, Location == "R-Estuary-2")
+Mic_0014 <- prune_taxa(taxa_sums(Mic_0014)>0, Mic_0014)
+Mic_000K <- subset_samples(Mic_pruned, Location == "NS-Marine")
+Mic_000K <- prune_taxa(taxa_sums(Mic_000K)>0, Mic_000K)
+Mic_00BF <- subset_samples(Mic_pruned, Location == "OS-Marine")
+Mic_00BF <- prune_taxa(taxa_sums(Mic_00BF)>0, Mic_00BF)
+Mic_CN01 <- subset_samples(Mic_pruned, Location == "SM-Outfall")
+Mic_CN01 <- prune_taxa(taxa_sums(Mic_CN01)>0, Mic_CN01)
 
 #WINTER
 BAC_pruned <- subset_samples(BAC_pruned, Dataset == "2020")
@@ -111,6 +124,13 @@ y[["NS-Marine"]] <- as.character(row.names(otu_table(BAC_000K)))
 y[["OS-Marine"]] <- as.character(row.names(otu_table(BAC_00BF)))
 y[["SM-Outfall"]] <- as.character(row.names(otu_table(BAC_CN01)))
 
+y.mic <- list()
+y.mic[["R-Estuary-1"]] <- as.character(row.names(otu_table(Mic_ERI2)))
+y.mic[["R-Estuary-2"]] <- as.character(row.names(otu_table(Mic_0014)))
+y.mic[["NS-Marine"]] <- as.character(row.names(otu_table(Mic_000K)))
+y.mic[["OS-Marine"]] <- as.character(row.names(otu_table(Mic_00BF)))
+y.mic[["SM-Outfall"]] <- as.character(row.names(otu_table(Mic_CN01)))
+
 y2 <- list ()
 y2[["R-Estuary-1.a"]] <- as.character(row.names(otu_table(BAC_ERI2.a)))
 y2[["R-Estuary-2.a"]] <- as.character(row.names(otu_table(BAC_0014.a)))
@@ -140,6 +160,9 @@ y2[["SM-Outfall.su"]] <- as.character(row.names(otu_table(BAC_CN01.su)))
 otu_overlaps <- pres_abs_matrix(y)    
 otu_overlaps$OTU <- rownames(otu_overlaps)
 
+otu_overlaps.mic <- pres_abs_matrix(y.mic)    
+otu_overlaps.mic$OTU <- rownames(otu_overlaps.mic)
+
 otu_overlaps2 <- pres_abs_matrix(y2)    
 otu_overlaps2$OTU <- rownames(otu_overlaps2)
 
@@ -150,9 +173,15 @@ otu_overlaps2$OTU <- rownames(otu_overlaps2)
 taxonomy <- as.data.frame(tax_table(BAC_pruned))
 taxonomy$OTU <- rownames(taxonomy)
 
+taxonomy.mic <- as.data.frame(tax_table(Mic_pruned))
+taxonomy.mic$OTU <- rownames(taxonomy.mic)
+
 otu_overlaps_merged <- full_join(taxonomy,otu_overlaps, by = c("OTU"))
+otu_overlaps_merged.mic <- full_join(taxonomy.mic,otu_overlaps.mic, by = c("OTU"))
 otu_overlaps_merged2 <- full_join(taxonomy,otu_overlaps2, by = c("OTU"))
 
+otu_overlaps_merged_B <- otu_overlaps_merged
+otu_overlaps_merged.mic_B <- otu_overlaps_merged.mic
 
 #####################################
 #Relative abundance of overlaping OTU
@@ -160,15 +189,23 @@ otu_overlaps_merged2 <- full_join(taxonomy,otu_overlaps2, by = c("OTU"))
 #add abundance in each fraction
 #transform data
 BAC_pruned.ra <- transform_sample_counts(BAC_pruned, function(x) x / sum(x))
+Mic_pruned.ra <- subset_taxa(BAC_pruned.ra, Family %in% c(Mic_Ind$Family))
+Mic_pruned.ra <- prune_taxa(taxa_sums(Mic_pruned.ra)>0, Mic_pruned.ra)
 
 #calculate mean abundance for each OTU
 BAC_pruned.ra.long <- psmelt(BAC_pruned.ra)
-BAC_pruned.ra.long.agg <- aggregate(Abundance~OTU+Season, BAC_pruned.ra.long, FUN = mean)
+BAC_pruned.ra.long.agg <- aggregate(Abundance~OTU, BAC_pruned.ra.long, FUN = mean)
 BAC_pruned.ra.long.agg$Abundance <- BAC_pruned.ra.long.agg$Abundance*100
+
+Mic_pruned.ra.long <- psmelt(Mic_pruned.ra)
+Mic_pruned.ra.long.agg <- aggregate(Abundance~OTU, Mic_pruned.ra.long, FUN = mean)
+Mic_pruned.ra.long.agg$Abundance <- Mic_pruned.ra.long.agg$Abundance*100
 
 #All seasons together
 otu_overlaps_merged <- full_join(otu_overlaps_merged, BAC_pruned.ra.long.agg, by = "OTU")
 
+#Mic indicators
+otu_overlaps_merged.mic <- full_join(otu_overlaps_merged.mic, Mic_pruned.ra.long.agg, by = "OTU")
 
 #Separate by season
 otu_overlaps_merged2 <- full_join(otu_overlaps_merged2, BAC_pruned.ra.long.agg[BAC_pruned.ra.long.agg$Season=="winter",], by = "OTU")
@@ -186,6 +223,9 @@ colnames(otu_overlaps_merged2)[36] <- "Abundance.s"
 sets <- names(y)
 metadata <- as.data.frame(sets)
 
+sets.mic <- names(y.mic)
+metadata.mic <- as.data.frame(sets.mic)
+
 sets2 <- names(y2)
 metadata2 <- as.data.frame(cbind(sets2, rep(c("R-Estuary-1", "R-Estuary-2", "NS-Marine", "OS-Marine", "SM-Outfall"),4),
                           c(rep("autumn",5), rep("winter",5), rep("spring",5), rep("summer",5))))
@@ -194,6 +234,23 @@ names(metadata2) <- c("sets", "Location","Season")
 #plot
 upset(otu_overlaps_merged, number.angles = 30,
       sets = as.vector(metadata$sets),
+      keep.order = TRUE,
+      mainbar.y.label = "No. of overlaping OTU",
+      order.by = "freq",
+      boxplot.summary = c("Abundance"),
+      empty.intersections = "on",
+      queries = list(list(query = intersects, 
+                          params = list("R-Estuary-1", "R-Estuary-2", "NS-Marine", "OS-Marine", "SM-Outfall"), 
+                          color = "yellow"),
+                     list(query = intersects, 
+                          params = list("R-Estuary-1", "R-Estuary-2"), 
+                          color = "red"),
+                     list(query = intersects, 
+                          params = list("OS-Marine", "SM-Outfall"), 
+                          color = "blue")))
+
+upset(otu_overlaps_merged.mic, number.angles = 30,
+      sets = as.vector(metadata.mic$sets.mic),
       keep.order = TRUE,
       mainbar.y.label = "No. of overlaping OTU",
       order.by = "freq",
@@ -221,7 +278,7 @@ upset(otu_overlaps_merged2, number.angles = 30,
 
 dev.off()
 
-#plot relative abundance of shared OTUs - all seasons together     
+###plot relative abundance of shared OTUs - all seasons together     
 BAC_pruned.ra.long.shared <- BAC_pruned.ra.long[BAC_pruned.ra.long$OTU %in% rownames(pres_abs_matrix(y))[rowSums(pres_abs_matrix(y))==5],]
 
 #aggregate by taxonomy
@@ -247,7 +304,33 @@ BAC_shared.otu.plot <- ggplot(BAC_pruned.ra.long.shared.agg, aes(x = Location, y
   theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
 BAC_shared.otu.plot
 
-#plot relative abundance of shared OTUs - Seasons separated     
+###plot relative abundance of shared OTUs -  Mic. indicators   
+Mic_pruned.ra.long.shared <- Mic_pruned.ra.long[Mic_pruned.ra.long$OTU %in% rownames(pres_abs_matrix(y.mic))[rowSums(pres_abs_matrix(y.mic))==5],]
+
+#aggregate by taxonomy
+Mic_pruned.ra.long.shared.agg <- aggregate(Abundance~Location+Season+Depth+Class+Family, Mic_pruned.ra.long.shared, FUN= sum)
+Mic_pruned.ra.long.shared.agg$Abundance <- Mic_pruned.ra.long.shared.agg$Abundance*100
+
+#remove beloew 0.5% ra
+#Mic_pruned.ra.long.shared.agg <- Mic_pruned.ra.long.shared.agg[Mic_pruned.ra.long.shared.agg$Abundance>0.5,]
+
+colourCount = length(unique(Mic_pruned.ra.long.shared.agg$Family))
+getPalette = colorRampPalette(brewer.pal(11, "Set2"))
+
+#plot
+Mic_pruned.ra.long.shared.agg$Location <- factor(Mic_pruned.ra.long.shared.agg$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+
+Mic_shared.otu.plot <- ggplot(Mic_pruned.ra.long.shared.agg, aes(x = Location, y = Abundance, fill = Family)) + 
+  facet_grid(Depth~Season, space= "fixed") +
+  geom_col()+
+  theme(legend.position = "bottom")+ 
+  guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
+  ylab("Relative Abundance of shared OTU") +
+  scale_fill_manual(values=getPalette(colourCount))+
+  theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
+Mic_shared.otu.plot
+
+###plot relative abundance of shared OTUs - Seasons separated     
 BAC_pruned.ra.long.shared2 <- BAC_pruned.ra.long[BAC_pruned.ra.long$OTU %in% rownames(pres_abs_matrix(y2))[rowSums(pres_abs_matrix(y2))==20],]
 
 #aggregate by taxonomy
@@ -269,3 +352,75 @@ BAC_shared.otu.plot2 <- ggplot(BAC_pruned.ra.long.shared.agg2, aes(x = Location,
   theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
 BAC_shared.otu.plot2
 
+
+###plot relative abundance of shared ASVs in R-Estuary-1 and SM_Outfall - all seasons together
+BAC_pruned.ra.long.agg.2 <- aggregate(Abundance~OTU+Season+Depth+Location, BAC_pruned.ra.long, FUN = mean)
+BAC_pruned.ra.long.agg.2$Abundance <- BAC_pruned.ra.long.agg.2$Abundance*100
+
+otu_overlaps_merged2 <- full_join(otu_overlaps_merged_B, BAC_pruned.ra.long.agg.2, by = "OTU")
+colnames(otu_overlaps_merged2)[9] <- "REstuary1"
+colnames(otu_overlaps_merged2)[10] <- "REstuary2"
+colnames(otu_overlaps_merged2)[11] <- "NSMarine"
+colnames(otu_overlaps_merged2)[12] <- "OSMarine"
+colnames(otu_overlaps_merged2)[13] <- "SMOutfall"
+
+
+BAC_pruned.ra.long.shared.Estuary <- filter(otu_overlaps_merged2, REstuary1 == 1 & REstuary2 == 0 & NSMarine == 0 & OSMarine == 0 & SMOutfall == 1)
+
+#aggregate by taxonomy
+BAC_pruned.ra.long.shared.Estuary.agg <- aggregate(Abundance~Location+Season+Depth+Class, BAC_pruned.ra.long.shared.Estuary, FUN= sum)
+
+#remove beloew 0.5% ra
+#BAC_pruned.ra.long.shared.Estuary.agg <- BAC_pruned.ra.long.shared.Estuary.agg[BAC_pruned.ra.long.shared.Estuary.agg$Abundance>0.5,]
+
+colourCount = length(unique(BAC_pruned.ra.long.shared.Estuary.agg$Class))
+getPalette = colorRampPalette(brewer.pal(11, "Set2"))
+
+#plot
+BAC_pruned.ra.long.shared.Estuary.agg$Location <- factor(BAC_pruned.ra.long.shared.Estuary.agg$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+
+BAC_shared.otu.plot <- ggplot(BAC_pruned.ra.long.shared.Estuary.agg, aes(x = Location, y = Abundance, fill = Class)) + 
+  facet_grid(Depth~Season, space= "fixed") +
+  geom_col()+
+  theme(legend.position = "bottom")+ 
+  guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
+  ylab("Relative Abundance of shared OTU") +
+  scale_fill_manual(values=getPalette(colourCount))+
+  theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
+BAC_shared.otu.plot
+
+###plot relative abundance of shared ASVs in  SM_Outfall and Os-Marine- Mic indicators
+Mic_pruned.ra.long.agg.2 <- aggregate(Abundance~OTU+Season+Depth+Location, Mic_pruned.ra.long, FUN = mean)
+Mic_pruned.ra.long.agg.2$Abundance <- Mic_pruned.ra.long.agg.2$Abundance*100
+
+otu_overlaps_merged2.mic <- full_join(otu_overlaps_merged.mic_B, Mic_pruned.ra.long.agg.2, by = "OTU")
+colnames(otu_overlaps_merged2.mic)[9] <- "REstuary1"
+colnames(otu_overlaps_merged2.mic)[10] <- "REstuary2"
+colnames(otu_overlaps_merged2.mic)[11] <- "NSMarine"
+colnames(otu_overlaps_merged2.mic)[12] <- "OSMarine"
+colnames(otu_overlaps_merged2.mic)[13] <- "SMOutfall"
+
+
+Mic_pruned.ra.long.shared.Selected <- filter(otu_overlaps_merged2.mic, REstuary1 == 0 & REstuary2 == 0 & NSMarine == 0 & OSMarine == 1 & SMOutfall == 1)
+
+#aggregate by taxonomy
+Mic_pruned.ra.long.shared.Selected.agg <- aggregate(Abundance~Location+Season+Depth+Class+Family, Mic_pruned.ra.long.shared.Selected, FUN= sum)
+
+#remove beloew 0.5% ra
+#Mic_pruned.ra.long.shared.Selected.agg <- Mic_pruned.ra.long.shared.Selected.agg[Mic_pruned.ra.long.shared.Selected.agg$Abundance>0.5,]
+
+colourCount = length(unique(Mic_pruned.ra.long.shared.Selected.agg$Family))
+getPalette = colorRampPalette(brewer.pal(11, "Set2"))
+
+#plot
+Mic_pruned.ra.long.shared.Selected.agg$Location <- factor(Mic_pruned.ra.long.shared.Selected.agg$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+
+Mic_shared.otu.plot <- ggplot(Mic_pruned.ra.long.shared.Selected.agg, aes(x = Location, y = Abundance, fill = Family)) + 
+  facet_grid(Depth~Season, space= "fixed") +
+  geom_col()+
+  theme(legend.position = "bottom")+ 
+  guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
+  ylab("Relative Abundance of shared OTU") +
+  scale_fill_manual(values=getPalette(colourCount))+
+  theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
+Mic_shared.otu.plot
