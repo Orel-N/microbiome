@@ -30,6 +30,11 @@ all.data$Depth <- factor(all.data$Depth, levels = c("surface", "bottom"))
 phy_obj3 <- readRDS("./data/ps.vst.RDS")
 phy_obj3
 
+#Microbial indicators (from variance stabilased data)
+Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
+ps.ind.vst <- subset_taxa(phy_obj3, Family %in% c(Mic_Ind$Family))
+ps.ind.vst
+
 ################################
 #Correlation between env. parameters
 ################################
@@ -129,6 +134,76 @@ BAC_20.rda.plot <- ggplot() +
   geom_text(data=as.data.frame(BAC_20.rda.arrows*1.2),
             aes(x, y, label = rownames(BAC_20.rda.arrows)),color="black",alpha=0.5)
 BAC_20.rda.plot
+
+
+#####################################
+#RDA ordination of the fitted model of bacterial composition data constrained by environmental variables - Microbial indicators
+####################################
+
+#subset by fraction and remove NAs in metadata
+Mic_20.no.na <- ps.ind.vst %>% 
+  subset_samples(
+    !is.na(Temperature_sea) &
+      !is.na(Salinity) &
+      !is.na(Dissolved_Oxygen_perc) &
+      !is.na(DOC) &
+      !is.na(TDN) & 
+      #      !is.na(Chl_A.1) &
+      !is.na(NO2) &
+      !is.na(NO3) &      
+      !is.na(PO4) &
+      !is.na(NH4) &
+      !is.na(SiO3) &
+      Dataset == "2020")
+Mic_20.no.na
+
+##remove unobserved OTU and OTU from 2015 dataset
+Mic_20.no.na <- prune_taxa(taxa_sums(Mic_20.no.na)>0, Mic_20.no.na)
+Mic_20.no.na
+
+#extract and scale the env. parameters
+#BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity","Chl_A.1", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "NO3", "PO4", "SiO3", "NH4")]  
+Mic_20.env <- data.frame(sample_data(Mic_20.no.na))[c("Temperature_sea","Salinity","DOC", "Dissolved_Oxygen_perc", "DIN")]  
+#BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity","DOC", "DIN")]  
+
+Mic_20.env <- as.data.frame(scale(Mic_20.env,center = FALSE, scale = TRUE))
+
+#extract OTU tables from Phyloseq object
+Mic_20.otu <- t(otu_table(Mic_20.no.na))
+
+#RDA analysis
+Mic_20.rda.all <- rda (Mic_20.otu ~ ., data = Mic_20.env) # model including all variables 
+
+#generate an RDA plot 
+Mic_20.rda.scores <- vegan::scores(Mic_20.rda.all,display=c("sp","wa","lc","bp","cn"))
+Mic_20.rda.sites <- data.frame(Mic_20.rda.scores$sites)
+Mic_20.rda.sites$SampleID <- as.character(rownames(Mic_20.rda.sites))
+sample_data(Mic_20.no.na)$SampleID <- as.character(rownames(sample_data(Mic_20.no.na)))
+Mic_20.rda.sites <- Mic_20.rda.sites %>%
+  left_join(sample_data(Mic_20.no.na))
+
+#Draw biplots
+Mic_20.rda.arrows<- Mic_20.rda.scores$biplot*10
+colnames(Mic_20.rda.arrows)<-c("x","y")
+Mic_20.rda.arrows <- as.data.frame(Mic_20.rda.arrows)
+Mic_20.rda.evals <- 100 * (Mic_20.rda.all$CCA$eig / sum(Mic_20.rda.all$CCA$eig))
+
+#Plot 
+Mic_20.rda.plot <- ggplot() +
+  geom_point(data = Mic_20.rda.sites, aes(x = RDA1, y = RDA2, colour = Season, shape = Depth), 
+             size = 4) +
+  geom_text(data = Mic_20.rda.sites,aes(x = RDA1, y = RDA2,label = Location), 
+            nudge_y= -0.3,size=3)+
+  labs(x = sprintf("RDA1 [%s%%]", round(Mic_20.rda.evals[1], 2)), 
+       y = sprintf("RDA2 [%s%%]", round(Mic_20.rda.evals[2], 2))) +
+  #scale_x_reverse()+ 
+  theme(legend.position = "top")+
+  geom_segment(data=Mic_20.rda.arrows, aes(x = 0, y = 0, xend = x, yend = y),
+               arrow = arrow(length = unit(0.2, "cm")),color="black",alpha=0.5)+
+  geom_text(data=as.data.frame(Mic_20.rda.arrows*1.2),
+            aes(x, y, label = rownames(Mic_20.rda.arrows)),color="black",alpha=0.5)
+Mic_20.rda.plot
+
 
 
 #####################################
