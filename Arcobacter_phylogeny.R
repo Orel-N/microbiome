@@ -9,41 +9,25 @@ library(DESeq2)
 library(rstatix)
 library(vegan)
 library(Biostrings)
+library("ape")
+library("ggtree") 
+library(phyloseq)
+library(ggjoy)
 
 
 phy_obj3 <- readRDS("./phyloseqFiltered.RDS")
-prevdf3 <- readRDS("./prevdfFiltered.RDS")
+
+
+phy_obj3 <- subset_samples(phy_obj3, Dataset == "2020")
+phy_obj3 <- prune_taxa(taxa_sums(phy_obj3)>0, phy_obj3)
+phy_obj3
+
+phy_obj3.ra <- transform_sample_counts(phy_obj3, function(x) x / sum(x))
+
 
 ##############################
-#Preparation of data for taxonomic comparison
+#Subset taxa
 ##############################
-
-#Abundance value transformation
-phy_obj3ra = transform_sample_counts(phy_obj3, function (otu) {otu/sum(otu)})
-
-#Melt data
-phy_obj3ra.melt <- psmelt(phy_obj3ra)
-
-#Calculate abundance for each taxa
-phy_obj3_melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family+Genus, phy_obj3ra.melt,
-                                                           FUN = function(x) c(sum = sum(x), count=length(x)))))
-phy_obj3_melt.agg.genus$Abundance <- phy_obj3_melt.agg.genus$Abundance.sum*100
-phy_obj3_melt.agg.genus<- phy_obj3_melt.agg.genus[phy_obj3_melt.agg.genus$Abundance.sum>0,]
-
-
-##calculate abundance for each Family
-phy_obj3_melt.agg.family <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, phy_obj3ra.melt,
-                                                            FUN = function(x) c(sum = sum(x), count=length(x)))))
-phy_obj3_melt.agg.family$Abundance <- phy_obj3_melt.agg.family$Abundance.sum*100
-phy_obj3_melt.agg.family<- phy_obj3_melt.agg.family[phy_obj3_melt.agg.family$Abundance.sum>0,]
-
-
-#Calculate abundance for each Class
-phy_obj3_melt.agg.class <- aggregate (Abundance~Location+Season+Date+Depth+Class, phy_obj3ra.melt, FUN="sum")
-phy_obj3_melt.agg.class$Abundance <- phy_obj3_melt.agg.class$Abundance*100
-phy_obj3_melt.agg.class<- phy_obj3_melt.agg.class[phy_obj3_melt.agg.class$Abundance>0,]
-
-
 
 Campylobacteria_class <- subset_taxa(phy_obj3, Class == "Campylobacteria")
 Arcobacter_family <- subset_taxa(phy_obj3, Family == "Arcobacteraceae")
@@ -62,30 +46,14 @@ writeXStringSet(Vibrio_family.rs, "./Vibrio_family.fasta", format = "fasta")
 Mycobacteriaceae_family.rs <- refseq(Mycobacteriaceae_family)
 writeXStringSet(Mycobacteriaceae_family.rs, "./Mycobacteriaceae_family.fasta", format = "fasta")
 
-##################################
-#Microbial pollution indicators
-##################################
-
 Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
-ps_Mic_Ind_ra <- subset_taxa(phy_obj3ra, Family %in% c(Mic_Ind$Family))
+ps_Mic <- subset_taxa(phy_obj3, Family %in% c(Mic_Ind$Family))
+ps.ra_Mic <- subset_taxa(phy_obj3ra, Family %in% c(Mic_Ind$Family))
 
-saveRDS(ps_Mic_Ind_ra, "./phyloseq_Mic_Ind_ra")
 
-library(ape)
-library("ape")
-library("Biostrings")
-library("ggplot2")
-library("ggtree") 
-library(phyloseq)
-BiocManager::install("ggtree")
-t <- read.tree("./data/Arcobacter.tree")
-t
-
-ggtree(t) + geom_text2(t, )
-plot.phylo(t)
-plot(t1, type = "phylogram") 
-p
-
+##############################
+#Silva tree with closest relatives
+##############################
 filename <- "./data/Arcobacter.nex"
 t1 <- ape::read.nexus(filename)
 t1
@@ -93,13 +61,13 @@ plot_tree(t1, label.tips="taxa_names")
 ggtree(t1, layout = "circular") + geom_tiplab()
 ggtree(t1) + geom_tiplab(as_ylab=TRUE, hjust = -.2, color='firebrick')
 
-#Tree
-library("ape")
-library(ggjoy)
-install.packages('ggjoy')
+
+##############################
+#Create phylogenetic tree of phyloseq object
+##############################
+
 
 random_tree = rtree(ntaxa(phy_obj3ra), rooted=TRUE, tip.label=taxa_names(phy_obj3ra))
-plot(random_tree)
 phy_obj3ra.2 = merge_phyloseq(phy_obj3ra, random_tree)
 
 Arcobacter_family_2 <- subset_taxa(phy_obj3ra.2, Family == "Arcobacteraceae")
@@ -110,4 +78,32 @@ plot_tree(Arcobacter_family_2, label.tips="taxa_names", color = "Location",
 Arcobacter_family_2
 
 ggtree(Arcobacter_family_2) + geom_tiplab() 
+
+#Create phylogenetic tree with reference seq
+library(ape)
+library(Biostrings)
+
+rs <- readDNAStringSet("./data/Arcobacter_ref_seq_NCBI.fasta", format = "fasta")
+seq_name = names(rs)
+sequence = paste(rs)
+df <- data.frame(seq_name, sequence)
+df
+
+otumat <- matrix(1, nrow = 1, ncol = length(rs))
+colnames(otumat) <- names(rs)
+rownames(otumat) <- "Reference"
+OTU <- otu_table(otumat, taxa_are_rows = FALSE)
+
+SAM <- sample_data(Arcobacter_family_2)[1,]
+SAM[,] <- NA
+sample_names(SAM) <- "Reference"
+# or : rownames(SAM) <- "Reference"
+ps.ref <- phyloseq(OTU, SAM, rs)
+ps.ref
+
+ps.merged <- merge_phyloseq(Arcobacter_family_2, ps.ref)
+
+ps.merged
+Arcobacter_family_2
+ps.ref
 
