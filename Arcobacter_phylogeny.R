@@ -17,7 +17,6 @@ library(ggjoy)
 
 phy_obj3 <- readRDS("./phyloseqFiltered.RDS")
 
-
 phy_obj3 <- subset_samples(phy_obj3, Dataset == "2020")
 phy_obj3 <- prune_taxa(taxa_sums(phy_obj3)>0, phy_obj3)
 phy_obj3
@@ -54,6 +53,7 @@ ps.ra_Mic <- subset_taxa(phy_obj3ra, Family %in% c(Mic_Ind$Family))
 ##############################
 #Silva tree with closest relatives
 ##############################
+
 filename <- "./data/Arcobacter.nex"
 t1 <- ape::read.nexus(filename)
 t1
