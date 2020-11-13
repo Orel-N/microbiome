@@ -135,7 +135,8 @@ BAC_20.rda.arrows <- as.data.frame(BAC_20.rda.arrows)
 BAC_20.rda.evals <- 100 * (BAC_20.rda.all$CCA$eig / sum(BAC_20.rda.all$CCA$eig))
 
 
-colourCount = length(unique(MIC_20.rda.species$Phylum))
+
+colourCount = length(unique(BAC_20.rda.species$Phylum))
 getPalette = colorRampPalette(brewer.pal(9, "Set1"))
 
 
