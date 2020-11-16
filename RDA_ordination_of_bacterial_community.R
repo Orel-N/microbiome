@@ -45,8 +45,8 @@ scale_par <- function(x) scale(x, center = FALSE, scale = TRUE)[,1]
 
 #import env.par. data
 metadata.raw <- all.data
-#env.par <- c("Temperature_sea","Salinity","Chl_A.1", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "NO3", "PO4", "SiO3", "NH4")
-env.par <- c("Temperature_sea","Salinity","DOC", "Dissolved_Oxygen_perc", "DIN")
+env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "NO3", "PO4", "SiO3", "NH4")
+env.par <- c("Temperature_sea", "DOC", "Dissolved_Oxygen_perc", "NH4")
 #env.par <- c("Temperature_sea","Salinity","DOC", "DIN")
 
 #scale all parameters
@@ -81,24 +81,25 @@ BAC_20.no.na <- phy_obj3 %>%
       !is.na(Salinity) &
       !is.na(Dissolved_Oxygen_perc) &
       !is.na(DOC) &
-   #   !is.na(TDN) & 
+      !is.na(TDN) & 
       #      !is.na(Chl_A.1) &
-    #  !is.na(NO2) &
-     # !is.na(NO3) &      
-      #!is.na(PO4) &
-      #!is.na(NH4) &
-      #!is.na(SiO3) &
+      !is.na(NO2) &
+      !is.na(NO3) &      
+      !is.na(PO4) &
+      !is.na(NH4) &
+      !is.na(SiO3) &
       Dataset == "2020")
 BAC_20.no.na
 
 ##remove unobserved OTU and OTU from 2015 dataset
-#BAC_20.no.na <- prune_taxa(taxa_sums(BAC_20.no.na)>0,BAC_20.no.na)
-#BAC_20.no.na
+BAC_20.no.na <- prune_taxa(taxa_sums(BAC_20.no.na)!=0,BAC_20.no.na)
+BAC_20.no.na
 
 #extract and scale the env. parameters
-#BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity","Chl_A.1", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "NO3", "PO4", "SiO3", "NH4")]  
-BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity","DOC", "Dissolved_Oxygen_perc", "DIN")]  
-#BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity","DOC", "DIN")]  
+BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "NO3", "PO4", "SiO3", "NH4")]  
+#extract and scale the env. parameters - only forward selected
+BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea", "DOC", "Dissolved_Oxygen_perc", "NH4")]  
+#BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Dissolved_Oxygen_perc","DOC")]  
 
 BAC_20.env <- as.data.frame(scale(BAC_20.env,center = FALSE, scale = TRUE))
 
@@ -107,6 +108,12 @@ BAC_20.otu <- t(otu_table(BAC_20.no.na))
 
 #RDA analysis
 BAC_20.rda.all <- rda (BAC_20.otu ~ ., data = BAC_20.env) # model including all variables 
+
+#The summary of RDA
+summary(BAC_20.rda.all, display = NULL)
+anova.cca(BAC_20.rda.all, step=1000)
+#anova.cca(BAC_20.rda.all, step=1000, by="axis")
+
 
 #generate an RDA plot 
 BAC_20.rda.scores <- vegan::scores(BAC_20.rda.all,display=c("sp","wa","lc","bp","cn"))
@@ -121,6 +128,7 @@ BAC_20.rda.sites <- BAC_20.rda.sites %>%
 #Species
 BAC_20.rda.species <- data.frame(BAC_20.rda.scores$species)
 BAC_20.rda.species
+BAC_20.rda.species <- BAC_20.rda.species[abs(BAC_20.rda.species$RDA1)>0.25 | abs(BAC_20.rda.species$RDA2)>0.25,]
 BAC_20.rda.species$species_names <- rownames(BAC_20.rda.species)
 TAX <- data.frame(as(tax_table(BAC_20.no.na), "matrix"))
 TAX$species_names <- rownames(TAX)
@@ -129,12 +137,10 @@ BAC_20.rda.species <- BAC_20.rda.species %>%
 MIC_20.rda.species <- filter(BAC_20.rda.species, Family %in% c(Mic_Ind$Family))
 
 #Draw biplots
-BAC_20.rda.arrows<- BAC_20.rda.scores$biplot*1
+BAC_20.rda.arrows<- BAC_20.rda.scores$biplot*10
 colnames(BAC_20.rda.arrows)<-c("x","y")
 BAC_20.rda.arrows <- as.data.frame(BAC_20.rda.arrows)
 BAC_20.rda.evals <- 100 * (BAC_20.rda.all$CCA$eig / sum(BAC_20.rda.all$CCA$eig))
-
-
 
 colourCount = length(unique(BAC_20.rda.species$Phylum))
 getPalette = colorRampPalette(brewer.pal(9, "Set1"))
@@ -142,21 +148,21 @@ getPalette = colorRampPalette(brewer.pal(9, "Set1"))
 
 #Plot 
 BAC_20.rda.plot <- ggplot() +
- # geom_point(data = BAC_20.rda.sites, aes(x = RDA1, y = RDA2, colour = Season, shape = Depth), 
-  #           size = 4) +
- # geom_point(data = BAC_20.rda.species, aes(x = RDA1, y = RDA2, colour = Phylum),
-  #           size = 2) +
- # geom_text(data = MIC_20.rda.species, aes(x = RDA1, y = RDA2, label=Genus), 
-  #          size = 3) +
-  geom_point(data = MIC_20.rda.species, aes(x = RDA1, y = RDA2, colour = Phylum), # fill=getPalette(colourCount),
-             size = 2) +
+  geom_point(data = BAC_20.rda.sites, aes(x = RDA1, y = RDA2, colour = Season, shape = Depth), 
+            size = 4) +
+  geom_text(data = BAC_20.rda.sites,aes(x = RDA1, y = RDA2,label = Location), 
+            nudge_y= -0.3,size=3) +
+  #geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15, colour = Phylum),
+   #            size=3) +
+  #geom_text(data = BAC_20.rda.species, aes(x = RDA1*17, y = RDA2*17, label=Family), color="red",
+   #         nudge_y= -0.3, size = 3) +
+  geom_text(data = MIC_20.rda.species, aes(x = RDA1*17, y = RDA2*17, label=Family), color="red", # fill=getPalette(colourCount),
+             size = 3) +
  # scale_fill_manual(values=getPalette(colourCount),
   #                  guide = "none") +
- # geom_text(data = BAC_20.rda.sites,aes(x = RDA1, y = RDA2,label = Location), 
-  #          nudge_y= -0.3,size=3)+
   labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
        y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
-  #scale_x_reverse()+ 
+  scale_y_reverse()+ 
   theme(legend.position = "top")+
   geom_segment(data=BAC_20.rda.arrows, aes(x = 0, y = 0, xend = x, yend = y),
                arrow = arrow(length = unit(0.2, "cm")),color="black",alpha=0.5)+
@@ -178,7 +184,7 @@ BAC_20.rda.sel.os <- ordistep (BAC_20.rda.0, scope = formula (BAC_20.rda.all), d
 BAC_20.rda.sel.os$anova
 
 #variance partitioning 
-varpart(BAC_20.otu, ~ Salinity, ~ Temperature_sea, ~ DOC, data = BAC_20.env[,c("Salinity", "Temperature_sea", "DOC")])
+varpart(BAC_20.otu, ~ Temperature_sea, ~ DOC, ~Dissolved_Oxygen_perc, ~NH4, data = BAC_20.env[,c("Temperature_sea", "DOC", "Dissolved_Oxygen_perc", "NH4")])
 
 
 
