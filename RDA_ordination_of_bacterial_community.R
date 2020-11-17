@@ -241,11 +241,11 @@ BAC_20.rda.plot <- ggplot() +
             size = 4) +
   geom_text(data = BAC_20.rda.sites,aes(x = RDA1, y = RDA2,label = Location), 
             nudge_y= -0.3,size=3) +
-  #geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15, colour = Phylum),
+  #geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15, colour = Phylum), # fill=getPalette(colourCount),
    #            size=3) +
   #geom_text(data = BAC_20.rda.species, aes(x = RDA1*17, y = RDA2*17, label=Family), color="red",
    #         nudge_y= -0.3, size = 3) +
-  geom_text(data = MIC_20.rda.species, aes(x = RDA1*17, y = RDA2*17, label=Family), color="red", # fill=getPalette(colourCount),
+  geom_text(data = MIC_20.rda.species, aes(x = RDA1*17, y = RDA2*17, label=Family), color="red", 
              size = 3) +
  # scale_fill_manual(values=getPalette(colourCount),
   #                  guide = "none") +
