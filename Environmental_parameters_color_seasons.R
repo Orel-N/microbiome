@@ -150,6 +150,60 @@ all.data.h
 ggarrange(all.data.a, all.data.b, all.data.c, all.data.d, all.data.e, all.data.f, all.data.g, all.data.h,
           labels = c("A", "B", "C", "D", "E", "F", "G", "H"), nrow = 4, ncol = 2, align = c("v"))
 
+############################################
+#PCA on environmental matrix
+###########################################
+
+#From https://www.davidzeleny.net/anadat-r/doku.php/en:pca_examples
+
+
+#define scale function
+scale_par <- function(x) scale(x, center = FALSE, scale = TRUE)[,1]
+
+#import env.par. data
+metadata.raw <- all.data
+env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen", "DOC", "TDN", "C_N", "NO2", "NO3", "PO4", "SiO3", "NH4", "BA_FC", "Coliform_bacteria")
+
+#scale all parameters
+metadata.scaled.SRF <- metadata.raw %>% 
+  mutate_at(env.par, scale_par)%>%
+  as.data.frame()
+
+#Select parameters
+envpar_corr <- metadata.scaled.SRF %>% select(env.par)
+locations <- metadata.scaled.SRF [,7]
+rownames(envpar_corr) <- metadata.scaled.SRF$SampleID
+
+#Calculate PCA
+PCA <- rda (envpar_corr, scale = TRUE) 
+
+#Analyzing the results
+head (summary (PCA))
+
+stand.chem <- scale (envpar_corr)
+stand.chem.var <- apply (envpar_corr, 2, var)
+stand.chem.var
+sum (stand.chem.var)
+
+loadings <- scores (PCA, display = 'species', scaling = 0)
+loadings
+
+#A quick sorting reveals which variables have the highest absolute correlation to the first and second axis: 
+sort (abs (loadings[,1]), decreasing = TRUE)
+sort (abs (loadings[,2]), decreasing = TRUE)
+
+#Make plot
+biplot (PCA, display = c("sites", "species"), scaling = "sites")
+
+source ('https://raw.githubusercontent.com/zdealveindy/anadat-r/master/scripts/NumEcolR2/cleanplot.pca.R')
+cleanplot.pca (PCA, scaling = 1)
+
+#Problem: cannot install ggbiplot
+
+install.packages("devtools")
+library(devtools)
+install_github("vqv/ggbiplot")
+
 
 # CLEAN UP #################################################
 
