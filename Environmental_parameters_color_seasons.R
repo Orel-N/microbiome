@@ -8,8 +8,6 @@
 #Set working directory
 setwd("C:/Users/nezao/Documents/5-R/Microbiome2015_2020")
 
-install.packages("tidyverse")
-
 #Load packages
 library(readxl)
 library(ggplot2)
@@ -21,7 +19,8 @@ library(tidyverse);packageVersion("tidyverse")
 library("vegan"); packageVersion("vegan")
 
 #Import Sample Data - "metadata"
-meta <- read.csv("./data/Metadata_2015_2020_2.csv", h=T, sep = ",")
+meta <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ",")
+
 
 # Checking data structure
 summary(meta)
@@ -48,8 +47,8 @@ season.col <- c("winter" = "#56B4E9",
 
 #Graph A: Temperature and dissolved oxygen
 all.data.a <- ggplot(data = all.data) +
-  geom_bar(mapping = aes(x = Season, y = Temperature_sea, fill = Location), position = position_dodge2(), stat = 'identity', width = .5, show.legend = FALSE) +
-  geom_point(mapping = aes(x = Season, y = Dissolved_Oxygen*4, shape = "Dissolved oxygen", group = Location), position = position_dodge2(width=.5), stat = 'identity') +
+  geom_bar(mapping = aes(x = Season, y = Temperature_sea, fill = Location), position = position_dodge(), stat = 'identity', width = .5, show.legend = FALSE) +
+  geom_point(mapping = aes(x = Season, y = Dissolved_Oxygen*4, shape = "Dissolved oxygen", group = Location), position = position_dodge(width=.5), stat = 'identity') +
   scale_y_continuous(name = "Temperature [°C]", limits = c(0,35), 
                      sec.axis = sec_axis(~./4, name = expression (paste("DO [mg ", L^-1, "]")))) +
   scale_fill_manual(values=location.col)  +
@@ -61,7 +60,7 @@ all.data.a
 
 #Graph B: Salinity
 all.data.b <- ggplot(data = all.data) +
-  geom_point(mapping = aes(x = Season, y = Salinity, colour = Location), position = position_dodge2(width=.7), stat = 'identity', show.legend = FALSE) +
+  geom_point(mapping = aes(x = Season, y = Salinity, colour = Location), position = position_dodge(width=.5), stat = 'identity', show.legend = FALSE) +
   scale_y_continuous(name = "Salinity", limits = c(30,40)) +
   scale_colour_manual(values=location.col)   +
   theme_bw() +
@@ -73,9 +72,9 @@ all.data.b
 
 #Graph C: DOC (y) / C/N (y2)
 all.data.c <- ggplot(data = all.data) +
-  geom_bar(mapping = aes(x = Season, y = DOC, fill = Location), stat = 'identity', width = .5, position = position_dodge2(), show.legend = FALSE) +
-  geom_point(mapping = aes(x = Season, y = C_N*9, shape = "C/N", group = Location), position = position_dodge2(width=.5), stat = 'identity') +
-  scale_y_continuous(name = expression (paste("DOC [µmol", L^-1, "]")), limits = c(0,200),
+  geom_bar(mapping = aes(x = Season, y = DOC, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
+  geom_point(mapping = aes(x = Season, y = C_N*9, shape = "C/N", group = Location), position = position_dodge(width=.5), stat = 'identity') +
+  scale_y_continuous(name = expression (paste("DOC [µmol ", L^-1, "]")), limits = c(0,200),
                      sec.axis = sec_axis(~./9, name = expression (paste("C ", N^-1)))) +
   scale_fill_manual(values=location.col) +
   theme_bw() +
@@ -86,8 +85,8 @@ all.data.c
 
 #Graph D: TDN
 all.data.d <- ggplot(data = all.data) +
-  geom_bar(mapping = aes(x = Season, y = TDN, fill = Location), stat = 'identity', width = .5, position = position_dodge2(), show.legend = FALSE) +
-  scale_y_continuous(name = expression (paste("TDN [µmol", L^-1, "]")), limits = c(0,30)) +
+  geom_bar(mapping = aes(x = Season, y = TDN, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
+  scale_y_continuous(name = expression (paste("TDN [µmol ", L^-1, "]")), limits = c(0,30)) +
   scale_fill_manual(values=location.col) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
@@ -98,8 +97,8 @@ all.data.d
 
 #Graph E: NH4 (y1) / NO2+NO3 (y2)
 all.data.e <- ggplot(data = all.data) +
-  geom_bar(mapping = aes(x = Season, y = NH4, fill = Location), stat = 'identity', width = .5, position = position_dodge2(), show.legend = FALSE) +
-  geom_point(aes(x = Season, y = NO2+NO3, shape = "NO2+NO3", group = Location), position = position_dodge2(width=.5), stat = 'identity') +
+  geom_bar(mapping = aes(x = Season, y = NH4, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
+  geom_point(aes(x = Season, y = NO2+NO3, shape = "NO2+NO3", group = Location), position = position_dodge(width=.5), stat = 'identity') +
   scale_y_continuous(name = expression (paste("NH4 [µmol ", L^-1, "]")), limits = c(0,10),
                      sec.axis = sec_axis(~./1, name = expression (paste("NO2+NO3 [µmol ", L^-1, "]")))) +
   scale_fill_manual(values=location.col) +
@@ -112,8 +111,8 @@ all.data.e
 
 #Graph F: PO4 (y1) / SiO3 (y2)
 all.data.f <- ggplot(data = all.data) +
-  geom_bar(mapping = aes(x = Season, y = PO4, fill = Location), stat = 'identity', width = .5, position = position_dodge2(), show.legend = FALSE) +
-  geom_point(aes(x = Season, y = SiO3/5, shape = "SiO3", group = Location), position = position_dodge2(width=.5), stat = 'identity') +
+  geom_bar(mapping = aes(x = Season, y = PO4, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
+  geom_point(aes(x = Season, y = SiO3/5, shape = "SiO3", group = Location), position = position_dodge(width=.5), stat = 'identity') +
   scale_y_continuous(name = expression (paste("PO4 [µmol ", L^-1, "]")), limits = c(0,3),
                      sec.axis = sec_axis(~.*5, name = expression (paste("SiO3 [µmol ", L^-1, "]")))) +
   scale_fill_manual(values=location.col) +
@@ -138,9 +137,9 @@ all.data.g
 
 #Graph H: Bacterial carbon production
 all.data.h <- ggplot(data = all.data, aes(fill=Location)) +
-  geom_bar(mapping = aes(x = Season, y = BCP), position = position_dodge(), stat = 'identity', width = .5, show.legend = FALSE) +
-  geom_errorbar(mapping = aes(x = Season, ymin = BCP - BCP_STDEV, ymax = BCP + BCP_STDEV), position = position_dodge(width = .5), stat = 'identity', width = 0.25) +
-  scale_y_continuous(name = expression(paste("BCP [N cell ", L^-1, " ", d^-1, "]"))) +
+  geom_bar(mapping = aes(x = Season, y = BCP_C), position = position_dodge(), stat = 'identity', width = .5, show.legend = FALSE) +
+  geom_errorbar(mapping = aes(x = Season, ymin = BCP_C - BCP_C_STDEV, ymax = BCP_C + BCP_C_STDEV), position = position_dodge(width = .5), stat = 'identity', width = 0.25) +
+  scale_y_continuous(name = expression(paste("BCP [µ C ", L^-1, " ", d^-1, "]"))) +
   scale_fill_manual(values=location.col)  +
   theme_bw() +
   facet_wrap(vars(Depth)) +
