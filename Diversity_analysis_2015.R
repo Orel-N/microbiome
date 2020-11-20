@@ -30,85 +30,14 @@ phy_obj3
 #Edit data - subset based on dataset
 phy_obj3_15 <- subset_samples(phy_obj3, Dataset == "2015")
 
+#Define colors
+phyla.col <- readRDS("./data/phyla_col.RDS")
+
+indicators.col <- readRDS("./data/indicators_col.RDS")
+
 ####################################
 #Alpha diversity plot
-####################################
-
-#Create Alphadiversity table 2015
-alpha_df_2 <- estimate_richness(phy_obj3_15, measures = c("Observed", "Chao1","Shannon", "InvSimpson"))
-alpha_df_15 <- data.frame(sample_data(phy_obj3_15), alpha_df_2)
-write.table(alpha_df_15, "./tables/AlphaDiversity_15.txt")
-
-
-#Edit table 2015
-alpha_df_15$Season <- factor(alpha_df_15$Season, levels = c("winter", "spring", "summer", "autumn"))
-alpha_df_15$Location <- factor(alpha_df_15$Location, levels = c("R-Mouth", "R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
-alpha_df_15$Depth <- factor(alpha_df_15$Depth, levels = c("bottom", "surface"))
-alpha_df_15$Pollution <- ifelse(alpha_df_15$Location == "OS-Marine", "Unpolluted", 
-                                ifelse(alpha_df_15$Location == "NS-Marine", "Unpolluted", "Polluted"))
-
-#Plot Chao1 - separate for depth 2015
-Chao.15.p <- ggplot(data = alpha_df_15) +
-  geom_boxplot(mapping=aes(x=Location, y=Chao1, color=Location)) +
-  geom_point(mapping=aes(x=Location, y=Chao1, color=Location, shape = Season), size = 3, stat = 'identity') +
-  facet_wrap(~Depth) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-Chao.15.p
-ggsave("./output_graphs/Chao_15.pdf")
-
-#Plot Shannon d.i. - separate for depth 2015
-Shannon.15.p <- ggplot(data = alpha_df_15) +
-  geom_boxplot(mapping=aes(x=Location, y=Shannon, color=Location)) +
-  geom_point(mapping=aes(x=Location, y=Shannon, color=Location, shape = Season), size = 3, stat = 'identity') +
-  facet_wrap(~Depth) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-Shannon.15.p
-ggsave("./output_graphs/Shannon_15.pdf")
-
-#Plot InvSimpson - separate for depth 2015
-InvSimpson.15.p <- ggplot(data = alpha_df_15) +
-  geom_boxplot(mapping=aes(x=Location, y=InvSimpson, color=Location)) +
-  geom_point(mapping=aes(x=Location, y=InvSimpson, color=Location, shape = Season), size = 3, stat = 'identity') +
-  facet_wrap(~Depth) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-InvSimpson.15.p
-ggsave("./output_graphs/InvSimpsin_15.pdf")
-
-
-alpha.15 <- ggarrange(Chao.15.p, Shannon.15.p, InvSimpson.15.p, nrow=1, common.legend = TRUE)
-alpha.15
-
-###Statistic 2015
-
-#Shapiro-Wilk's test
-hist(alpha_df_15$Chao1)
-qqnorm(alpha_df_15$Chao1)
-qqline(alpha_df_15$Chao1)
-hist(alpha_df_15$Shannon)
-qqnorm(alpha_df_15$Shannon)
-qqline(alpha_df_15$Shannon)
-
-alpha_df_15 %>% shapiro_test(Chao1, Shannon, InvSimpson)
-
-#ANOVA or Kruskal-Wallis test
-kruskal.test(alpha_df_15$Chao1 ~ Season, data = alpha_df_15) 
-kruskal.test(alpha_df_15$Chao1 ~ Location, data = alpha_df_15)
-
-anova.Ch.15 <- aov(alpha_df_15$Chao1 ~ Season, data=alpha_df_15)
-summary(anova.Ch.15)
-anova.Ch.15 <- aov(alpha_df_15$Chao1 ~ Location, data=alpha_df_15)
-summary(anova.Ch.15)
-TukeyHSD(anova.Ch.15)
-
-kruskal.test(alpha_df_15$Shannon ~ Season, data = alpha_df_15) 
-kruskal.test(alpha_df_15$Shannon ~ Location, data = alpha_df_15)
-anova.Sh.15 <- aov(alpha_df_15$Shannon ~ Location+Season, data=alpha_df_15)
-summary(anova.Sh.15)
-TukeyHSD(anova.Sh.15)
-
-kruskal.test(alpha_df_15$InvSimpson ~ Season, data = alpha_df_15) 
-kruskal.test(alpha_df_15$InvSimpson ~ Location, data = alpha_df_15)
-
+#
 
 ##############################
 #Preparation of data for taxonomic comparison
@@ -160,13 +89,11 @@ write.csv(phy_obj3_melt.agg.class.table, "./tables/Class.csv")
 
 
 #Plot Class(Date)
-colourCount = length(unique(phy_obj3_melt.agg.class$Class))
-getPalette = colorRampPalette(brewer.pal(8, "Set1"))
 phy_obj3_melt.agg.class$Season = factor(phy_obj3_melt.agg.class$Season, levels=c( 'winter','spring','summer','autumn'))
 ggplot(phy_obj3_melt.agg.class, aes(x = Abundance, y = Location, fill = Class))+
   facet_grid(Season~Depth, space= "fixed")+
   geom_bar(stat = "identity", position="fill")+
-  scale_fill_manual(values=getPalette(colourCount))+
+  scale_fill_manual(values=phyla.col)+
   scale_y_discrete(limits=c('NS-Marine','R-Estuary-1', 'R-Mouth'))
 
 

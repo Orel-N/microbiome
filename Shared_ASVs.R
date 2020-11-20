@@ -6,63 +6,6 @@
 
 ############################################################################
 
-phyla.col <- c("Acidimicrobiia"="#AA4488",
-               "Actinobacteria" = "#DDAA77",
-               "Alphaproteobacteria"= "#771155",
-               "Bacilli"="#117744", 
-               "Bacteroidia"= "#77AADD",
-               "Campylobacteria" = "#FF2222",
-               "Rhodothermia"= "#77CCCC",
-               #"Clostridia"= "#DD1232", 
-               "Cyanobacteriia"= "#AAAA44",
-               "Clostridia" ="#CC1234", 
-               #"Desulfobulbia"= "#117744", 
-               "Gammaproteobacteria"="#117777",
-               "Gracilibacteria"= "#44AA77",
-               "Kiritimatiellae" = "#DD7788",
-               "Negativicutes"= "#34ABAA", 
-               "Paracubacteria"= "#11BBCC", 
-               #"NB1-j_uncl" = "#774411",
-               #"Nitrososphaeria" = "#E69F00",
-               "Parcubacteria"= "#88CCAA", 
-               "Planctomycetes"= "#777711",
-               #"OM190"= "#009E73",
-               #"SAR324_clade(Marine_group_B)_uncl"="#CC99BB",
-               #"Spirochaetia" = "#AACC45",
-               #"Thermoplasmata" = "#0072B2",
-               "Verrucomicrobiae" = "#AA7744",
-               #"Vicinamibacteria" ="#DDDD77",
-               "Other taxa"= "#114477")
-
-indicators.col <- c("Aeromonadaceae"="#AA4488",
-                    "Arcobacteraceae" = "#771155",
-                    "Bacteroidaceae"= "#DDAA77",
-                    "Bdellovibrionaceae"="#117744", 
-                    "Carnobacteriaceae"= "#77AADD",
-                    "Campylobacteraceae" = "#FF2222",
-                    "Chlamydiaceae"= "#DD1232" ,
-                    "Enterococcaceae"= "#77CCCC", 
-                    "Clostridiaceae" ="#CC1234", 
-                    "Desulfovibrionaceae"= "#117744", 
-                    "Enterobacteriaceae"="#117777",
-                    "Flavobacteriaceae"= "#44AA77",
-                    "Helicobacteraceae" = "#DD7788",
-                    "Lachnospiraceae"= "#34ABAA", 
-                    "Legionellaceae"= "#11BBCC", 
-                    "Leptospiraceae" = "#774411",
-                    "Listeriaceae" = "#E69F00",
-                    "Moraxellaceae"= "#88CCAA", 
-                    "Mycobacteriaceae"= "#777711",
-                    "Porphyromonadaceae"= "#009E73",
-                    "Pseudomonadaceae"="#CC99BB",
-                    "Ruminococcaceae" = "#AACC45",
-                    "Staphylococcaceae" = "#0072B2",
-                    "Streptococcaceae" = "#AA7744",
-                    "Vibrionaceae" ="#DDDD77",
-                    "Yersiniaceae"= "#AAAA44",
-                    "Other taxa"= "#114477")
-
-
 #Set working directory
 setwd("C:/Users/nezao/Documents/5-R/Microbiome2015_2020")
 
@@ -80,6 +23,11 @@ source("./scripts/pres_abs_matrix.R")
 #Import data
 BAC_pruned <- readRDS("./phyloseqFiltered.RDS")
 Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
+
+#Import collor pallets
+phyla.col <- readRDS("./data/phyla_col.RDS")
+indicators.col <- readRDS("./data/indicators_col.RDS")
+
 
 #####################################
 #Diagram of bacterial OTU overlap between different groups 
@@ -278,7 +226,6 @@ colnames(otu_overlaps_merged2)[32] <- "Abundance.su"
 colnames(otu_overlaps_merged2)[34] <- "Abundance.a"
 colnames(otu_overlaps_merged2)[36] <- "Abundance.s"
 
-
 #set metadata
 sets <- names(y)
 metadata <- as.data.frame(sets)
@@ -334,11 +281,8 @@ BAC_pruned.ra.long.shared <- BAC_pruned.ra.long[BAC_pruned.ra.long$OTU %in% rown
 BAC_pruned.ra.long.shared.agg <- aggregate(Abundance~Location+Season+Depth+Class, BAC_pruned.ra.long.shared, FUN= sum)
 BAC_pruned.ra.long.shared.agg$Abundance <- BAC_pruned.ra.long.shared.agg$Abundance*100
 
-#remove beloew 0.5% ra
+#remove below 0.5% ra
 BAC_pruned.ra.long.shared.agg <- BAC_pruned.ra.long.shared.agg[BAC_pruned.ra.long.shared.agg$Abundance>3,]
-
-colourCount = length(unique(BAC_pruned.ra.long.shared.agg$Class))
-getPalette = colorRampPalette(brewer.pal(11, "Set1"))
 
 #plot
 BAC_pruned.ra.long.shared.agg$Location <- factor(BAC_pruned.ra.long.shared.agg$Location, levels = c("SM-Outfall", "OS-Marine", "NS-Marine","R-Estuary-2", "R-Estuary-1"))
@@ -361,7 +305,7 @@ Mic_pruned.ra.long.shared <- Mic_pruned.ra.long[Mic_pruned.ra.long$OTU %in% rown
 Mic_pruned.ra.long.shared.agg <- aggregate(Abundance~Location+Season+Depth+Class+Family, Mic_pruned.ra.long.shared, FUN= sum)
 Mic_pruned.ra.long.shared.agg$Abundance <- Mic_pruned.ra.long.shared.agg$Abundance*100
 
-#remove beloew 0.5% ra
+#remove below 0.5% ra
 #Mic_pruned.ra.long.shared.agg <- Mic_pruned.ra.long.shared.agg[Mic_pruned.ra.long.shared.agg$Abundance>0.5,]
 
 #plot
@@ -423,9 +367,6 @@ BAC_pruned.ra.long.shared.Estuary.agg <- aggregate(Abundance~Location+Season+Dep
 #remove beloew 0.5% ra
 #BAC_pruned.ra.long.shared.Estuary.agg <- BAC_pruned.ra.long.shared.Estuary.agg[BAC_pruned.ra.long.shared.Estuary.agg$Abundance>0.5,]
 
-colourCount = length(unique(BAC_pruned.ra.long.shared.Estuary.agg$Class))
-getPalette = colorRampPalette(brewer.pal(11, "Set2"))
-
 #plot
 BAC_pruned.ra.long.shared.Estuary.agg$Location <- factor(BAC_pruned.ra.long.shared.Estuary.agg$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
 
@@ -435,7 +376,7 @@ BAC_shared.otu.plot <- ggplot(BAC_pruned.ra.long.shared.Estuary.agg, aes(x = Loc
   theme(legend.position = "bottom")+ 
   guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
   ylab("Relative Abundance of shared OTU") +
-  scale_fill_manual(values=getPalette(colourCount))+
+  scale_fill_manual(values=phyla.col)+
   theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
 BAC_shared.otu.plot
 
@@ -459,9 +400,6 @@ Mic_pruned.ra.long.shared.Selected.agg <- aggregate(Abundance~Location+Season+De
 #remove beloew 0.5% ra
 #Mic_pruned.ra.long.shared.Selected.agg <- Mic_pruned.ra.long.shared.Selected.agg[Mic_pruned.ra.long.shared.Selected.agg$Abundance>0.5,]
 
-colourCount = length(unique(Mic_pruned.ra.long.shared.Selected.agg$Family))
-getPalette = colorRampPalette(brewer.pal(11, "Set2"))
-
 #plot
 Mic_pruned.ra.long.shared.Selected.agg$Location <- factor(Mic_pruned.ra.long.shared.Selected.agg$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
 
@@ -471,7 +409,7 @@ Mic_shared.otu.plot <- ggplot(Mic_pruned.ra.long.shared.Selected.agg, aes(x = Lo
   theme(legend.position = "bottom")+ 
   guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
   ylab("Relative Abundance of shared OTU") +
-  scale_fill_manual(values=getPalette(colourCount))+
+  scale_fill_manual(values=phyla.col)+
   theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
 Mic_shared.otu.plot
 
