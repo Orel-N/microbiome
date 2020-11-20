@@ -21,32 +21,20 @@ library(tidyverse);packageVersion("tidyverse")
 library("vegan"); packageVersion("vegan")
 
 #Import Sample Data - "metadata"
-meta <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ",")
+meta <- read.csv("./data/Metadata_2015_2020_2.csv", h=T, sep = ",")
 
-#Edit metadata
 # Checking data structure
 summary(meta)
 str(meta)
-
-meta[,'DIN']=round(meta[,'DIN'],1)
-meta[,'Depth_m']=round(meta[,'Depth_m'],0)
-meta[,'Coliform_bacteria']=round(meta[,'Coliform_bacteria'],0)
-meta[,'Cyanobacteria_STDEV']=round(meta[,'Cyanobacteria_STDEV'],0)
-meta[,'Cyanobacteria_STDEV']=round(meta[,'Cyanobacteria_STDEV'],0)
-meta <- meta %>% mutate_at(12:18, round, 2)
-
-meta$Dataset <- ifelse(meta$SampleID < 12, "2015", "2020")
-
-#Save corrected table
-write.csv(meta, "./data/Metadata_2015_2020.csv")
-
 
 #Edit order
 all.data <- filter(meta, Dataset == "2020")
 all.data$Season <- factor(all.data$Season, levels = c("winter", "spring", "summer", "autumn"))
 all.data$Location <- factor(all.data$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
 all.data$Depth <- factor(all.data$Depth, levels = c("surface", "bottom"))
+str(all.data)
 
+#Graph A: Temperature and dissolved oxygen
 all.data.a <- ggplot(data = all.data) +
   geom_bar(mapping = aes(x = Location, y = Temperature_sea, fill = "Temperature"), stat = 'identity', width = .5) +
   geom_point(mapping = aes(x = Location, y = Dissolved_Oxygen*4, shape = "Dissolved oxygen"), stat = 'identity') +
@@ -151,10 +139,10 @@ ggsave("./output_graphs/f.pdf")
 
 #Graph G: Bacterial carbon production / bacterial abundance
 all.data.g <- ggplot(data = all.data) +
-  geom_bar(mapping = aes(x = Location, y = BA_FC, fill = "Bacterial abundance"), stat = 'identity', width = .5, position = 'dodge') +
-  geom_errorbar(aes(x = Location, ymin = BA_FC - BA_FC_STDEV, ymax = BA_FC + BA_FC_STDEV), position = 'dodge', width = 0.25) +
-  geom_point(mapping = aes(x = Location, y = BCP*2, shape = "BCP"), stat = 'identity') +
-  geom_errorbar(aes(x = Location, y = BCP*2, ymin = (BCP - BCP_STDEV)*2, ymax = (BCP + BCP_STDEV)*2), width = 0.25) +
+  geom_bar(mapping = aes(x = Location, y = BA, fill = "Bacterial abundance"), stat = 'identity', width = .5, position = 'dodge') +
+  geom_errorbar(aes(x = Location, ymin = BA - BA_STDEV, ymax = BA + BA_STDEV), position = 'dodge', width = 0.25) +
+  geom_point(mapping = aes(x = Location, y = BCP*1.5, shape = "BCP"), stat = 'identity') +
+  geom_errorbar(aes(x = Location, y = BCP*1.5, ymin = (BCP - BCP_STDEV)*1.5, ymax = (BCP + BCP_STDEV)*1.5), width = 0.25) +
   scale_y_continuous(name = expression(paste("Bacterial abundance [N cell ", L^-1, "]")),
                      sec.axis = sec_axis(~./2, name = expression (paste("BCP [N cell ", L^-1, " ", d^-1, "]")))) +
   scale_fill_manual(values = c("honeydew4")) +
@@ -173,8 +161,6 @@ ggsave("./output_graphs/all.pdf")
 
 # CLEAN UP #################################################
 
-# Clear packages
-detach("package:datasets", unload = TRUE)
 
 # Clear plots
 dev.off()  # But only if there IS a plot

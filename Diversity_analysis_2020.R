@@ -25,8 +25,64 @@ phy_obj3
 
 #Edit data - subset based on dataset
 phy_obj3_20 <- subset_samples(phy_obj3, Dataset == "2020")
+phy_obj3_20 <- prune_taxa(taxa_sums(phy_obj3_20)>0, phy_obj3_20)
+phy_obj3_20
 
+phyla.col <- c("Acidimicrobiia"="#AA4488",
+               "Actinobacteria" = "#DDAA77",
+               "Alphaproteobacteria"= "#771155",
+               "Bacilli"="#117744", 
+               "Bacteroidia"= "#77AADD",
+               "Campylobacteria" = "#FF2222",
+               #"Chlamydiae"= "#DD1232" ,
+               #"Clostridia"= "#77CCCC", 
+               "Cyanobacteriia"= "#AAAA44",
+               "Clostridia" ="#CC1234", 
+               #"Desulfobulbia"= "#117744", 
+               "Gammaproteobacteria"="#117777",
+               "Gracilibacteria"= "#44AA77",
+               "Kiritimatiellae" = "#DD7788",
+               "Negativicutes"= "#34ABAA", 
+               "Paracubacteria"= "#11BBCC", 
+               #"NB1-j_uncl" = "#774411",
+               #"Nitrososphaeria" = "#E69F00",
+               "Parcubacteria"= "#88CCAA", 
+               "Planctomycetes"= "#777711",
+               #"OM190"= "#009E73",
+               #"SAR324_clade(Marine_group_B)_uncl"="#CC99BB",
+               #"Spirochaetia" = "#AACC45",
+               #"Thermoplasmata" = "#0072B2",
+               "Verrucomicrobiae" = "#AA7744",
+               #"Vicinamibacteria" ="#DDDD77",
+               "Other taxa"= "#114477")
 
+indicators.col <- c("Aeromonadaceae"="#AA4488",
+               "Arcobacteraceae" = "#771155",
+               "Bacteroidaceae"= "#DDAA77",
+               "Bdellovibrionaceae"="#117744", 
+               "Carnobacteriaceae"= "#77AADD",
+               "Campylobacteraceae" = "#FF2222",
+               "Chlamydiaceae"= "#DD1232" ,
+               "Enterococcaceae"= "#77CCCC", 
+               "Clostridiaceae" ="#CC1234", 
+               "Desulfovibrionaceae"= "#117744", 
+               "Enterobacteriaceae"="#117777",
+               "Flavobacteriaceae"= "#44AA77",
+               "Helicobacteraceae" = "#DD7788",
+               "Lachnospiraceae"= "#34ABAA", 
+               "Legionellaceae"= "#11BBCC", 
+               "Leptospiraceae" = "#774411",
+               "Listeriaceae" = "#E69F00",
+               "Moraxellaceae"= "#88CCAA", 
+               "Mycobacteriaceae"= "#777711",
+               "Porphyromonadaceae"= "#009E73",
+               "Pseudomonadaceae"="#CC99BB",
+               "Ruminococcaceae" = "#AACC45",
+               "Staphylococcaceae" = "#0072B2",
+               "Streptococcaceae" = "#AA7744",
+               "Vibrionaceae" ="#DDDD77",
+               "Yersiniaceae"= "#AAAA44",
+               "Other taxa"= "#114477")
 
 ##############################
 #Preparation of data for taxonomic comparison
@@ -83,7 +139,7 @@ phy_obj3_melt.agg.class$Season = factor(phy_obj3_melt.agg.class$Season, levels=c
 ggplot(phy_obj3_melt.agg.class, aes(x = Abundance, y = Location, fill = Class))+
   facet_grid(Season~Depth, space= "fixed")+
   geom_bar(stat = "identity", position="fill")+
-  scale_fill_manual(values=getPalette(colourCount))+
+  scale_fill_manual(values=phyla.col)+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1'))
 
 
@@ -192,7 +248,7 @@ ps_Mic_Ind_ra.melt <- psmelt(ps_Mic_Ind_ra)
 write.table(ps_Mic_Ind_ra.melt, "./tables/ps_Mic_Ind_ra.melt.txt")
 
 #Calculate abundance for each taxa
-ps_Mic_Ind_ra.melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Sample+Season+Date+Class+Order+Family+Genus, ps_Mic_Ind_ra.melt,
+ps_Mic_Ind_ra.melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Sample+Season+Date+Class+Order+Family, ps_Mic_Ind_ra.melt,
                                                                 FUN = function(x) c(sum = sum(x), count=length(x)))))
 ps_Mic_Ind_ra.melt.agg.genus$Abundance <- ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum*100
 ps_Mic_Ind_ra.melt.agg.genus<- ps_Mic_Ind_ra.melt.agg.genus[ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum>0,]
@@ -200,11 +256,17 @@ ps_Mic_Ind_ra.melt.agg.genus<- ps_Mic_Ind_ra.melt.agg.genus[ps_Mic_Ind_ra.melt.a
 ps_Mic_Ind_ra.melt.agg.genus$Season_f = factor(ps_Mic_Ind_ra.melt.agg.genus$Season, levels=c('winter','spring','summer','autumn'))
 ps_Mic_Ind_ra.melt.agg.genus$Location_f = factor(ps_Mic_Ind_ra.melt.agg.genus$Location, levels=c('R-Estuary-1','R-Estuary-2', 'NS-Marine', 'OS-Marine', 'SM-Outfall'))
 
-colourCount = length(unique(ps_Mic_Ind_ra.melt.agg.genus$Family))
-getPalette = colorRampPalette(brewer.pal(8, "Set2"))
+threshold<- 1
+ps_Mic_Ind_ra.melt.agg.genus$Family <- as.character(ps_Mic_Ind_ra.melt.agg.genus$Family)
+taxa_classes <- unique(ps_Mic_Ind_ra.melt.agg.genus$Family[!ps_Mic_Ind_ra.melt.agg.genus$Abundance<threshold])
+ps_Mic_Ind_ra.melt.agg.genus$Family[ps_Mic_Ind_ra.melt.agg.genus$Abundance<threshold] <- "Other taxa"
+ps_Mic_Ind_ra.melt.agg.genus$Family <- factor(ps_Mic_Ind_ra.melt.agg.genus$Family,
+                                        levels=c(taxa_classes,"Other taxa"))
+
+
 ggplot(ps_Mic_Ind_ra.melt.agg.genus, aes(x = Abundance, y = Location, fill = Family))+
   facet_grid(Season_f~Depth, space= "fixed")+
-  scale_fill_manual(values=getPalette(colourCount))+
+  scale_fill_manual(values=indicators.col)+
   geom_bar(stat = "identity", position="stack")+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1'))
 ggsave("./output_graphs/MicrobialInidicators.pdf", last_plot())
@@ -387,6 +449,7 @@ d <- phyloseq::distance(ps.vst, "euclidean")
 adonis_all <- adonis2(d ~ Pollution+Location+Season+Depth, data= df, perm = 999)
 adonis_all
 
+
 #Post-hoc test 
 #posthoc to check which seasons are different
 groups <- df[["Season"]]
@@ -398,6 +461,26 @@ boxplot(mod)
 mod.HSD <- TukeyHSD(mod)
 mod.HSD
 plot(mod.HSD)
+
+###statistical significance of the groups - separate by depth
+
+ps.vst.surface <- subset_samples(ps.vst, Depth=="surface")
+df <- as(sample_data(ps.vst.surface), "data.frame")
+df$Pollution <- ifelse(df$Location == "OS-Marine", "Unpolluted", 
+                       ifelse(df$Location == "NS-Marine", "Unpolluted", "Polluted"))
+d <- phyloseq::distance(ps.vst.surface, "euclidean")
+adonis_all <- adonis2(d ~ Pollution+Location+Season, data= df, perm = 999)
+adonis_all
+
+
+ps.vst.bottom <- subset_samples(ps.vst, Depth=="bottom")
+df <- as(sample_data(ps.vst.bottom), "data.frame")
+df$Pollution <- ifelse(df$Location == "OS-Marine", "Unpolluted", 
+                       ifelse(df$Location == "NS-Marine", "Unpolluted", "Polluted"))
+d <- phyloseq::distance(ps.vst.bottom, "euclidean")
+adonis_all <- adonis2(d ~ Pollution+Location+Season, data= df, perm = 999)
+adonis_all
+
 
 
 

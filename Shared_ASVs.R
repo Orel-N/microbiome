@@ -6,6 +6,62 @@
 
 ############################################################################
 
+phyla.col <- c("Acidimicrobiia"="#AA4488",
+               "Actinobacteria" = "#DDAA77",
+               "Alphaproteobacteria"= "#771155",
+               "Bacilli"="#117744", 
+               "Bacteroidia"= "#77AADD",
+               "Campylobacteria" = "#FF2222",
+               "Rhodothermia"= "#77CCCC",
+               #"Clostridia"= "#DD1232", 
+               "Cyanobacteriia"= "#AAAA44",
+               "Clostridia" ="#CC1234", 
+               #"Desulfobulbia"= "#117744", 
+               "Gammaproteobacteria"="#117777",
+               "Gracilibacteria"= "#44AA77",
+               "Kiritimatiellae" = "#DD7788",
+               "Negativicutes"= "#34ABAA", 
+               "Paracubacteria"= "#11BBCC", 
+               #"NB1-j_uncl" = "#774411",
+               #"Nitrososphaeria" = "#E69F00",
+               "Parcubacteria"= "#88CCAA", 
+               "Planctomycetes"= "#777711",
+               #"OM190"= "#009E73",
+               #"SAR324_clade(Marine_group_B)_uncl"="#CC99BB",
+               #"Spirochaetia" = "#AACC45",
+               #"Thermoplasmata" = "#0072B2",
+               "Verrucomicrobiae" = "#AA7744",
+               #"Vicinamibacteria" ="#DDDD77",
+               "Other taxa"= "#114477")
+
+indicators.col <- c("Aeromonadaceae"="#AA4488",
+                    "Arcobacteraceae" = "#771155",
+                    "Bacteroidaceae"= "#DDAA77",
+                    "Bdellovibrionaceae"="#117744", 
+                    "Carnobacteriaceae"= "#77AADD",
+                    "Campylobacteraceae" = "#FF2222",
+                    "Chlamydiaceae"= "#DD1232" ,
+                    "Enterococcaceae"= "#77CCCC", 
+                    "Clostridiaceae" ="#CC1234", 
+                    "Desulfovibrionaceae"= "#117744", 
+                    "Enterobacteriaceae"="#117777",
+                    "Flavobacteriaceae"= "#44AA77",
+                    "Helicobacteraceae" = "#DD7788",
+                    "Lachnospiraceae"= "#34ABAA", 
+                    "Legionellaceae"= "#11BBCC", 
+                    "Leptospiraceae" = "#774411",
+                    "Listeriaceae" = "#E69F00",
+                    "Moraxellaceae"= "#88CCAA", 
+                    "Mycobacteriaceae"= "#777711",
+                    "Porphyromonadaceae"= "#009E73",
+                    "Pseudomonadaceae"="#CC99BB",
+                    "Ruminococcaceae" = "#AACC45",
+                    "Staphylococcaceae" = "#0072B2",
+                    "Streptococcaceae" = "#AA7744",
+                    "Vibrionaceae" ="#DDDD77",
+                    "Yersiniaceae"= "#AAAA44",
+                    "Other taxa"= "#114477")
+
 
 #Set working directory
 setwd("C:/Users/nezao/Documents/5-R/Microbiome2015_2020")
@@ -132,11 +188,6 @@ y.mic[["OS-Marine"]] <- as.character(row.names(otu_table(Mic_00BF)))
 y.mic[["SM-Outfall"]] <- as.character(row.names(otu_table(Mic_CN01)))
 
 y2 <- list ()
-y2[["R-Estuary-1.a"]] <- as.character(row.names(otu_table(BAC_ERI2.a)))
-y2[["R-Estuary-2.a"]] <- as.character(row.names(otu_table(BAC_0014.a)))
-y2[["NS-Marine.a"]] <- as.character(row.names(otu_table(BAC_000K.a)))
-y2[["OS-Marine.a"]] <- as.character(row.names(otu_table(BAC_00BF.a)))
-y2[["SM-Outfall.a"]] <- as.character(row.names(otu_table(BAC_CN01.a)))
 
 y2[["R-Estuary-1.w"]] <- as.character(row.names(otu_table(BAC_ERI2.w)))
 y2[["R-Estuary-2.w"]] <- as.character(row.names(otu_table(BAC_0014.w)))
@@ -155,6 +206,13 @@ y2[["R-Estuary-2.su"]] <- as.character(row.names(otu_table(BAC_0014.su)))
 y2[["NS-Marine.su"]] <- as.character(row.names(otu_table(BAC_000K.su)))
 y2[["OS-Marine.su"]] <- as.character(row.names(otu_table(BAC_00BF.su)))
 y2[["SM-Outfall.su"]] <- as.character(row.names(otu_table(BAC_CN01.su)))
+
+y2[["R-Estuary-1.a"]] <- as.character(row.names(otu_table(BAC_ERI2.a)))
+y2[["R-Estuary-2.a"]] <- as.character(row.names(otu_table(BAC_0014.a)))
+y2[["NS-Marine.a"]] <- as.character(row.names(otu_table(BAC_000K.a)))
+y2[["OS-Marine.a"]] <- as.character(row.names(otu_table(BAC_00BF.a)))
+y2[["SM-Outfall.a"]] <- as.character(row.names(otu_table(BAC_CN01.a)))
+
 
 #generate presence/abscence matrix
 otu_overlaps <- pres_abs_matrix(y)    
@@ -208,6 +266,8 @@ otu_overlaps_merged <- full_join(otu_overlaps_merged, BAC_pruned.ra.long.agg, by
 otu_overlaps_merged.mic <- full_join(otu_overlaps_merged.mic, Mic_pruned.ra.long.agg, by = "OTU")
 
 #Separate by season
+BAC_pruned.ra.long.agg <- aggregate(Abundance~OTU+Season, BAC_pruned.ra.long, FUN = mean)
+BAC_pruned.ra.long.agg$Abundance <- BAC_pruned.ra.long.agg$Abundance*100
 otu_overlaps_merged2 <- full_join(otu_overlaps_merged2, BAC_pruned.ra.long.agg[BAC_pruned.ra.long.agg$Season=="winter",], by = "OTU")
 otu_overlaps_merged2 <- full_join(otu_overlaps_merged2, BAC_pruned.ra.long.agg[BAC_pruned.ra.long.agg$Season=="summer",], by = "OTU")
 otu_overlaps_merged2 <- full_join(otu_overlaps_merged2, BAC_pruned.ra.long.agg[BAC_pruned.ra.long.agg$Season=="autumn",], by = "OTU")
@@ -226,52 +286,41 @@ metadata <- as.data.frame(sets)
 sets.mic <- names(y.mic)
 metadata.mic <- as.data.frame(sets.mic)
 
-sets2 <- names(y2)
-metadata2 <- as.data.frame(cbind(sets2, rep(c("R-Estuary-1", "R-Estuary-2", "NS-Marine", "OS-Marine", "SM-Outfall"),4),
-                          c(rep("autumn",5), rep("winter",5), rep("spring",5), rep("summer",5))))
+sets2 <- names(rev(y2))
+metadata2 <- as.data.frame(cbind(sets2, rep(c("SM-Outfall", "OS-Marine", "NS-Marine", "R-Estuary-2", "R-Estuary-1"),4),
+                          c(rep("autumn",5), rep("summer",5), rep("spring",5), rep("winter",5))))
 names(metadata2) <- c("sets", "Location","Season")
 
+
 #plot
-upset(otu_overlaps_merged, number.angles = 30,
-      sets = as.vector(metadata$sets),
+upset(otu_overlaps_merged, number.angles = 30, nintersects = 20,
+      sets = c("SM-Outfall", "OS-Marine", "NS-Marine","R-Estuary-2", "R-Estuary-1"),
       keep.order = TRUE,
       mainbar.y.label = "No. of overlaping OTU",
       order.by = "freq",
-      boxplot.summary = c("Abundance"),
+     # boxplot.summary = c("Abundance"),
       empty.intersections = "on",
       queries = list(list(query = intersects, 
                           params = list("R-Estuary-1", "R-Estuary-2", "NS-Marine", "OS-Marine", "SM-Outfall"), 
-                          color = "yellow"),
-                     list(query = intersects, 
-                          params = list("R-Estuary-1", "R-Estuary-2"), 
-                          color = "red"),
-                     list(query = intersects, 
-                          params = list("OS-Marine", "SM-Outfall"), 
-                          color = "blue")))
+                          color = "red")))
 
-upset(otu_overlaps_merged.mic, number.angles = 30,
-      sets = as.vector(metadata.mic$sets.mic),
+upset(otu_overlaps_merged.mic, number.angles = 30, nintersects = 20,
+      sets = rev(as.vector(metadata.mic$sets.mic)),
       keep.order = TRUE,
       mainbar.y.label = "No. of overlaping OTU",
       order.by = "freq",
-      boxplot.summary = c("Abundance"),
+    #  boxplot.summary = c("Abundance"),
       empty.intersections = "on",
       queries = list(list(query = intersects, 
                           params = list("R-Estuary-1", "R-Estuary-2", "NS-Marine", "OS-Marine", "SM-Outfall"), 
-                          color = "yellow"),
-                     list(query = intersects, 
-                          params = list("R-Estuary-1", "R-Estuary-2"), 
-                          color = "red"),
-                     list(query = intersects, 
-                          params = list("OS-Marine", "SM-Outfall"), 
-                          color = "blue")))
+                          color = "red")))
 
-upset(otu_overlaps_merged2, number.angles = 30,
+upset(otu_overlaps_merged2, number.angles = 30, nintersects = 30,
       sets = as.vector(metadata2$sets),
       keep.order = TRUE, 
       mainbar.y.label = "No. of overlaping OTU",
       order.by = "freq",
-      boxplot.summary = c("Abundance.s", "Abundance.a"),
+      #boxplot.summary = c("Abundance.s", "Abundance.a"),
       set.metadata = list(data = metadata2, plots = list(list(type = "matrix_rows", 
                                                              column = "Season", colors = c(summer = "red", spring = "yellow", winter ="blue", autumn="brown"), 
                                                              alpha = 0.5))))
@@ -286,21 +335,22 @@ BAC_pruned.ra.long.shared.agg <- aggregate(Abundance~Location+Season+Depth+Class
 BAC_pruned.ra.long.shared.agg$Abundance <- BAC_pruned.ra.long.shared.agg$Abundance*100
 
 #remove beloew 0.5% ra
-BAC_pruned.ra.long.shared.agg <- BAC_pruned.ra.long.shared.agg[BAC_pruned.ra.long.shared.agg$Abundance>0.5,]
+BAC_pruned.ra.long.shared.agg <- BAC_pruned.ra.long.shared.agg[BAC_pruned.ra.long.shared.agg$Abundance>3,]
 
 colourCount = length(unique(BAC_pruned.ra.long.shared.agg$Class))
-getPalette = colorRampPalette(brewer.pal(11, "Set2"))
+getPalette = colorRampPalette(brewer.pal(11, "Set1"))
 
 #plot
-BAC_pruned.ra.long.shared.agg$Location <- factor(BAC_pruned.ra.long.shared.agg$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+BAC_pruned.ra.long.shared.agg$Location <- factor(BAC_pruned.ra.long.shared.agg$Location, levels = c("SM-Outfall", "OS-Marine", "NS-Marine","R-Estuary-2", "R-Estuary-1"))
+BAC_pruned.ra.long.shared.agg$Season<- factor(BAC_pruned.ra.long.shared.agg$Season, levels = c('winter','spring','summer','autumn'))
 
-BAC_shared.otu.plot <- ggplot(BAC_pruned.ra.long.shared.agg, aes(x = Location, y = Abundance, fill = Class)) + 
-  facet_grid(Depth~Season, space= "fixed") +
+BAC_shared.otu.plot <- ggplot(BAC_pruned.ra.long.shared.agg, aes(x = Abundance, y = Location, fill = Class)) + 
+  facet_grid(Season~Depth, space= "fixed") +
   geom_col()+
   theme(legend.position = "bottom")+ 
   guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
-  ylab("Relative Abundance of shared OTU") +
-  scale_fill_manual(values=getPalette(colourCount))+
+  ylab("Relative Abundance of shared ASVs") +
+  scale_fill_manual(values=phyla.col)+
   theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
 BAC_shared.otu.plot
 
@@ -314,19 +364,18 @@ Mic_pruned.ra.long.shared.agg$Abundance <- Mic_pruned.ra.long.shared.agg$Abundan
 #remove beloew 0.5% ra
 #Mic_pruned.ra.long.shared.agg <- Mic_pruned.ra.long.shared.agg[Mic_pruned.ra.long.shared.agg$Abundance>0.5,]
 
-colourCount = length(unique(Mic_pruned.ra.long.shared.agg$Family))
-getPalette = colorRampPalette(brewer.pal(11, "Set2"))
-
 #plot
-Mic_pruned.ra.long.shared.agg$Location <- factor(Mic_pruned.ra.long.shared.agg$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+Mic_pruned.ra.long.shared.agg$Location <- factor(Mic_pruned.ra.long.shared.agg$Location, levels = c("SM-Outfall", "OS-Marine", "NS-Marine","R-Estuary-2", "R-Estuary-1"))
+Mic_pruned.ra.long.shared.agg$Season<- factor(Mic_pruned.ra.long.shared.agg$Season, levels = c('winter','spring','summer','autumn'))
 
-Mic_shared.otu.plot <- ggplot(Mic_pruned.ra.long.shared.agg, aes(x = Location, y = Abundance, fill = Family)) + 
-  facet_grid(Depth~Season, space= "fixed") +
+
+Mic_shared.otu.plot <- ggplot(Mic_pruned.ra.long.shared.agg, aes(x = Abundance, y = Location, fill = Family)) + 
+  facet_grid(Season~Depth, space= "fixed") +
   geom_col()+
   theme(legend.position = "bottom")+ 
   guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
   ylab("Relative Abundance of shared OTU") +
-  scale_fill_manual(values=getPalette(colourCount))+
+  scale_fill_manual(values=indicators.col)+
   theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
 Mic_shared.otu.plot
 
@@ -340,15 +389,16 @@ BAC_pruned.ra.long.shared.agg2$Abundance <- BAC_pruned.ra.long.shared.agg2$Abund
 
 
 #plot 
-BAC_pruned.ra.long.shared.agg2$Location <- factor(BAC_pruned.ra.long.shared.agg2$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
+BAC_pruned.ra.long.shared.agg2$Location <- factor(BAC_pruned.ra.long.shared.agg2$Location, levels = c("SM-Outfall", "OS-Marine", "NS-Marine","R-Estuary-2", "R-Estuary-1"))
+BAC_pruned.ra.long.shared.agg2$Season<- factor(BAC_pruned.ra.long.shared.agg2$Season, levels = c('winter','spring','summer','autumn'))
 
-BAC_shared.otu.plot2 <- ggplot(BAC_pruned.ra.long.shared.agg2, aes(x = Location, y = Abundance, fill = Class)) + 
-  facet_grid(Depth~Season, space= "fixed") +
+BAC_shared.otu.plot2 <- ggplot(BAC_pruned.ra.long.shared.agg2, aes(x = Abundance, y = Location, fill = Class)) + 
+  facet_grid(Season~Depth, space= "fixed") +
   geom_col()+
   theme(legend.position = "bottom")+ 
   guides(fill = guide_legend(reverse = FALSE, keywidth = 1, keyheight = 1)) +
   ylab("Relative Abundance of shared OTU") +
-  scale_fill_manual(values=getPalette(colourCount))+
+  scale_fill_manual(values=phyla.col)+
   theme(legend.position = "top", axis.text.x = element_text(angle = 70, hjust = 1))
 BAC_shared.otu.plot2
 
@@ -401,7 +451,7 @@ colnames(otu_overlaps_merged2.mic)[12] <- "OSMarine"
 colnames(otu_overlaps_merged2.mic)[13] <- "SMOutfall"
 
 
-Mic_pruned.ra.long.shared.Selected <- filter(otu_overlaps_merged2.mic, REstuary1 == 0 & REstuary2 == 0 & NSMarine == 0 & OSMarine == 1 & SMOutfall == 1)
+Mic_pruned.ra.long.shared.Selected <- filter(otu_overlaps_merged2.mic, REstuary1 == 1 & REstuary2 == 0 & NSMarine == 0 & OSMarine == 0 & SMOutfall == 1)
 
 #aggregate by taxonomy
 Mic_pruned.ra.long.shared.Selected.agg <- aggregate(Abundance~Location+Season+Depth+Class+Family, Mic_pruned.ra.long.shared.Selected, FUN= sum)
