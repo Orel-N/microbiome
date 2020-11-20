@@ -30,19 +30,12 @@ str(meta)
 all.data <- filter(meta, Dataset == "2020")
 all.data$Season <- factor(all.data$Season, levels = c("winter", "spring", "summer", "autumn"))
 all.data$Location <- factor(all.data$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
-all.data$Depth <- factor(all.data$Depth, levels = c("surface", "bottom"))
+all.data$Depth <- factor(all.data$Depth, levels = c("bottom", "surface"))
 str(all.data)
 
 #Edit colour pallete
-location.col <- c("R-Estuary-1" = "#D55E00", 
-                  "R-Estuary-2" = "#E69F00", 
-                  "NS-Marine" = "#F0E442", 
-                  "OS-Marine" = "#56B4E9",
-                  "SM-Outfall" = "#009E73")
-season.col <- c("winter" = "#56B4E9", 
-                "spring" = "#F0E442", 
-                "summer" = "#D55E00", 
-                "autumn" = "#E69F00")
+location.col <- readRDS("./data/location_col.RDS")
+season.col <- readRDS("./data/season_col.RDS")
 
 
 #Graph A: Temperature and dissolved oxygen
@@ -53,7 +46,8 @@ all.data.a <- ggplot(data = all.data) +
                      sec.axis = sec_axis(~./4, name = expression (paste("DO [mg ", L^-1, "]")))) +
   scale_fill_manual(values=location.col)  +
   theme_bw() +
-  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,1,0,0), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), axis.text.x = element_blank(), axis.title.x = element_blank()) +
+  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0.5,0,0), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), 
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
   facet_wrap(vars(Depth)) +
   labs(shape = NULL, fill = NULL)
 all.data.a 
@@ -65,7 +59,8 @@ all.data.b <- ggplot(data = all.data) +
   scale_colour_manual(values=location.col)   +
   theme_bw() +
   facet_wrap(vars(Depth)) +
-  theme(legend.position = "top", plot.margin = unit(c(0,0,0,1), "lines"), axis.text.x = element_blank(), axis.title.x = element_blank()) +
+  theme(legend.position = "top", plot.margin = unit(c(0,0,0,0.5), "lines"), 
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
   labs(shape = NULL)
 all.data.b 
 
@@ -79,7 +74,8 @@ all.data.c <- ggplot(data = all.data) +
   scale_fill_manual(values=location.col) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
-  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,1,0,0), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), axis.text.x = element_blank(), axis.title.x = element_blank()) +
+  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0.5,0,0), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), 
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
   labs(shape = NULL, fill = NULL)
 all.data.c 
 
@@ -90,7 +86,8 @@ all.data.d <- ggplot(data = all.data) +
   scale_fill_manual(values=location.col) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
-  theme(legend.position = "top", plot.margin = unit(c(0,0,0,1), "lines"), axis.text.x = element_blank(), axis.title.x = element_blank()) +
+  theme(legend.position = "top", plot.margin = unit(c(0,0,0,0.5), "lines"), 
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
   labs(shape = NULL, fill = NULL)
 all.data.d 
 
@@ -104,7 +101,8 @@ all.data.e <- ggplot(data = all.data) +
   scale_fill_manual(values=location.col) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
-  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,1,0,0), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), axis.text.x = element_blank(), axis.title.x = element_blank()) +
+  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0.5,0,0), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), 
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
   labs(shape = NULL, fill = NULL)
 all.data.e
 
@@ -118,7 +116,8 @@ all.data.f <- ggplot(data = all.data) +
   scale_fill_manual(values=location.col) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
-  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0,0,1), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), axis.text.x = element_blank(), axis.title.x = element_blank()) +
+  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0,0,0.5), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), 
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
   labs(shape = NULL, fill = NULL)
 all.data.f
 
@@ -131,7 +130,8 @@ all.data.g <- ggplot(data = all.data, aes(fill=Location)) +
   scale_fill_manual(values=location.col)  +
   theme_bw() +
   facet_wrap(vars(Depth)) +
-  theme(legend.position = "top", plot.margin = unit(c(0,1,0,0), "lines"), axis.text.x = element_text(angle = 70, hjust = 1)) +
+  theme(legend.position = "top", plot.margin = unit(c(0,0.5,0,0), "lines"), 
+        axis.text.x = element_text(angle = 50, hjust = 1), axis.text.y = element_text(angle = 50, hjust = 1), axis.title = element_text(size=8)) +
   labs(shape = NULL, fill = NULL)
 all.data.g
 
@@ -143,7 +143,8 @@ all.data.h <- ggplot(data = all.data, aes(fill=Location)) +
   scale_fill_manual(values=location.col)  +
   theme_bw() +
   facet_wrap(vars(Depth)) +
-  theme(legend.position = "right", plot.margin = unit(c(0,0,0,1), "lines"), axis.text.x = element_text(angle = 70, hjust = 1)) +
+  theme(legend.position = "right", plot.margin = unit(c(0,0,0,0.5), "lines"), 
+        axis.text.x = element_text(angle = 50, hjust = 1), axis.title = element_text(size=8)) +
   labs(shape = NULL, fill = NULL)
 all.data.h
 

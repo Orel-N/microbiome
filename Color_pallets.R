@@ -58,3 +58,25 @@ indicators.col <- c("Aeromonadaceae"="#AA4488",
                     "Other taxa"= "#114477")
 
 saveRDS(indicators.col, "./data/indicators_col.RDS")
+
+
+library(RColorBrewer)
+display.brewer.all()
+display.brewer.pal(n=8, "Set2")
+brewer.pal(n=8, "Set2")
+
+#Edit colour pallete
+location.col <- c("R-Estuary-1" = "#FC8D62", 
+                  "R-Estuary-2" = "#FFD92F", 
+                  "NS-Marine" = "#E5C494", 
+                  "OS-Marine" = "#8DA0CB",
+                  "SM-Outfall" = "#66C2A5")
+
+saveRDS(location.col, "./data/location_col.RDS")
+
+season.col <- c("winter" = "#377EB8", 
+                "spring" = "#FFFF33", 
+                "summer" = "#E41A1C", 
+                "autumn" = "#A65628")
+
+saveRDS(season.col, "./data/season_col.RDS")

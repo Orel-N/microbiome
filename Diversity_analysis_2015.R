@@ -208,11 +208,17 @@ ps_Mic_Ind_ra.melt.agg.genus$Abundance <- ps_Mic_Ind_ra.melt.agg.genus$Abundance
 ps_Mic_Ind_ra.melt.agg.genus<- ps_Mic_Ind_ra.melt.agg.genus[ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum>0,]
 
 ps_Mic_Ind_ra.melt.agg.genus$Season_f = factor(ps_Mic_Ind_ra.melt.agg.genus$Season, levels=c('winter','spring','summer','autumn'))
-colourCount = length(unique(ps_Mic_Ind_ra.melt.agg.genus$Family))
-getPalette = colorRampPalette(brewer.pal(8, "Set2"))
+
+threshold<- 1
+ps_Mic_Ind_ra.melt.agg.genus$Family <- as.character(ps_Mic_Ind_ra.melt.agg.genus$Family)
+taxa_classes <- unique(ps_Mic_Ind_ra.melt.agg.genus$Family[!ps_Mic_Ind_ra.melt.agg.genus$Abundance<threshold])
+ps_Mic_Ind_ra.melt.agg.genus$Family[ps_Mic_Ind_ra.melt.agg.genus$Abundance<threshold] <- "Other taxa"
+ps_Mic_Ind_ra.melt.agg.genus$Family <- factor(ps_Mic_Ind_ra.melt.agg.genus$Family,
+                                              levels=c(taxa_classes,"Other taxa"))
+
 ggplot(ps_Mic_Ind_ra.melt.agg.genus, aes(x = Abundance, y = Location, fill = Family))+
   facet_grid(Season_f~Depth, space= "fixed")+
-  scale_fill_manual(values=getPalette(colourCount))+
+  scale_fill_manual(values=indicators.col)+
   geom_bar(stat = "identity", position="stack")+
   scale_y_discrete(limits=c('NS-Marine','R-Estuary-1', 'R-Mouth'))
 ggsave("./output_graphs/MicrobialInidicators.pdf", last_plot())
