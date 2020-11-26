@@ -16,7 +16,7 @@ phyla.col <- c("Acidimicrobiia"="#AA4488",
                "Negativicutes"= "#34ABAA", 
                "Paracubacteria"= "#11BBCC", 
                #"NB1-j_uncl" = "#774411",
-               #"Nitrososphaeria" = "#E69F00",
+               "Rhodothermia" = "#E69F00",
                "Parcubacteria"= "#88CCAA", 
                "Planctomycetes"= "#777711",
                #"OM190"= "#009E73",
@@ -59,13 +59,11 @@ indicators.col <- c("Aeromonadaceae"="#AA4488",
 
 saveRDS(indicators.col, "./data/indicators_col.RDS")
 
-
 library(RColorBrewer)
 display.brewer.all()
 display.brewer.pal(n=8, "Set2")
 brewer.pal(n=8, "Set2")
 
-#Edit colour pallete
 location.col <- c("R-Estuary-1" = "#FC8D62", 
                   "R-Estuary-2" = "#FFD92F", 
                   "NS-Marine" = "#E5C494", 

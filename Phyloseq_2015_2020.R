@@ -18,6 +18,10 @@ library(vegan)
 
 theme_set(theme_bw())
 
+#Edit colour pallete
+location.col <- readRDS("./data/location_col.RDS")
+season.col <- readRDS("./data/season_col.RDS")
+
 ##################################
 #Import dada2 output into phyloseq
 ##################################
@@ -126,6 +130,8 @@ alpha_df_15.20$Location <- factor(alpha_df_15.20$Location, levels = c("R-Mouth",
 alpha_df_15.20$Depth <- factor(alpha_df_15.20$Depth, levels = c("bottom", "surface"))
 alpha_df_15.20$Pollution <- ifelse(alpha_df_15.20$Location == "OS-Marine", "Unpolluted", 
                                    ifelse(alpha_df_15.20$Location == "NS-Marine", "Unpolluted", "Polluted"))
+
+##Plot alphadiversity - Locations
 #Plot Chao1 - separate for depth
 Chao.p <- ggplot(data = alpha_df_15.20) +
   geom_boxplot(mapping=aes(x=Location, y=Chao1, color=Location)) +
@@ -154,6 +160,7 @@ InvSimpson.p
 ggsave("./output_graphs/InvSimpsin_15_20.pdf")
 
 ggarrange(Chao.p, Shannon.p, InvSimpson.p, nrow=1, common.legend = TRUE)
+
 
 ###Statistic
 
@@ -242,6 +249,40 @@ ggsave("./output_graphs/InvSimpsin_20.pdf")
 
 alpha.20 <- ggarrange(Chao.20.p, Shannon.20.p, InvSimpson.20.p, nrow=1, common.legend = TRUE)
 alpha.20
+
+
+##Plot alphadiversity - Seasons
+#Plot Chao1 - separate for depth
+Chao.20.p <- ggplot(data = alpha_df_20) +
+  geom_boxplot(mapping=aes(x=Season, y=Chao1, color=Season)) +
+  geom_point(mapping=aes(x=Season, y=Chao1, color=Season, shape = Location), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  scale_colour_manual(values=season.col) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+Chao.20.p
+ggsave("./output_graphs/Chao_15_20.pdf")
+
+#Plot Shannon d.i. - separate for depth
+Shannon.20.p <- ggplot(data = alpha_df_20) +
+  geom_boxplot(mapping=aes(x=Season, y=Shannon, color=Season)) +
+  geom_point(mapping=aes(x=Season, y=Shannon, color=Season, shape = Location), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  scale_colour_manual(values=season.col) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+Shannon.20.p
+ggsave("./output_graphs/Shannon_15_20.pdf")
+
+#Plot InvSimpson - separate for depth
+InvSimpson.20.p <- ggplot(data = alpha_df_20) +
+  geom_boxplot(mapping=aes(x=Season, y=InvSimpson, color=Season)) +
+  geom_point(mapping=aes(x=Season, y=InvSimpson, color=Season, shape = Location), size = 3, stat = 'identity') +
+  facet_wrap(~Depth) +
+  scale_colour_manual(values=season.col) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+InvSimpson.20.p
+ggsave("./output_graphs/InvSimpsin_15_20.pdf")
+
+ggarrange(Chao.20.p, Shannon.20.p, InvSimpson.20.p, nrow=1, common.legend = TRUE)
 
 ###Statistic 2020
 #Subsetting data 2020 - bottom vs.surface

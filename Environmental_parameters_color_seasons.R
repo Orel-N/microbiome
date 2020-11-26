@@ -41,13 +41,13 @@ season.col <- readRDS("./data/season_col.RDS")
 #Graph A: Temperature and dissolved oxygen
 all.data.a <- ggplot(data = all.data) +
   geom_bar(mapping = aes(x = Season, y = Temperature_sea, fill = Location), position = position_dodge(), stat = 'identity', width = .5, show.legend = FALSE) +
-  geom_point(mapping = aes(x = Season, y = Dissolved_Oxygen*4, shape = "Dissolved oxygen", group = Location), position = position_dodge(width=.5), stat = 'identity') +
+  geom_point(mapping = aes(x = Season, y = Dissolved_Oxygen*4, shape = "Dissolved oxygen", group = Location), position = position_dodge(width=.5), stat = 'identity', show.legend = FALSE) +
   scale_y_continuous(name = "Temperature [°C]", limits = c(0,35), 
                      sec.axis = sec_axis(~./4, name = expression (paste("DO [mg ", L^-1, "]")))) +
   scale_fill_manual(values=location.col)  +
   theme_bw() +
-  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0.5,0,0), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), 
-        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
+  theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0.5,0,0), "lines"),legend.background = element_rect(colour="black", linetype = "solid"), 
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=9)) +
   facet_wrap(vars(Depth)) +
   labs(shape = NULL, fill = NULL)
 all.data.a 
@@ -60,7 +60,7 @@ all.data.b <- ggplot(data = all.data) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
   theme(legend.position = "top", plot.margin = unit(c(0,0,0,0.5), "lines"), 
-        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=9)) +
   labs(shape = NULL)
 all.data.b 
 
@@ -68,14 +68,14 @@ all.data.b
 #Graph C: DOC (y) / C/N (y2)
 all.data.c <- ggplot(data = all.data) +
   geom_bar(mapping = aes(x = Season, y = DOC, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
-  geom_point(mapping = aes(x = Season, y = C_N*9, shape = "C/N", group = Location), position = position_dodge(width=.5), stat = 'identity') +
+  geom_point(mapping = aes(x = Season, y = C_N*9, shape = "C:N", group = Location), position = position_dodge(width=.5), stat = 'identity', show.legend = FALSE) +
   scale_y_continuous(name = expression (paste("DOC [µmol ", L^-1, "]")), limits = c(0,200),
-                     sec.axis = sec_axis(~./9, name = expression (paste("C ", N^-1)))) +
+                     sec.axis = sec_axis(~./9, name = expression (paste("C:N")))) +
   scale_fill_manual(values=location.col) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
   theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0.5,0,0), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), 
-        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=9)) +
   labs(shape = NULL, fill = NULL)
 all.data.c 
 
@@ -87,7 +87,7 @@ all.data.d <- ggplot(data = all.data) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
   theme(legend.position = "top", plot.margin = unit(c(0,0,0,0.5), "lines"), 
-        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=9)) +
   labs(shape = NULL, fill = NULL)
 all.data.d 
 
@@ -95,14 +95,14 @@ all.data.d
 #Graph E: NH4 (y1) / NO2+NO3 (y2)
 all.data.e <- ggplot(data = all.data) +
   geom_bar(mapping = aes(x = Season, y = NH4, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
-  geom_point(aes(x = Season, y = NO2+NO3, shape = "NO2+NO3", group = Location), position = position_dodge(width=.5), stat = 'identity') +
-  scale_y_continuous(name = expression (paste("NH4 [µmol ", L^-1, "]")), limits = c(0,10),
-                     sec.axis = sec_axis(~./1, name = expression (paste("NO2+NO3 [µmol ", L^-1, "]")))) +
+  geom_point(aes(x = Season, y = NO2+NO3, shape = "NO2+NO3", group = Location), position = position_dodge(width=.5), stat = 'identity', show.legend = FALSE) +
+  scale_y_continuous(name = expression (paste("NH " [4]^"  +", " [µmol ", L^-1, "]")), limits = c(0,10),
+                     sec.axis = sec_axis(~./1, name = expression (paste("NO " [2]^"  -", " + NO " [3]^"  -", " [µmol ", L^-1, "]")))) +
   scale_fill_manual(values=location.col) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
   theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0.5,0,0), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), 
-        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=9)) +
   labs(shape = NULL, fill = NULL)
 all.data.e
 
@@ -110,17 +110,26 @@ all.data.e
 #Graph F: PO4 (y1) / SiO3 (y2)
 all.data.f <- ggplot(data = all.data) +
   geom_bar(mapping = aes(x = Season, y = PO4, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
-  geom_point(aes(x = Season, y = SiO3/5, shape = "SiO3", group = Location), position = position_dodge(width=.5), stat = 'identity') +
-  scale_y_continuous(name = expression (paste("PO4 [µmol ", L^-1, "]")), limits = c(0,3),
-                     sec.axis = sec_axis(~.*5, name = expression (paste("SiO3 [µmol ", L^-1, "]")))) +
+ # geom_point(aes(x = Season, y = SiO3/5, shape = "SiO3", group = Location), position = position_dodge(width=.5), stat = 'identity') +
+  scale_y_continuous(name = expression (paste("PO"[4 ]^"  3+", " [µmol ", L^-1, "]")), limits = c(0,3)) +
   scale_fill_manual(values=location.col) +
   theme_bw() +
   facet_wrap(vars(Depth)) +
   theme(legend.position = c(0.9, 0.97), plot.margin = unit(c(0,0,0,0.5), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), 
-        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=8)) +
+        axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=9)) +
   labs(shape = NULL, fill = NULL)
 all.data.f
 
+all.data.f2 <- ggplot(data = all.data) +
+  geom_bar(mapping = aes(x = Season, y = SiO3, fill = Location), stat = 'identity', width = .5, position = position_dodge()) +
+  scale_y_continuous(name = expression (paste("SiO"[3 ], " [µmol ", L^-1, "]")), limits = c(0,15)) +
+  scale_fill_manual(values=location.col) +
+  theme_bw() +
+  facet_wrap(vars(Depth)) +
+  theme(plot.margin = unit(c(0,0,0,0.5), "lines"), legend.background = element_rect(colour="black", linetype = "solid"), 
+        axis.text.x = element_text(size=8), axis.title.x = element_text(size=8), axis.title.y = element_text(size=8)) +
+  labs(shape = NULL, fill = NULL)
+all.data.f2
 
 #Graph G: Bacterial abundance
 all.data.g <- ggplot(data = all.data, aes(fill=Location)) +
@@ -149,7 +158,7 @@ all.data.h <- ggplot(data = all.data, aes(fill=Location)) +
 all.data.h
 
 ggarrange(all.data.a, all.data.b, all.data.c, all.data.d, all.data.e, all.data.f, all.data.g, all.data.h,
-          labels = c("A", "B", "C", "D", "E", "F", "G", "H"), nrow = 4, ncol = 2, align = c("v"))
+          labels = c("B", "C", "D", "E", "F", "G", "H", "I"), font.label = list(size=9), nrow = 4, ncol = 2, align = c("v"))
 
 ############################################
 #PCA on environmental matrix
@@ -163,7 +172,7 @@ scale_par <- function(x) scale(x, center = FALSE, scale = TRUE)[,1]
 
 #import env.par. data
 metadata.raw <- all.data
-env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen", "DOC", "TDN", "C_N", "NO2", "NO3", "PO4", "SiO3", "NH4", "BA_FC", "Coliform_bacteria")
+env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen", "DOC", "TDN", "C_N", "NO2", "NO3", "PO4", "SiO3", "NH4", "BA_FC", "BCP_C", "Coliform_bacteria")
 
 #scale all parameters
 metadata.scaled.SRF <- metadata.raw %>% 
@@ -175,8 +184,11 @@ envpar_corr <- metadata.scaled.SRF %>% select(env.par)
 locations <- metadata.scaled.SRF [,7]
 rownames(envpar_corr) <- metadata.scaled.SRF$SampleID
 
+#Remove NA in env.par
+envpar_corr_2 <- filter(envpar_corr, !is.na(BCP_C))
+
 #Calculate PCA
-PCA <- rda (envpar_corr, scale = TRUE) 
+PCA <- rda (envpar_corr_2, scale = TRUE) 
 
 #Analyzing the results
 head (summary (PCA))
@@ -198,6 +210,7 @@ biplot (PCA, display = c("sites", "species"), scaling = "sites")
 
 source ('https://raw.githubusercontent.com/zdealveindy/anadat-r/master/scripts/NumEcolR2/cleanplot.pca.R')
 cleanplot.pca (PCA, scaling = 1)
+
 
 #Problem: cannot install ggbiplot
 

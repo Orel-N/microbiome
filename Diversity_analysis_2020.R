@@ -28,61 +28,9 @@ phy_obj3_20 <- subset_samples(phy_obj3, Dataset == "2020")
 phy_obj3_20 <- prune_taxa(taxa_sums(phy_obj3_20)>0, phy_obj3_20)
 phy_obj3_20
 
-phyla.col <- c("Acidimicrobiia"="#AA4488",
-               "Actinobacteria" = "#DDAA77",
-               "Alphaproteobacteria"= "#771155",
-               "Bacilli"="#117744", 
-               "Bacteroidia"= "#77AADD",
-               "Campylobacteria" = "#FF2222",
-               #"Chlamydiae"= "#DD1232" ,
-               #"Clostridia"= "#77CCCC", 
-               "Cyanobacteriia"= "#AAAA44",
-               "Clostridia" ="#CC1234", 
-               #"Desulfobulbia"= "#117744", 
-               "Gammaproteobacteria"="#117777",
-               "Gracilibacteria"= "#44AA77",
-               "Kiritimatiellae" = "#DD7788",
-               "Negativicutes"= "#34ABAA", 
-               "Paracubacteria"= "#11BBCC", 
-               #"NB1-j_uncl" = "#774411",
-               #"Nitrososphaeria" = "#E69F00",
-               "Parcubacteria"= "#88CCAA", 
-               "Planctomycetes"= "#777711",
-               #"OM190"= "#009E73",
-               #"SAR324_clade(Marine_group_B)_uncl"="#CC99BB",
-               #"Spirochaetia" = "#AACC45",
-               #"Thermoplasmata" = "#0072B2",
-               "Verrucomicrobiae" = "#AA7744",
-               #"Vicinamibacteria" ="#DDDD77",
-               "Other taxa"= "#114477")
-
-indicators.col <- c("Aeromonadaceae"="#AA4488",
-               "Arcobacteraceae" = "#771155",
-               "Bacteroidaceae"= "#DDAA77",
-               "Bdellovibrionaceae"="#117744", 
-               "Carnobacteriaceae"= "#77AADD",
-               "Campylobacteraceae" = "#FF2222",
-               "Chlamydiaceae"= "#DD1232" ,
-               "Enterococcaceae"= "#77CCCC", 
-               "Clostridiaceae" ="#CC1234", 
-               "Desulfovibrionaceae"= "#117744", 
-               "Enterobacteriaceae"="#117777",
-               "Flavobacteriaceae"= "#44AA77",
-               "Helicobacteraceae" = "#DD7788",
-               "Lachnospiraceae"= "#34ABAA", 
-               "Legionellaceae"= "#11BBCC", 
-               "Leptospiraceae" = "#774411",
-               "Listeriaceae" = "#E69F00",
-               "Moraxellaceae"= "#88CCAA", 
-               "Mycobacteriaceae"= "#777711",
-               "Porphyromonadaceae"= "#009E73",
-               "Pseudomonadaceae"="#CC99BB",
-               "Ruminococcaceae" = "#AACC45",
-               "Staphylococcaceae" = "#0072B2",
-               "Streptococcaceae" = "#AA7744",
-               "Vibrionaceae" ="#DDDD77",
-               "Yersiniaceae"= "#AAAA44",
-               "Other taxa"= "#114477")
+#Import collor pallets
+phyla.col <- readRDS("./data/phyla_col.RDS")
+indicators.col <- readRDS("./data/indicators_col.RDS")
 
 ##############################
 #Preparation of data for taxonomic comparison
@@ -115,11 +63,20 @@ phy_obj3_melt.agg.family <- as.data.frame(as.list(aggregate(Abundance~Location+D
 phy_obj3_melt.agg.family$Abundance <- phy_obj3_melt.agg.family$Abundance.sum*100
 phy_obj3_melt.agg.family<- phy_obj3_melt.agg.family[phy_obj3_melt.agg.family$Abundance.sum>0,]
 
+#Calculate abundance for each Phylum
+phy_obj3_melt.agg.phylum <- aggregate (Abundance~Location+Season+Depth+Phylum, phy_obj3ra.melt, FUN="sum")
+phy_obj3_melt.agg.phylum$Abundance <- phy_obj3_melt.agg.phylum$Abundance*100
+phy_obj3_melt.agg.phylum<- phy_obj3_melt.agg.phylum[phy_obj3_melt.agg.phylum$Abundance>0,]
+write.table(phy_obj3_melt.agg.phylum, "./tables/phy_obj3ra.phylum.txt")
+
+phy_obj3_melt.agg.phylum_average <- aggregate (Abundance~Phylum, phy_obj3_melt.agg.phylum, FUN="mean")
 
 #Calculate abundance for each Class
 phy_obj3_melt.agg.class <- aggregate (Abundance~Location+Season+Date+Depth+Class, phy_obj3ra.melt, FUN="sum")
 phy_obj3_melt.agg.class$Abundance <- phy_obj3_melt.agg.class$Abundance*100
 phy_obj3_melt.agg.class<- phy_obj3_melt.agg.class[phy_obj3_melt.agg.class$Abundance>0,]
+
+phy_obj3_melt.agg.class$Season_f = factor(phy_obj3_melt.agg.class$Season, levels=c( 'winter','spring','summer','autumn'))
 
 #remove below 3% ra
 threshold<- 3
@@ -128,18 +85,14 @@ taxa_classes <- unique(phy_obj3_melt.agg.class$Class[!phy_obj3_melt.agg.class$Ab
 phy_obj3_melt.agg.class$Class[phy_obj3_melt.agg.class$Abundance<threshold] <- "Other taxa"
 phy_obj3_melt.agg.class$Class <- factor(phy_obj3_melt.agg.class$Class,
                                         levels=c(taxa_classes,"Other taxa"))
-phy_obj3_melt.agg.class.table <- aggregate (Abundance~Location+Season+Date+Depth+Class, phy_obj3_melt.agg.class, FUN="sum")
-write.csv(phy_obj3_melt.agg.class.table, "./tables/Class.csv")
 
 
 #Plot Class(Date)
-colourCount = length(unique(phy_obj3_melt.agg.class$Class))
-getPalette = colorRampPalette(brewer.pal(8, "Set1"))
-phy_obj3_melt.agg.class$Season = factor(phy_obj3_melt.agg.class$Season, levels=c( 'winter','spring','summer','autumn'))
 ggplot(phy_obj3_melt.agg.class, aes(x = Abundance, y = Location, fill = Class))+
-  facet_grid(Season~Depth, space= "fixed")+
-  geom_bar(stat = "identity", position="fill")+
+  facet_grid(Season_f~Depth, space= "fixed")+
+  theme_bw()+
   scale_fill_manual(values=phyla.col)+
+  geom_bar(stat = "identity",position="fill")+
   scale_y_discrete(limits=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1'))
 
 
@@ -408,11 +361,14 @@ otu_table(ps.vst)<- otu_table(otu.vst, taxa_are_rows = TRUE)
 
 # Do the ordination with variance stabilized data
 phy_obj3.vst.nmds <- ordinate(ps.vst, "NMDS", "euclidean")
-plot_ordination(ps.vst, phy_obj3.vst.nmds, shape = "Location", color = "Season")+facet_wrap(~Depth)+geom_point(size=4)
+plot_ordination(ps.vst, phy_obj3.vst.nmds, shape = "Location", color = "Season")+facet_wrap(~Depth)+geom_point(size=4)+scale_colour_manual(values=season.col)
+
 ggsave("./output_graphs/nMDS_var.pdf")
 
 phy_obj3.vst.rda <- ordinate(ps.vst, "RDA", "euclidean")
-plot_ordination(ps.vst, phy_obj3.vst.rda, shape = "Location", color = "Season")+facet_wrap(~Depth)+geom_point(size=4)
+plot_ordination(ps.vst, phy_obj3.vst.rda, label = "Location", shape = "Depth", color = "Season") + 
+  theme_bw() + facet_wrap(~Depth) + geom_point(size=3) + scale_color_manual(values=season.col)
+
 ggsave("./output_graphs/RDA_var.pdf")
 plot_ordination(ps.vst, phy_obj3.vst.rda, type="taxa", color="Phylum", title="taxa")
 

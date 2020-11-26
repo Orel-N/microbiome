@@ -16,7 +16,11 @@ library(tidyr);packageVersion("tidyr")
 library(tidyverse);packageVersion("tidyverse")
 library("vegan"); packageVersion("vegan")
 library(RColorBrewer)
+library(phyloseq)
 
+#Edit colour pallete
+location.col <- readRDS("./data/location_col.RDS")
+season.col <- readRDS("./data/season_col.RDS")
 
 ####################################
 #Import data
@@ -40,6 +44,11 @@ Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
 ps.ind.vst <- subset_taxa(phy_obj3, Family %in% c(Mic_Ind$Family))
 ps.ind.vst
 
+#Most abundant taxa
+most_abundant_taxa <- sort(taxa_sums(phy_obj3), TRUE) [1:250]
+ex2 <- prune_taxa(names(most_abundant_taxa), phy_obj3)
+
+
 
 ###############################################################
 #Correlation between env. parameters - BEFORE FORWARD SELECTION
@@ -50,7 +59,7 @@ scale_par <- function(x) scale(x, center = FALSE, scale = TRUE)[,1]
 
 #import env.par. data
 metadata.raw <- all.data
-env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "NO3", "PO4", "SiO3", "NH4")
+env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "PO4", "NH4")
 
 #scale all parameters
 metadata.scaled.SRF <- metadata.raw %>% 
@@ -63,7 +72,7 @@ envpar_corr <- metadata.scaled.SRF %>%
   cor_mat(method = "pearson")
 
 #check the p-values
-envpar_corr.pvalues<- envpar_corr %>% cor_get_pval()
+envpar_corr.pvalues <- envpar_corr %>% cor_get_pval()
 
 #plot
 envpar_corr %>%
@@ -99,7 +108,7 @@ BAC_20.no.na
 #BAC_20.no.na
 
 #extract and scale the env. parameters
-BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "NO3", "PO4", "SiO3", "NH4")]  
+BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "NO3", "PO4", "NH4")]  
 BAC_20.env <- as.data.frame(scale(BAC_20.env,center = FALSE, scale = TRUE))
 
 #extract OTU tables from Phyloseq object
@@ -135,8 +144,8 @@ scale_par <- function(x) scale(x, center = FALSE, scale = TRUE)[,1]
 
 #import env.par. data
 metadata.raw <- all.data
-env.par <- c("Temperature_sea", "DOC", "Dissolved_Oxygen_perc", "NH4")
-###env.par <- c("Temperature_sea","Salinity","DOC", "DIN")
+#env.par <- c("Temperature_sea", "DOC", "Dissolved_Oxygen_perc", "NH4")
+env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "PO4", "NH4")
 
 #scale all parameters
 metadata.scaled.SRF <- metadata.raw %>% 
@@ -186,8 +195,8 @@ BAC_20.no.na
 #BAC_20.no.na
 
 #extract and scale the env. parameters - only forward selected
-BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea", "DOC", "Dissolved_Oxygen_perc", "NH4")]  
-###BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Dissolved_Oxygen_perc","DOC")]  
+#BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea", "DOC", "Dissolved_Oxygen_perc", "NH4")]  
+BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity", "Dissolved_Oxygen_perc", "DOC", "TDN", "NO2", "PO4", "NH4")]  
 
 BAC_20.env <- as.data.frame(scale(BAC_20.env,center = FALSE, scale = TRUE))
 
@@ -216,24 +225,23 @@ BAC_20.rda.sites <- BAC_20.rda.sites %>%
 
 #Make data frame with scores - Species
 BAC_20.rda.species <- data.frame(BAC_20.rda.scores$species)
-BAC_20.rda.species <- BAC_20.rda.species[abs(BAC_20.rda.species$RDA1)>0.25 | abs(BAC_20.rda.species$RDA2)>0.25,]
+BAC_20.rda.species <- BAC_20.rda.species[abs(BAC_20.rda.species$RDA1)>0.35 | abs(BAC_20.rda.species$RDA2)>0.35,]
 BAC_20.rda.species$species_names <- rownames(BAC_20.rda.species)
 TAX <- data.frame(as(tax_table(BAC_20.no.na), "matrix"))
 TAX$species_names <- rownames(TAX)
 BAC_20.rda.species <- BAC_20.rda.species %>%
   left_join(TAX)
 MIC_20.rda.species <- filter(BAC_20.rda.species, Family %in% c(Mic_Ind$Family))
-BAC_20.rda.species <- BAC_20.rda.species[abs(BAC_20.rda.species$RDA1)>0.5 | abs(BAC_20.rda.species$RDA2)>0.5,]
+MIC_20.rda.species <- filter(BAC_20.rda.species, Family %in% c(Mic_Ind$Family))
+BAC_sel_20.rda.species <- filter(BAC_20.rda.species, species_names %in% rownames(otu_table(ex2)))
+#BAC_20.rda.species <- BAC_20.rda.species[abs(BAC_20.rda.species$RDA1)>0.5 | abs(BAC_20.rda.species$RDA2)>0.5,]
+
 
 #Draw biplots
 BAC_20.rda.arrows<- BAC_20.rda.scores$biplot*10
 colnames(BAC_20.rda.arrows)<-c("x","y")
 BAC_20.rda.arrows <- as.data.frame(BAC_20.rda.arrows)
 BAC_20.rda.evals <- 100 * (BAC_20.rda.all$CCA$eig / sum(BAC_20.rda.all$CCA$eig))
-
-#Preparation of colour pallete
-colourCount = length(unique(BAC_20.rda.species$Phylum))
-getPalette = colorRampPalette(brewer.pal(9, "Set1"))
 
 #Plot 
 BAC_20.rda.plot <- ggplot() +
@@ -243,15 +251,15 @@ BAC_20.rda.plot <- ggplot() +
             nudge_y= -0.3,size=3) +
   #geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15, colour = Phylum), # fill=getPalette(colourCount),
    #            size=3) +
-  #geom_text(data = BAC_20.rda.species, aes(x = RDA1*17, y = RDA2*17, label=Family), color="red",
-   #         nudge_y= -0.3, size = 3) +
-  geom_text(data = MIC_20.rda.species, aes(x = RDA1*17, y = RDA2*17, label=Family), color="red", 
-             size = 3) +
- # scale_fill_manual(values=getPalette(colourCount),
-  #                  guide = "none") +
+  geom_text(data = BAC_sel_20.rda.species, aes(x = RDA1*17, y = RDA2*17, label=Family), color="red",
+            nudge_y= -0.3, size = 3) +
+  #geom_text(data = MIC_20.rda.species, aes(x = RDA1*17, y = RDA2*17, label=Family), color="red", 
+   #          size = 3) +
+  scale_colour_manual(values=season.col) +
   labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
        y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
   scale_y_reverse()+ 
+  scale_x_reverse()+ 
   theme(legend.position = "top")+
   geom_segment(data=BAC_20.rda.arrows, aes(x = 0, y = 0, xend = x, yend = y),
                arrow = arrow(length = unit(0.2, "cm")),color="black",alpha=0.5)+
