@@ -41,7 +41,7 @@ all.data$NO2_NO3 <- all.data$NO2+all.data$NO3
 phy_obj3 <- readRDS("./data/ps.vst.20.RDS")
 
 #Import phyloseq (total abundance and relative abundance)
-phy_obj <- readRDS("./phyloseqFiltered.RDS")
+phy_obj <- readRDS("./data/phyloseqFiltered.RDS")
 phy_obj <- subset_samples(phy_obj, Dataset == 2020)
 phy_obj <- prune_taxa(taxa_sums(phy_obj)>0, phy_obj)
 phy_obj.ra = transform_sample_counts(phy_obj, function (otu) {otu/sum(otu)})

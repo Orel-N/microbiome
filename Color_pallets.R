@@ -60,11 +60,6 @@ indicators.col <- c("Aeromonadaceae"="#AA4488",
 
 saveRDS(indicators.col, "./data/indicators_col.RDS")
 
-library(RColorBrewer)
-display.brewer.all()
-display.brewer.pal(n=8, "Set2")
-brewer.pal(n=8, "Set2")
-
 location.col <- c("R-Estuary-1" = "#FC8D62", 
                   "R-Estuary-2" = "#FFD92F", 
                   "NS-Marine" = "#E5C494", 
@@ -80,3 +75,10 @@ season.col <- c("winter" = "#377EB8",
                 "autumn" = "#A65628")
 
 saveRDS(season.col, "./data/season_col.RDS")
+
+#Display colors from pallete
+library(RColorBrewer)
+display.brewer.all()
+display.brewer.pal(n=8, "Set2")
+brewer.pal(n=8, "Set2")
+

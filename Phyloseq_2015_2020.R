@@ -517,6 +517,6 @@ ggplot(prevdf3, aes(TotalAbundance, Prevalence / nsamples(phy_obj3),color=Phylum
 ggsave("./output_graphs/TaxaPrevalenceVsTotalCounts_AfterF.pdf", last_plot())
 
 #Save filtered phyloseq object
-saveRDS(phy_obj3, "./phyloseqFiltered.RDS")
-saveRDS(prevdf3, "./prevdfFiltered.RDS")
-saveRDS(ps0_chl, "./chloroplasts.RDS")
+saveRDS(phy_obj3, "./data/phyloseqFiltered.RDS")
+saveRDS(prevdf3, "./data/prevdfFiltered.RDS")
+saveRDS(ps0_chl, "./data/chloroplasts.RDS")

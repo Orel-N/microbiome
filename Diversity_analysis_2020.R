@@ -17,9 +17,9 @@ library(rstatix)
 library(vegan)
 
 #Import data
-phy_obj3 <- readRDS("./phyloseqFiltered.RDS")
+phy_obj3 <- readRDS("./data/phyloseqFiltered.RDS")
 phy_obj3
-prevdf3 <- readRDS("./prevdfFiltered.RDS")
+prevdf3 <- readRDS("./data/prevdfFiltered.RDS")
 
 #Edit data - subset based on dataset
 phy_obj3_20 <- subset_samples(phy_obj3, Dataset == "2020")

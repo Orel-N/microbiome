@@ -17,8 +17,8 @@ library(rstatix)
 library(vegan)
 
 #Import data
-phy_obj3 <- readRDS("./phyloseqFiltered.RDS")
-prevdf3 <- readRDS("./prevdfFiltered.RDS")
+phy_obj3 <- readRDS("./data/phyloseqFiltered.RDS")
+prevdf3 <- readRDS("./data/prevdfFiltered.RDS")
 
 #Import collor pallets
 phyla.col <- readRDS("./data/phyla_col.RDS")

@@ -13,7 +13,7 @@ library(tidyr)
 
 
 #Load data
-phy_obj3 <- readRDS("./phyloseqFiltered.RDS")
+phy_obj3 <- readRDS("./data/phyloseqFiltered.RDS")
 
 ##Both datasets (2015, 2020)
 phy_obj3_2 <- phy_obj3
