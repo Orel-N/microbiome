@@ -19,7 +19,7 @@ library(RColorBrewer)
 source("./scripts/pres_abs_matrix.R")
 
 #Import data
-BAC_pruned <- readRDS("./phyloseqFiltered.RDS")
+BAC_pruned <- readRDS("./data/phyloseqFiltered.RDS")
 Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
 
 #Import collor pallets
