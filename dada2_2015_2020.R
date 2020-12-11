@@ -205,7 +205,7 @@ write.table(track_15_2, "Overview_15_2.txt" , sep = "\t", quote = F)
 write.table(track_20_2, "Overview_20_2.txt" , sep = "\t", quote = F)
 
 
-#merge the hiseq and miseq into a single sequence table
+#merge the seq table 2015 and 2020 into a single sequence table
 seqtab<- mergeSequenceTables(table1=makeSequenceTable(mergers_15),
                              table2=makeSequenceTable(mergers_20_2))
 
@@ -243,12 +243,15 @@ dim(seqtab.nochim)
 #proportion of chimeras
 sum(seqtab.nochim)/sum(seqtab1)
 
+#Edit list sample.names (now we have different order!!!)
+sample.names.merged <- append(sample.names_15, sample.names_20)
+
 # inspect output: remove singletons and 'junk' sequences
 # read lengths modified for V34 amplicons / based upon output table where majority of reads occurs
 seqtab.nochim2 <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) %in% c(400:430) & colSums(seqtab.nochim) > 1]
 dim(seqtab.nochim2)
 summary(rowSums(seqtab.nochim2)/rowSums(seqtab.nochim))
-rownames(seqtab.nochim2) <- sample.names
+rownames(seqtab.nochim2) <- sample.names.merged
 saveRDS(seqtab.nochim2, file.path("./dada2", "seqtab15_20.rds"))
 
 #Generate overview table - all together
