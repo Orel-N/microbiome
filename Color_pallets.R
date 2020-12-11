@@ -1,3 +1,4 @@
+
 #Define colors
 phyla.col <- c("Acidimicrobiia"="#AA4488",
                "Actinobacteria" = "#DDAA77",
@@ -32,29 +33,29 @@ saveRDS(phyla.col, "./data/phyla_col.RDS")
 indicators.col <- c("Aeromonadaceae"="#AA4488",
                     "Arcobacteraceae" = "#771155",
                     "Bacteroidaceae"= "#DDAA77",
-                    "Bdellovibrionaceae"="#117744", 
+                    "Bdellovibrionaceae"="#AAAA44", 
                     "Carnobacteriaceae"= "#77AADD",
                     "Campylobacteraceae" = "#FF2222",
-                    "Chlamydiaceae"= "#DD1232" ,
-                    "Enterococcaceae"= "#77CCCC", 
+                    "Chlamydiaceae"= "#E5C494" ,
+                    "Enterococcaceae"= "#117777", 
                     "Clostridiaceae" ="#CC1234", 
                     "Desulfovibrionaceae"= "#117744", 
-                    "Enterobacteriaceae"="#117777",
+                    "Enterobacteriaceae"="#77CCCC",
                     "Flavobacteriaceae"= "#44AA77",
-                    "Helicobacteraceae" = "#DD7788",
+                    "Helicobacteraceae" = "#88CCAA",
                     "Lachnospiraceae"= "#34ABAA", 
                     "Legionellaceae"= "#11BBCC", 
                     "Leptospiraceae" = "#774411",
                     "Listeriaceae" = "#E69F00",
-                    "Moraxellaceae"= "#88CCAA", 
+                    "Moraxellaceae"= "#DDDD77", 
                     "Mycobacteriaceae"= "#777711",
                     "Porphyromonadaceae"= "#009E73",
                     "Pseudomonadaceae"="#CC99BB",
                     "Ruminococcaceae" = "#AACC45",
                     "Staphylococcaceae" = "#0072B2",
                     "Streptococcaceae" = "#AA7744",
-                    "Vibrionaceae" ="#DDDD77",
-                    "Yersiniaceae"= "#AAAA44",
+                    "Vibrionaceae" = "#DD7788",
+                    "Yersiniaceae"= "#117744",
                     "Other taxa"= "#114477")
 
 saveRDS(indicators.col, "./data/indicators_col.RDS")
@@ -68,12 +69,13 @@ location.col <- c("R-Estuary-1" = "#FC8D62",
                   "R-Estuary-2" = "#FFD92F", 
                   "NS-Marine" = "#E5C494", 
                   "OS-Marine" = "#8DA0CB",
-                  "SM-Outfall" = "#66C2A5")
+                  "SM-Outfall" = "#66C2A5", 
+                  "R-Mouth" = "#E41A1C")
 
 saveRDS(location.col, "./data/location_col.RDS")
 
 season.col <- c("winter" = "#377EB8", 
-                "spring" = "#FFFF33", 
+                "spring" = "#4cbb30", 
                 "summer" = "#E41A1C", 
                 "autumn" = "#A65628")
 

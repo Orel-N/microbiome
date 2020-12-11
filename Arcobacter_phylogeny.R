@@ -38,14 +38,14 @@ Arcobacter_family <- subset_taxa(phy_obj3.ra, Family == "Arcobacteraceae")
 saveRDS(Arcobacter_family, "./data/Arcobacter_family_ps.RDS")
 
 Arcobacter_family.rs <- refseq(Arcobacter_family)
-writeXStringSet(Arcobacter_family.rs, "./Arcobacter_family.fasta", format = "fasta")
+writeXStringSet(Arcobacter_family.rs, "./data/Arcobacter_family.fasta", format = "fasta")
 
 ##Both datsets
 Arcobacter_family_2 <- subset_taxa(phy_obj3_2.ra, Family == "Arcobacteraceae")
 saveRDS(Arcobacter_family_2, "./data/Arcobacter_family_ps_15_20.RDS")
 
 Arcobacter_family_2.rs <- refseq(Arcobacter_family_2)
-writeXStringSet(Arcobacter_family_2.rs, "./Arcobacter_family_15_20.fasta", format = "fasta")
+writeXStringSet(Arcobacter_family_2.rs, "./data/Arcobacter_family_15_20.fasta", format = "fasta")
 
 
 

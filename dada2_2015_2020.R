@@ -255,7 +255,7 @@ saveRDS(seqtab.nochim2, file.path("./dada2", "seqtab15_20.rds"))
 total <- rbind(track_15, track_20_2)
 total <- as.data.frame(total)
 
-total$nochim<-rowSums(seqtab.nochim)
+total$nochim<-rowSums(seqtab.nochim2)
 
 write.table(total, "./dada2/Overview_dada2_15_20_2.txt" , sep = "\t", quote = F)
 
