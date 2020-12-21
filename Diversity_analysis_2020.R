@@ -6,7 +6,7 @@
 #Set working directory
 setwd("C:/Users/nezao/Documents/5-R/Microbiome2015_2020")
 
-#Load packages
+#Load libraries
 library(ggplot2)
 library(dplyr)
 library(ggpubr)
@@ -24,13 +24,10 @@ prevdf3 <- readRDS("./data/prevdfFiltered.RDS")
 #Edit data - subset based on dataset
 phy_obj3_20 <- subset_samples(phy_obj3, Dataset == "2020")
 phy_obj3_20 <- prune_taxa(taxa_sums(phy_obj3_20)>0, phy_obj3_20)
+phy_obj3_20
 
-#Import collor pallets
-phyla.col <- readRDS("./data/phyla_col.RDS")
-indicators.col <- readRDS("./data/indicators_col.RDS")
-season.col <- readRDS("./data/season_col.RDS")
-location.col <- readRDS("./data/location_col.RDS")
-
+#Import collor palette
+source("./scripts/Color_palettes.R")
 
 #############################################
 #Preparation of data for taxonomic comparison
@@ -70,6 +67,8 @@ phy_obj3_melt.agg.genus<- phy_obj3_melt.agg.genus[phy_obj3_melt.agg.genus$Abunda
 phy_obj3_melt.agg.class <- aggregate (Abundance~Location+Season+Date+Depth+Class, phy_obj3ra.melt, FUN="sum")
 phy_obj3_melt.agg.class$Abundance <- phy_obj3_melt.agg.class$Abundance*100
 phy_obj3_melt.agg.class<- phy_obj3_melt.agg.class[phy_obj3_melt.agg.class$Abundance>0,]
+
+phy_obj3_melt.agg.class.allSamples <- aggregate (Abundance~Class, phy_obj3_melt.agg.class, FUN="mean")
 
 
 #Plot community composition on class level
@@ -222,8 +221,18 @@ otu_table(ps.vst)<- otu_table(otu.vst, taxa_are_rows = TRUE)
 phy_obj3.vst.rda <- ordinate(ps.vst, "RDA", "euclidean")
 plot_ordination(ps.vst, phy_obj3.vst.rda, label = "Location", shape = "Depth", color = "Season") + 
   theme_bw() + geom_point(size=3) + scale_color_manual(values=season.col)
-
 ggsave("./output_graphs/RDA_var.pdf")
+
+phy_obj3.vst.nmds <- ordinate(ps.vst, method = "NMDS", distance = "euclidean")
+plot_ordination(ps.vst, phy_obj3.vst.nmds, label ="Location", color = "Season") + geom_point(aes(shape=Depth), size=3) + 
+  stat_ellipse(geom = "polygon", alpha = 0.1, level = 0.95) + theme_bw() + scale_color_manual(values=season.col)
+ggsave("./output_graphs/nMDS_var.pdf")
+
+phy_obj3.vst.nmds <- ordinate(phy_obj3ra_20, method = "NMDS", distance = "bray")
+plot_ordination(phy_obj3ra_20, phy_obj3.vst.nmds, label ="Location", color = "Season") + geom_point(aes(shape=Depth), size=3) + 
+  stat_ellipse(geom = "polygon", alpha = 0.1, level = 0.95) + theme_bw() + scale_color_manual(values=season.col)
+ggsave("./output_graphs/nMDS_var.pdf")
+
 saveRDS(ps.vst, "./data/ps.vst.20.RDS")
 
 
@@ -232,9 +241,14 @@ saveRDS(ps.vst, "./data/ps.vst.20.RDS")
 ###########
 
 ###statistical significance of the groups
+df <- as(sample_data(phy_obj3ra_20), "data.frame")
+d <- phyloseq::distance(phy_obj3ra_20, "bray")
+adonis_all <- adonis2(d ~ Season+Location+Depth, data= df)
+adonis_all
+
 df <- as(sample_data(ps.vst), "data.frame")
 d <- phyloseq::distance(ps.vst, "euclidean")
-adonis_all <- adonis2(d ~ Location+Season+Depth, data= df, perm = 999)
+adonis_all <- adonis2(d ~ Location+Season+Depth, data= df)
 adonis_all
 
 #Post-hoc test 

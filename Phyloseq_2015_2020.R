@@ -15,9 +15,8 @@ library(vegan)
 
 theme_set(theme_bw())
 
-#Edit colour pallete
-location.col <- readRDS("./data/location_col.RDS")
-season.col <- readRDS("./data/season_col.RDS")
+#Import collor palette
+source("./scripts/Color_palettes.R")
 
 ##################################
 #Import dada2 output into phyloseq
@@ -29,7 +28,6 @@ meta <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ",")
 #Import "ASV table" (matrix)
 seqtab.nochim <- read.csv("./dada2/dada2_seqtab_nochim2_2.txt", h=T, sep="\t")
 
-sum(seqtab.nochim$X14)
 
 #Import taxonomy table (matrix)
 taxa <- as.matrix(read.csv("./dada2/dada2_taxonomy_table_2.txt", h=T,sep = "\t"))

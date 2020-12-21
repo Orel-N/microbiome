@@ -11,7 +11,6 @@ library("ape")
 library("ggtree") 
 library(tidyr)
 
-
 #Load data
 phy_obj3 <- readRDS("./data/phyloseqFiltered.RDS")
 
@@ -35,10 +34,10 @@ phy_obj3.ra <- transform_sample_counts(phy_obj3, function(x) x / sum(x))
 
 ##Only 2020
 Arcobacter_family <- subset_taxa(phy_obj3.ra, Family == "Arcobacteraceae")
-saveRDS(Arcobacter_family, "./data/Arcobacter_family_ps.RDS")
+saveRDS(Arcobacter_family, "./data/Arcobacter_family_ps_20.RDS")
 
 Arcobacter_family.rs <- refseq(Arcobacter_family)
-writeXStringSet(Arcobacter_family.rs, "./data/Arcobacter_family.fasta", format = "fasta")
+writeXStringSet(Arcobacter_family.rs, "./data/Arcobacter_family_20.fasta", format = "fasta")
 
 ##Both datsets
 Arcobacter_family_2 <- subset_taxa(phy_obj3_2.ra, Family == "Arcobacteraceae")
