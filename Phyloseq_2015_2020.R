@@ -15,9 +15,8 @@ library(vegan)
 
 theme_set(theme_bw())
 
-#Edit colour pallete
-location.col <- readRDS("./data/location_col.RDS")
-season.col <- readRDS("./data/season_col.RDS")
+#Import collor palette
+source("./scripts/Color_palettes.R")
 
 
 ##################################
