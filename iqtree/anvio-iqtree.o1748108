@@ -1,0 +1,1072 @@
+
+******************************************************
+CHECKPOINT: Resuming analysis from Arcobacter_silva.fa.ckp.gz
+
+IQ-TREE multicore version 2.0.3 for Linux 64-bit built Apr 26 2020
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    scc-hc2 (SSE4.2, 46 GB RAM)
+Command: iqtree -s Arcobacter_silva.fa -nt 8 -bb 1000
+Seed:    564430 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Mon Dec 21 05:29:43 2020
+Kernel:  SSE2 - 8 threads (12 CPU cores detected)
+
+WARNING: Command-line argument `-bb` differs from checkpoint `-m`
+WARNING: Command-line argument `1000` differs from checkpoint `WAG`
+WARNING: Command-line differs from checkpoint!
+Reading alignment file Arcobacter_silva.fa ... Fasta format detected
+Alignment most likely contains DNA/RNA sequences
+Alignment has 436 sequences with 355 columns, 146 distinct patterns
+67 parsimony-informative, 81 singleton sites, 207 constant sites
+                          Gap/Ambiguity  Composition  p-value
+   1  AB030598.1.1449             0.00%    passed     99.83%
+   2  AB243994.1.1486             0.00%    passed     90.89%
+   3  AB539948.1.1383             0.00%    passed     96.36%
+   4  AF513455.1.1402             0.00%    passed     91.75%
+   5  AJ810558.1.1445             0.00%    passed     99.42%
+   6  AP012047.791244.792758      0.00%    passed     98.56%
+   7  AP012048.2429210.2430725    0.00%    passed     99.98%
+   8  AY314753.1.1410             0.00%    passed     96.63%
+   9  AY922182.1.1381             0.00%    passed     99.98%
+  10  CP019070.2095178.2096695    0.00%    passed     97.08%
+  11  CP031217.2599245.2600750    0.00%    passed     98.74%
+  12  CP031218.1972423.1973928    0.00%    passed     91.75%
+  13  CP031218.2298512.2300017    0.00%    passed     91.75%
+  14  CP031218.2758484.2759989    0.00%    passed     91.75%
+  15  CP031367.1764819.1766324    0.00%    passed     97.59%
+  16  CP032100.2265641.2267146    0.00%    passed     99.42%
+  17  CP032823.102401.103906      0.00%    passed     97.59%
+  18  CP032825.302516.304021      0.00%    passed     97.59%
+  19  CP032825.540386.541891      0.00%    passed     97.59%
+  20  CP032825.1264110.1265615    0.00%    passed     97.59%
+  21  DQ234096.1.1547             0.00%    passed     97.00%
+  22  DQ676345.1.1410             0.00%    passed     99.98%
+  23  EF064151.1.1390             0.00%    passed     97.59%
+  24  EF515690.1.1375             0.00%    passed     98.77%
+  25  EU052236.1.1481             0.28%    passed     99.97%
+  26  EU265967.1.1479             0.00%    passed     99.19%
+  27  EU662492.1.1477             0.00%    passed     99.83%
+  28  EU800814.1.1277             0.00%    passed     99.83%
+  29  FJ573216.1.1454             0.00%    passed     99.42%
+  30  FJ612320.1.1411             0.00%    passed     99.89%
+  31  FJ628198.1.1480             0.00%    passed     99.42%
+  32  FJ628348.1.1478             0.00%    passed     99.42%
+  33  FJ717083.1.1513             0.00%    passed     99.97%
+  34  FJ946551.1.1290             0.00%    passed     99.61%
+  35  FN650333.1.1309             0.00%    passed     97.59%
+  36  FPLP01003601.2.1453         0.00%    passed     98.74%
+  37  FR666867.1.1476             0.00%    passed     98.22%
+  38  FR683719.1.1479             0.00%    passed     99.49%
+  39  GQ261829.1.1477             0.00%    passed     99.98%
+  40  GU061286.1.1415             0.00%    passed     99.42%
+  41  GU179711.1.1373             0.00%    passed     94.53%
+  42  GU179723.1.1377             0.00%    passed     99.98%
+  43  HE565360.1.1402             0.00%    passed     99.98%
+  44  HM057681.1.1486             0.00%    passed     96.63%
+  45  HM057725.1.1504             0.00%    passed     88.90%
+  46  HM591345.1.1479             0.00%    passed     99.89%
+  47  HM591472.1.1485             0.00%    passed     99.89%
+  48  HQ203914.1.1479             0.00%    passed     96.63%
+  49  HQ538624.1.1477             0.00%    passed     98.97%
+  50  JF344171.1.1476             0.00%    passed     98.22%
+  51  AB015529.1.1478             0.00%    passed     99.42%
+  52  AB100003.1.1328             0.56%    passed     97.14%
+  53  AB294336.1.1439             0.00%    passed     99.83%
+  54  AB806738.1.1440             0.00%    passed     97.93%
+  55  AJ607391.1.1460             0.00%    passed     96.63%
+  56  AM084114.1.1464             0.00%    passed     99.42%
+  57  AP012047.1881956.1883470    0.00%    passed     98.56%
+  58  AP012048.2339767.2341282    0.00%    passed     99.98%
+  59  AP012048.2850041.2851556    0.00%    passed     99.98%
+  60  AY340831.1.1402             0.00%    passed     92.58%
+  61  AB013832.1.1477             0.00%    passed     99.98%
+  62  CP019070.609339.610856      0.00%    passed     97.08%
+  63  AB030599.1.1452             0.00%    passed     99.83%
+  64  AB244002.1.1494             0.00%    passed     96.36%
+  65  AB546073.1.1479             0.00%    passed     94.53%
+  66  AJ271653.1.1508             0.00%    passed     99.86%
+  67  AJ810559.1.1432             0.00%    passed     99.86%
+  68  AY314754.1.1483             0.00%    passed     96.63%
+  69  AY922205.1.1380             0.00%    passed     99.75%
+  70  CP019070.2682675.2684192    0.00%    passed     97.08%
+  71  CP000361.847461.848975      0.00%    passed     98.56%
+  72  CP031217.341658.343163      0.00%    passed     98.74%
+  73  CP000361.2003610.2005124    0.00%    passed     98.56%
+  74  CP031217.1945484.1946989    0.00%    passed     98.74%
+  75  CP000361.2274813.2276327    0.00%    passed     98.56%
+  76  CP031218.230734.232239      0.00%    passed     91.75%
+  77  CP001999.2328945.2330449    0.00%    passed     99.78%
+  78  CP031218.2006547.2008052    0.00%    passed     91.75%
+  79  CP001999.2660340.2661844    0.00%    passed     99.78%
+  80  AB030594.1.1454             0.00%    passed     99.51%
+  81  AB189374.1.1478             0.00%    passed     99.78%
+  82  CP031367.1626402.1627907    0.00%    passed     97.59%
+  83  AB530236.1.1479             0.00%    passed     98.22%
+  84  AF324539.1.1486             0.00%    passed     97.59%
+  85  AJ607392.1.1468             0.00%    passed     96.63%
+  86  AM084124.1.1453             0.00%    passed     99.44%
+  87  CP019070.1936360.1937877    0.00%    passed     97.08%
+  88  CP032097.951489.952994      0.00%    passed     99.98%
+  89  AP012048.1097572.1099087    0.00%    passed     99.98%
+  90  CP019070.2816412.2817929    0.00%    passed     97.08%
+  91  CP032097.2142906.2144411    0.00%    passed     99.98%
+  92  AP012048.2586203.2587718    0.00%    passed     99.98%
+  93  AY570594.1.1479             0.00%    passed     96.36%
+  94  CP031218.166581.168086      0.00%    passed     91.75%
+  95  CP032100.2549892.2551397    0.00%    passed     99.42%
+  96  CP001999.237935.239439      0.00%    passed     99.78%
+  97  CP032823.69871.71376        0.00%    passed     97.59%
+  98  CU925531.1.1345             0.00%    passed     97.59%
+  99  DQ234115.1.1547             0.00%    passed     97.59%
+ 100  EF028937.1.1438             0.00%    passed     99.98%
+ 101  EF123613.1.1496             0.00%    passed     99.65%
+ 102  EF648116.1.1463             0.00%    passed     98.77%
+ 103  EU236320.1.1370             0.00%    passed     99.89%
+ 104  EU617862.1.1482             0.00%    passed     99.97%
+ 105  FJ203093.1.1440             0.00%    passed     99.97%
+ 106  FJ612312.1.1424             0.00%    passed     99.98%
+ 107  FJ628196.1.1478             0.00%    passed     99.42%
+ 108  FJ628291.1.1488             0.00%    passed     99.42%
+ 109  FJ660508.1.1459             0.00%    passed     96.63%
+ 110  FJ717163.1.1513             0.00%    passed     99.73%
+ 111  FJ820447.1.1476             0.00%    passed     99.75%
+ 112  FJ900992.1.1315             0.00%    passed     99.98%
+ 113  CP001999.3087363.3088867    0.00%    passed     99.78%
+ 114  FN428747.1.1480             0.00%    passed     99.89%
+ 115  FR666862.1.1474             0.00%    passed     98.27%
+ 116  CP031367.1403197.1404702    0.00%    passed     97.59%
+ 117  FR682113.1.1402             0.00%    passed     97.59%
+ 118  GQ245902.1.1404             0.00%    passed     99.42%
+ 119  GQ844379.1.1481             0.00%    passed     97.00%
+ 120  GU179703.1.1379             0.00%    passed     99.98%
+ 121  GU179720.1.1374             0.00%    passed     94.53%
+ 122  GU451405.1.1215             0.00%    passed     99.98%
+ 123  HG513895.1.1486             0.00%    passed     99.44%
+ 124  HM057704.1.1488             0.00%    passed     99.78%
+ 125  HM057798.1.1502             0.00%    passed     98.74%
+ 126  HQ203797.1.1479             0.00%    passed     99.86%
+ 127  HQ203977.1.1485             0.00%    passed     99.98%
+ 128  CP006615.1882920.1884424    0.00%    passed     98.56%
+ 129  HQ860672.1.1449             0.00%    passed     99.42%
+ 130  CP006615.2184913.2186417    0.00%    passed     98.56%
+ 131  CP031367.1837400.1838905    0.00%    passed     97.59%
+ 132  CP019070.2388699.2390216    0.00%    passed     97.08%
+ 133  CP032097.2437538.2439043    0.00%    passed     99.98%
+ 134  CP031217.1961684.1963189    0.00%    passed     98.74%
+ 135  CP032100.2137959.2139464    0.00%    passed     99.42%
+ 136  CP031367.506253.507758      0.00%    passed     97.59%
+ 137  CP032823.303648.305153      0.00%    passed     97.59%
+ 138  CP032823.568634.570139      0.00%    passed     97.59%
+ 139  CP032097.2284812.2286317    0.00%    passed     99.98%
+ 140  CP032825.56100.57605        0.00%    passed     97.59%
+ 141  DQ234101.1.1546             0.00%    passed     99.42%
+ 142  DQ676433.1.1407             0.00%    passed     99.83%
+ 143  CP032097.2715696.2717201    0.00%    passed     99.98%
+ 144  EF111153.1.1268             0.00%    passed     99.29%
+ 145  EF645952.1.1476             0.00%    passed     99.86%
+ 146  EU142043.1.1479             0.00%    passed     99.98%
+ 147  EU570854.1.1481             0.00%    passed     99.42%
+ 148  EU721819.1.1379             0.00%    passed     97.37%
+ 149  FJ203167.1.1440             0.00%    passed     99.97%
+ 150  FJ612319.1.1470             0.00%    passed     98.56%
+ 151  FJ628197.1.1489             0.00%    passed     99.42%
+ 152  JN118552.1.1427             0.00%    passed     91.75%
+ 153  FJ628347.1.1476             0.00%    passed     99.42%
+ 154  JN619794.1.1423             0.00%    passed     99.44%
+ 155  FJ664785.1.1320             0.00%    passed     99.19%
+ 156  JQ088367.1.1471             0.00%    passed     99.81%
+ 157  FJ717168.1.1511             0.00%    passed     99.73%
+ 158  JQ199442.1.1346             0.00%    passed     99.29%
+ 159  FJ900977.1.1282             0.00%    passed     93.75%
+ 160  JQ213174.1.1347             0.00%    passed     98.51%
+ 161  FJ959781.1.1385             0.00%    passed     97.09%
+ 162  CP032100.1735385.1736890    0.00%    passed     99.42%
+ 163  JQ215058.1.1344             0.00%    passed     99.98%
+ 164  FR666861.1.1474             0.00%    passed     99.98%
+ 165  JQ611206.1.1378             0.00%    passed     99.89%
+ 166  FR666869.1.1474             0.00%    passed     99.98%
+ 167  JQ743025.1.1413             0.00%    passed     98.56%
+ 168  FR744554.1.1439             0.00%    passed     98.56%
+ 169  JQ862035.1.1484             0.00%    passed     99.86%
+ 170  GQ357014.1.1479             0.00%    passed     99.78%
+ 171  JX170305.1.1217             0.00%    passed     99.86%
+ 172  GU061291.1.1416             0.00%    passed     98.56%
+ 173  JX391660.1.1485             0.00%    passed     99.97%
+ 174  GU179722.1.1362             0.00%    passed     99.98%
+ 175  JX393002.1.1430             0.00%    passed     98.56%
+ 176  HE565359.1.1401             0.00%    passed     99.42%
+ 177  JX521798.1.1496             0.00%    passed     99.65%
+ 178  HM057667.1.1487             0.00%    passed     96.63%
+ 179  KC527432.1.1217             0.00%    passed     99.42%
+ 180  HM057719.1.1503             0.00%    passed     99.61%
+ 181  KC682198.1.1478             0.00%    passed     99.98%
+ 182  HM057804.1.1502             0.00%    passed     91.75%
+ 183  KF268902.1.1385             0.00%    passed     95.27%
+ 184  CP032100.2049452.2050957    0.00%    passed     99.42%
+ 185  HQ203800.1.1480             0.00%    passed     99.42%
+ 186  KJ808094.1.1477             0.00%    passed     99.40%
+ 187  HQ218501.1.1480             0.00%    passed     96.36%
+ 188  KM270348.1.1470             0.00%    passed     99.98%
+ 189  KM668178.1.1489             0.00%    passed     97.59%
+ 190  KP182996.1.1480             0.00%    passed     99.42%
+ 191  KP994483.1.1382             0.00%    passed     99.44%
+ 192  KT283075.1.1478             0.00%    passed     99.98%
+ 193  KU524867.1.1478             0.28%    passed     99.74%
+ 194  KX176915.1.1484             0.00%    passed     99.98%
+ 195  KX177624.1.1478             0.00%    passed     99.75%
+ 196  KX422127.1.1475             0.00%    passed     99.28%
+ 197  CP032823.785256.786761      0.00%    passed     97.59%
+ 198  KY235939.1.1203             0.00%    passed     99.02%
+ 199  KY235971.1.1476             0.00%    passed     99.73%
+ 200  L14627.1.1461               0.00%    passed     99.78%
+ 201  LK392931.1.1391             0.00%    passed     99.98%
+ 202  LK393014.1.1392             0.00%    passed     99.42%
+ 203  LK393053.1.1367             0.00%    passed     99.98%
+ 204  LLEK01000564.3498.4995      0.00%    passed     99.65%
+ 205  LT904750.1.1202             0.00%    passed     98.74%
+ 206  CP032825.83730.85235        0.00%    passed     97.59%
+ 207  CU926906.2.1345             0.00%    passed     97.59%
+ 208  DQ133925.1.1482             0.00%    passed     99.83%
+ 209  DQ234254.1.1547             0.00%    passed     99.42%
+ 210  EF029030.1.1439             0.00%    passed     99.98%
+ 211  EF467560.1.1480             0.00%    passed     99.83%
+ 212  EF999357.1.1405             0.00%    passed     99.97%
+ 213  EU245155.1.1478             0.00%    passed     97.80%
+ 214  EU662330.1.1487             0.00%    passed     99.83%
+ 215  FJ202091.1.1461             0.00%    passed     99.97%
+ 216  LT906455.1918668.1920172    0.00%    passed     98.56%
+ 217  FJ573217.1.1451             0.00%    passed     98.74%
+ 218  FJ612335.1.1474             0.00%    passed     99.98%
+ 219  FJ628239.1.1477             0.00%    passed     99.42%
+ 220  FJ628352.1.1488             0.00%    passed     99.42%
+ 221  FJ717121.1.1510             0.00%    passed     97.30%
+ 222  FJ901115.1.1381             0.00%    passed     98.74%
+ 223  FN428763.1.1481             0.00%    passed     99.61%
+ 224  FR666864.1.1474             0.00%    passed     99.98%
+ 225  FR683715.1.1521             0.00%    passed     96.64%
+ 226  GQ245905.1.1423             0.00%    passed     99.86%
+ 227  GQ844391.1.1485             0.00%    passed     88.75%
+ 228  GU179704.1.1385             0.00%    passed     96.36%
+ 229  GU179716.1.1374             0.00%    passed     99.98%
+ 230  GU300770.1.1377             0.00%    passed     97.59%
+ 231  HE576787.1.1388             0.00%    passed     99.97%
+ 232  HM057692.1.1487             0.00%    passed     96.63%
+ 233  HM057749.1.1488             0.00%    passed     99.86%
+ 234  HM591433.1.1479             0.00%    passed     99.89%
+ 235  HQ115595.1.1402             0.00%    passed     99.98%
+ 236  JF268371.1.1474             0.00%    passed     99.49%
+ 237  JN118550.1.1426             0.00%    passed     99.89%
+ 238  JN397809.1.1439             0.00%    passed     99.97%
+ 239  JN685494.1.1497             0.00%    passed     97.00%
+ 240  JQ199082.1.1345             0.00%    passed     99.78%
+ 241  JQ212073.1.1346             0.00%    passed     98.51%
+ 242  JQ214780.1.1346             0.00%    passed     98.56%
+ 243  JQ216693.1.1343             0.00%    passed     98.56%
+ 244  JQ712383.1.1385             0.00%    passed     98.27%
+ 245  JQ712417.1.1381             0.00%    passed     97.08%
+ 246  JQ845805.1.1325             0.00%    passed     99.42%
+ 247  JX170279.1.1405             0.00%    passed     99.97%
+ 248  JX391518.1.1481             0.00%    passed     99.98%
+ 249  JX392996.1.1417             0.00%    passed     97.59%
+ 250  JX521786.1.1491             0.00%    passed     99.67%
+ 251  KC527298.1.1215             0.00%    passed     98.74%
+ 252  KC682188.1.1482             0.00%    passed     96.63%
+ 253  KF179644.1.1445             0.00%    passed     97.00%
+ 254  KF799695.1.1483             0.00%    passed     99.49%
+ 255  KM668167.1.1480             0.00%    passed     99.98%
+ 256  KM873116.1.1478             0.00%    passed     98.44%
+ 257  KP994482.1.1382             0.00%    passed     94.28%
+ 258  KT257856.1.1480             0.00%    passed     99.98%
+ 259  KU242456.1.1394             0.00%    passed     97.83%
+ 260  KX014304.1.1482             0.00%    passed     98.74%
+ 261  KX177620.1.1482             0.00%    passed     99.75%
+ 262  KX422126.1.1475             0.00%    passed     98.57%
+ 263  KY235925.1.1411             0.00%    passed     99.49%
+ 264  KY235965.1.1476             0.00%    passed     99.78%
+ 265  KY236000.1.1476             0.00%    passed     99.83%
+ 266  L14624.1.1462               0.00%    passed     97.59%
+ 267  LK392738.1.1211             0.00%    passed     96.63%
+ 268  LK392968.1.1384             0.00%    passed     99.98%
+ 269  LK393052.1.1379             0.00%    passed     99.75%
+ 270  LLEL01000725.12.1508        0.00%    passed     99.97%
+ 271  LT629298.1.1382             0.00%    passed     99.97%
+ 272  HQ203962.1.1486             0.00%    passed     99.78%
+ 273  HQ729100.1.1479             0.00%    passed     99.65%
+ 274  JF497852.1.1469             0.00%    passed     99.44%
+ 275  JFJP01051705.322.1797       0.00%    passed     99.83%
+ 276  JN233480.1.1439             0.00%    passed     99.42%
+ 277  JQ195744.1.1344             0.00%    passed     99.97%
+ 278  JQ211124.1.1344             0.00%    passed     99.98%
+ 279  JQ213296.1.1350             0.00%    passed     98.51%
+ 280  JQ215660.1.1345             0.00%    passed     99.98%
+ 281  JQ611225.1.1361             0.00%    passed     97.45%
+ 282  JQ845768.1.1324             0.00%    passed     98.74%
+ 283  JQ895021.1.1435             0.00%    passed     98.74%
+ 284  JX170315.1.1383             0.00%    passed     99.97%
+ 285  JX391668.1.1479             0.00%    passed     99.97%
+ 286  JX403025.1.1514             0.00%    passed     99.98%
+ 287  JX403059.1.1507             0.00%    passed     99.42%
+ 288  JX559229.1.1472             0.00%    passed     98.56%
+ 289  KC527458.1.1215             0.00%    passed     99.86%
+ 290  KC682350.1.1482             0.00%    passed     99.42%
+ 291  KF799046.1.1481             0.00%    passed     97.09%
+ 292  KJ862122.1.1382             0.00%    passed     97.59%
+ 293  KM410309.1.1510             0.00%    passed     97.00%
+ 294  KM820506.1.1479             0.00%    passed     98.74%
+ 295  KP183021.1.1481             0.00%    passed     99.42%
+ 296  KT257771.1.1479             0.00%    passed     98.56%
+ 297  KT318714.1.1372             0.00%    passed     99.97%
+ 298  KX177047.1.1484             0.00%    passed     99.83%
+ 299  KX177630.1.1483             0.00%    passed     99.98%
+ 300  KX550224.1.1517             0.00%    passed     99.97%
+ 301  KY235946.1.1476             0.00%    passed     99.04%
+ 302  KY235976.1.1491             0.00%    passed     99.78%
+ 303  LK392700.1.1386             0.00%    passed     96.63%
+ 304  LK392947.1.1390             0.00%    passed     99.89%
+ 305  LK393019.1.1384             0.00%    passed     99.98%
+ 306  LK393070.1.1366             0.00%    passed     99.98%
+ 307  MF040336.1.1478             0.00%    passed     99.98%
+ 308  JARS01000027.280.1777       0.00%    passed     96.63%
+ 309  JF904743.1.1478             0.00%    passed     98.79%
+ 310  JN233497.1.1440             0.00%    passed     99.42%
+ 311  JQ197538.1.1344             0.00%    passed     99.97%
+ 312  JQ211910.1.1343             0.00%    passed     99.86%
+ 313  JQ214547.1.1346             0.00%    passed     98.51%
+ 314  JQ215863.1.1346             0.00%    passed     98.51%
+ 315  JQ712382.1.1383             0.00%    passed     99.73%
+ 316  JQ712391.1.1392             0.00%    passed     99.29%
+ 317  JQ845780.1.1325             0.00%    passed     99.98%
+ 318  JX016315.1.1478             0.00%    passed     99.78%
+ 319  JX391310.1.1479             0.00%    passed     95.27%
+ 320  JX391694.1.1483             0.00%    passed     99.97%
+ 321  JX403044.1.1509             0.00%    passed     99.97%
+ 322  JX521734.1.1489             0.00%    passed     99.98%
+ 323  KC121364.1.1413             0.00%    passed     99.42%
+ 324  KC527463.1.1216             0.00%    passed     99.42%
+ 325  KC682366.1.1483             0.00%    passed     99.97%
+ 326  KF799568.1.1479             0.00%    passed     99.49%
+ 327  KM410320.1.1423             0.00%    passed     91.75%
+ 328  KM873085.1.1399             0.00%    passed     99.42%
+ 329  KP994454.1.1353             0.00%    passed     99.08%
+ 330  KT257834.1.1480             0.00%    passed     99.83%
+ 331  KU143708.1.1442             0.00%    passed     96.63%
+ 332  KX177125.1.1485             0.00%    passed     99.98%
+ 333  KX422118.1.1476             0.00%    passed     99.80%
+ 334  KX581190.1.1516             0.00%    passed     99.98%
+ 335  KY235963.1.1468             0.00%    passed     99.98%
+ 336  KY235977.1.1474             0.00%    passed     99.98%
+ 337  KY969129.1.1481             0.00%    passed     99.28%
+ 338  LK392734.1.1244             0.00%    passed     99.98%
+ 339  LK392962.1.1383             0.00%    passed     99.98%
+ 340  LK393042.1.1397             0.00%    passed     99.89%
+ 341  LK393101.1.1364             0.00%    passed     99.98%
+ 342  LT906455.2281175.2282679    0.00%    passed     98.56%
+ 343  MH916846.1.1379             0.00%    passed     97.93%
+ 344  ASV6                        0.00%    passed     99.97%
+ 345  ASV32                       0.00%    passed     95.98%
+ 346  ASV55                       0.00%    passed     97.59%
+ 347  ASV155                      0.00%    passed     99.78%
+ 348  ASV165                      0.00%    passed     99.86%
+ 349  ASV194                      0.00%    passed     99.98%
+ 350  ASV196                      0.00%    passed     96.63%
+ 351  ASV247                      0.00%    passed     99.86%
+ 352  ASV267                      0.00%    passed     99.78%
+ 353  ASV279                      0.00%    passed     99.42%
+ 354  ASV331                      0.00%    passed     98.56%
+ 355  ASV475                      0.00%    passed     99.97%
+ 356  ASV522                      0.00%    passed     99.97%
+ 357  ASV526                      0.00%    passed     98.56%
+ 358  ASV527                      0.00%    passed     97.08%
+ 359  ASV551                      0.00%    passed     99.89%
+ 360  ASV566                      0.00%    passed     99.98%
+ 361  ASV589                      0.00%    passed     99.88%
+ 362  ASV684                      0.00%    passed     99.42%
+ 363  ASV685                      0.00%    passed     98.57%
+ 364  ASV703                      0.00%    passed     99.42%
+ 365  ASV709                      0.00%    passed     99.42%
+ 366  ASV712                      0.00%    passed     99.97%
+ 367  ASV752                      0.00%    passed     97.59%
+ 368  ASV774                      0.00%    passed     96.63%
+ 369  ASV782                      0.00%    passed     99.04%
+ 370  ASV785                      0.00%    passed     99.97%
+ 371  ASV849                      0.00%    passed     99.44%
+ 372  ASV897                      0.00%    passed     97.59%
+ 373  ASV913                      0.00%    passed     96.63%
+ 374  ASV1017                     0.00%    passed     99.97%
+ 375  ASV1087                     0.00%    passed     98.79%
+ 376  ASV1216                     0.00%    passed     99.88%
+ 377  ASV1248                     0.00%    passed     99.83%
+ 378  ASV1280                     0.00%    passed     99.42%
+ 379  ASV1357                     0.00%    passed     99.83%
+ 380  ASV1413                     0.00%    passed     99.83%
+ 381  ASV1438                     0.00%    passed     99.86%
+ 382  ASV1439                     0.00%    passed     99.97%
+ 383  ASV1454                     0.00%    passed     99.86%
+ 384  ASV1471                     0.00%    passed     97.08%
+ 385  ASV1481                     0.00%    passed     99.61%
+ 386  ASV1485                     0.00%    passed     99.05%
+ 387  ASV1523                     0.00%    passed     99.97%
+ 388  ASV1537                     0.00%    passed     95.25%
+ 389  ASV1664                     0.00%    passed     99.29%
+ 390  ASV1783                     0.00%    passed     99.42%
+ 391  ASV1867                     0.00%    passed     99.98%
+ 392  ASV1887                     0.00%    passed     99.98%
+ 393  ASV1973                     0.00%    passed     98.74%
+ 394  ASV2047                     0.00%    passed     99.98%
+ 395  ASV2057                     0.00%    passed     99.44%
+ 396  ASV2197                     0.00%    passed     99.65%
+ 397  ASV2244                     0.00%    passed     99.86%
+ 398  ASV2272                     0.00%    passed     99.42%
+ 399  ASV2344                     0.00%    passed     99.83%
+ 400  ASV2384                     0.00%    passed     96.63%
+ 401  ASV2487                     0.00%    passed     99.42%
+ 402  ASV2516                     0.00%    passed     99.98%
+ 403  ASV2528                     0.00%    passed     98.22%
+ 404  ASV2674                     0.00%    passed     99.97%
+ 405  ASV2880                     0.00%    passed     99.49%
+ 406  ASV2894                     0.00%    passed     94.62%
+ 407  ASV2897                     0.00%    passed     96.36%
+ 408  ASV3051                     0.00%    passed     99.81%
+ 409  ASV3246                     0.00%    passed     99.42%
+ 410  ASV3335                     0.00%    passed     98.22%
+ 411  ASV3494                     0.00%    passed     99.65%
+ 412  ASV4041                     0.00%    passed     99.98%
+ 413  ASV4212                     0.00%    passed     99.04%
+ 414  ASV4375                     0.00%    passed     99.97%
+ 415  ASV4426                     0.00%    passed     99.98%
+ 416  ASV4559                     0.00%    passed     91.75%
+ 417  ASV4621                     0.00%    passed     99.97%
+ 418  ASV4671                     0.00%    passed     97.00%
+ 419  ASV5247                     0.00%    passed     99.04%
+ 420  ASV5285                     0.00%    passed     98.79%
+ 421  ASV5382                     0.00%    passed     95.98%
+ 422  ASV5389                     0.00%    passed     99.89%
+ 423  ASV5487                     0.00%    passed     99.83%
+ 424  ASV5532                     0.00%    passed     99.86%
+ 425  ASV6143                     0.00%    passed     99.86%
+ 426  ASV7034                     0.00%    passed     94.16%
+ 427  ASV7112                     0.00%    passed     95.26%
+ 428  ASV7511                     0.00%    passed     99.31%
+ 429  ASV7578                     0.00%    passed     98.74%
+ 430  ASV7711                     0.00%    passed     99.49%
+ 431  ASV8860                     0.00%    passed     92.77%
+ 432  ASV8898                     0.00%    passed     99.70%
+ 433  ASV9725                     0.00%    passed     97.07%
+ 434  ASV10271                    0.00%    passed     98.67%
+ 435  ASV10287                    0.00%    passed     87.65%
+ 436  ASV10742                    0.00%    passed     85.06%
+****  TOTAL                       0.00%  0 sequences failed composition chi2 test (p-value<5%; df=3)
+NOTE: EU662492.1.1477 is identical to AB030598.1.1449 but kept for subsequent analysis
+NOTE: AB244002.1.1494 is identical to AB539948.1.1383 but kept for subsequent analysis
+NOTE: CP031218.1972423.1973928 is identical to AF513455.1.1402 but kept for subsequent analysis
+NOTE: AP012047.1881956.1883470 is identical to AP012047.791244.792758 but kept for subsequent analysis
+NOTE: GU179723.1.1377 is identical to AP012048.2429210.2430725 but kept for subsequent analysis
+NOTE: AJ607391.1.1460 is identical to AY314753.1.1410 but kept for subsequent analysis
+NOTE: CP019070.609339.610856 is identical to CP019070.2095178.2096695 but kept for subsequent analysis
+NOTE: CP031217.341658.343163 is identical to CP031217.2599245.2600750 but kept for subsequent analysis
+NOTE: CP032823.102401.103906 is identical to CP031367.1764819.1766324 but kept for subsequent analysis
+NOTE: FJ573216.1.1454 is identical to CP032100.2265641.2267146 but kept for subsequent analysis
+NOTE: FJ628348.1.1478 is identical to FJ628198.1.1480 but kept for subsequent analysis
+NOTE: FJ203093.1.1440 is identical to FJ717083.1.1513 but kept for subsequent analysis
+NOTE: AB530236.1.1479 is identical to FR666867.1.1476 but kept for subsequent analysis
+NOTE: JF268371.1.1474 is identical to FR683719.1.1479 but kept for subsequent analysis
+NOTE: FR666861.1.1474 is identical to GQ261829.1.1477 but kept for subsequent analysis
+NOTE: HQ203914.1.1479 is identical to HM057681.1.1486 but kept for subsequent analysis
+NOTE: HM591472.1.1485 is identical to HM591345.1.1479 but kept for subsequent analysis
+NOTE: KP182996.1.1480 is identical to AB015529.1.1478 but kept for subsequent analysis
+NOTE: AJ810559.1.1432 is identical to AJ271653.1.1508 but kept for subsequent analysis
+NOTE: CP001999.2660340.2661844 is identical to CP001999.2328945.2330449 but kept for subsequent analysis
+NOTE: JF497852.1.1469 is identical to AM084124.1.1453 but kept for subsequent analysis
+NOTE: JQ215058.1.1344 is identical to FJ612312.1.1424 but kept for subsequent analysis
+NOTE: FJ717168.1.1511 is identical to FJ717163.1.1513 but kept for subsequent analysis
+NOTE: JQ712383.1.1385 is identical to FR666862.1.1474 but kept for subsequent analysis
+NOTE: KC527463.1.1216 is identical to GQ245902.1.1404 but kept for subsequent analysis
+NOTE: JN685494.1.1497 is identical to GQ844379.1.1481 but kept for subsequent analysis
+NOTE: KC527298.1.1215 is identical to HM057798.1.1502 but kept for subsequent analysis
+NOTE: GQ245905.1.1423 is identical to HQ203797.1.1479 but kept for subsequent analysis
+NOTE: ASV1783 is identical to DQ234101.1.1546 but kept for subsequent analysis
+NOTE: JQ212073.1.1346 is identical to JQ213174.1.1347 but kept for subsequent analysis
+NOTE: JQ199082.1.1345 is identical to GQ357014.1.1479 but kept for subsequent analysis
+NOTE: JX559229.1.1472 is identical to GU061291.1.1416 but kept for subsequent analysis
+NOTE: EF999357.1.1405 is identical to JX391660.1.1485 but kept for subsequent analysis
+NOTE: LLEK01000564.3498.4995 is identical to JX521798.1.1496 but kept for subsequent analysis
+NOTE: ASV709 is identical to HQ203800.1.1480 but kept for subsequent analysis
+NOTE: ASV2047 is identical to KM270348.1.1470 but kept for subsequent analysis
+NOTE: KX177630.1.1483 is identical to KX176915.1.1484 but kept for subsequent analysis
+NOTE: KX550224.1.1517 is identical to HE576787.1.1388 but kept for subsequent analysis
+NOTE: ASV685 is identical to KX422126.1.1475 but kept for subsequent analysis
+NOTE: LT629298.1.1382 is identical to LLEL01000725.12.1508 but kept for subsequent analysis
+NOTE: JQ211910.1.1343 is identical to KC527458.1.1215 but kept for subsequent analysis
+NOTE: JQ197538.1.1344 is identical to KT318714.1.1372 but kept for subsequent analysis
+NOTE: ASV782 is identical to KY235946.1.1476 but kept for subsequent analysis
+NOTE: ASV1087 is identical to JF904743.1.1478 but kept for subsequent analysis
+NOTE: ASV1438 is identical to ASV247 but kept for subsequent analysis
+NOTE: ASV522 is identical to ASV475 but kept for subsequent analysis
+NOTE: ASV1439 is identical to ASV785 but kept for subsequent analysis
+NOTE: ASV3335 is identical to ASV2528 but kept for subsequent analysis
+NOTE: 194 identical sequences (see below) will be ignored for subsequent analysis
+NOTE: EU800814.1.1277 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: AB294336.1.1439 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: AB030599.1.1452 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: DQ676433.1.1407 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: DQ133925.1.1482 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: EF467560.1.1480 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: EU662330.1.1487 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: JFJP01051705.322.1797 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: ASV1248 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: ASV2344 (identical to AB030598.1.1449) is ignored but added at the end
+NOTE: AY570594.1.1479 (identical to AB539948.1.1383) is ignored but added at the end
+NOTE: HQ218501.1.1480 (identical to AB539948.1.1383) is ignored but added at the end
+NOTE: GU179704.1.1385 (identical to AB539948.1.1383) is ignored but added at the end
+NOTE: ASV2897 (identical to AB539948.1.1383) is ignored but added at the end
+NOTE: CP031218.2298512.2300017 (identical to AF513455.1.1402) is ignored but added at the end
+NOTE: CP031218.2758484.2759989 (identical to AF513455.1.1402) is ignored but added at the end
+NOTE: CP031218.230734.232239 (identical to AF513455.1.1402) is ignored but added at the end
+NOTE: CP031218.2006547.2008052 (identical to AF513455.1.1402) is ignored but added at the end
+NOTE: CP031218.166581.168086 (identical to AF513455.1.1402) is ignored but added at the end
+NOTE: JN118552.1.1427 (identical to AF513455.1.1402) is ignored but added at the end
+NOTE: HM057804.1.1502 (identical to AF513455.1.1402) is ignored but added at the end
+NOTE: ASV4559 (identical to AF513455.1.1402) is ignored but added at the end
+NOTE: CP000361.847461.848975 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: CP000361.2003610.2005124 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: CP000361.2274813.2276327 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: CP006615.1882920.1884424 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: CP006615.2184913.2186417 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: FJ612319.1.1470 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: JQ743025.1.1413 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: JX393002.1.1430 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: LT906455.1918668.1920172 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: LT906455.2281175.2282679 (identical to AP012047.791244.792758) is ignored but added at the end
+NOTE: HE565360.1.1402 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: AP012048.2339767.2341282 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: AP012048.2850041.2851556 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: CP032097.951489.952994 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: AP012048.1097572.1099087 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: CP032097.2142906.2144411 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: AP012048.2586203.2587718 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: FJ900992.1.1315 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: GU179703.1.1379 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: GU451405.1.1215 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: HQ203977.1.1485 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: CP032097.2437538.2439043 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: CP032097.2284812.2286317 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: CP032097.2715696.2717201 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: GU179722.1.1362 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: KT283075.1.1478 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: LK392931.1.1391 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: LK393053.1.1367 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: GU179716.1.1374 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: HQ115595.1.1402 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: KM668167.1.1480 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: LK392968.1.1384 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: LK393019.1.1384 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: LK393070.1.1366 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: MF040336.1.1478 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: JQ845780.1.1325 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: LK392962.1.1383 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: LK393101.1.1364 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: ASV194 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: ASV566 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: ASV1867 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: ASV4426 (identical to AP012048.2429210.2430725) is ignored but added at the end
+NOTE: AY314754.1.1483 (identical to AY314753.1.1410) is ignored but added at the end
+NOTE: AJ607392.1.1468 (identical to AY314753.1.1410) is ignored but added at the end
+NOTE: FJ660508.1.1459 (identical to AY314753.1.1410) is ignored but added at the end
+NOTE: LK392738.1.1211 (identical to AY314753.1.1410) is ignored but added at the end
+NOTE: LK392700.1.1386 (identical to AY314753.1.1410) is ignored but added at the end
+NOTE: JARS01000027.280.1777 (identical to AY314753.1.1410) is ignored but added at the end
+NOTE: ASV2384 (identical to AY314753.1.1410) is ignored but added at the end
+NOTE: CP019070.2682675.2684192 (identical to CP019070.2095178.2096695) is ignored but added at the end
+NOTE: CP019070.1936360.1937877 (identical to CP019070.2095178.2096695) is ignored but added at the end
+NOTE: CP019070.2816412.2817929 (identical to CP019070.2095178.2096695) is ignored but added at the end
+NOTE: CP019070.2388699.2390216 (identical to CP019070.2095178.2096695) is ignored but added at the end
+NOTE: ASV527 (identical to CP019070.2095178.2096695) is ignored but added at the end
+NOTE: ASV1471 (identical to CP019070.2095178.2096695) is ignored but added at the end
+NOTE: CP031217.1945484.1946989 (identical to CP031217.2599245.2600750) is ignored but added at the end
+NOTE: CP031217.1961684.1963189 (identical to CP031217.2599245.2600750) is ignored but added at the end
+NOTE: LT904750.1.1202 (identical to CP031217.2599245.2600750) is ignored but added at the end
+NOTE: FJ573217.1.1451 (identical to CP031217.2599245.2600750) is ignored but added at the end
+NOTE: CP032825.302516.304021 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP032825.540386.541891 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP032825.1264110.1265615 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: EF064151.1.1390 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: FN650333.1.1309 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP031367.1626402.1627907 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: AF324539.1.1486 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP032823.69871.71376 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CU925531.1.1345 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: DQ234115.1.1547 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP031367.1403197.1404702 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: FR682113.1.1402 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP031367.1837400.1838905 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP031367.506253.507758 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP032823.303648.305153 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP032823.568634.570139 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP032825.56100.57605 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: KM668178.1.1489 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP032823.785256.786761 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CP032825.83730.85235 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: CU926906.2.1345 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: GU300770.1.1377 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: JX392996.1.1417 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: L14624.1.1462 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: KJ862122.1.1382 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: ASV55 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: ASV897 (identical to CP031367.1764819.1766324) is ignored but added at the end
+NOTE: GU061286.1.1415 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: AM084114.1.1464 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: CP032100.2549892.2551397 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: CP032100.2137959.2139464 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: CP032100.1735385.1736890 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: HE565359.1.1401 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: CP032100.2049452.2050957 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: LK393014.1.1392 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: DQ234254.1.1547 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: JQ845805.1.1325 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: JX403059.1.1507 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: ASV279 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: ASV684 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: ASV703 (identical to CP032100.2265641.2267146) is ignored but added at the end
+NOTE: FJ628196.1.1478 (identical to FJ628198.1.1480) is ignored but added at the end
+NOTE: FJ628291.1.1488 (identical to FJ628198.1.1480) is ignored but added at the end
+NOTE: EU570854.1.1481 (identical to FJ628198.1.1480) is ignored but added at the end
+NOTE: FJ628197.1.1489 (identical to FJ628198.1.1480) is ignored but added at the end
+NOTE: FJ628347.1.1476 (identical to FJ628198.1.1480) is ignored but added at the end
+NOTE: FJ628239.1.1477 (identical to FJ628198.1.1480) is ignored but added at the end
+NOTE: FJ628352.1.1488 (identical to FJ628198.1.1480) is ignored but added at the end
+NOTE: ASV1280 (identical to FJ628198.1.1480) is ignored but added at the end
+NOTE: JX170279.1.1405 (identical to FJ717083.1.1513) is ignored but added at the end
+NOTE: JQ195744.1.1344 (identical to FJ717083.1.1513) is ignored but added at the end
+NOTE: JX170315.1.1383 (identical to FJ717083.1.1513) is ignored but added at the end
+NOTE: KF799695.1.1483 (identical to FR683719.1.1479) is ignored but added at the end
+NOTE: KY235925.1.1411 (identical to FR683719.1.1479) is ignored but added at the end
+NOTE: KF799568.1.1479 (identical to FR683719.1.1479) is ignored but added at the end
+NOTE: ASV2880 (identical to FR683719.1.1479) is ignored but added at the end
+NOTE: ASV7711 (identical to FR683719.1.1479) is ignored but added at the end
+NOTE: FR666869.1.1474 (identical to GQ261829.1.1477) is ignored but added at the end
+NOTE: FR666864.1.1474 (identical to GQ261829.1.1477) is ignored but added at the end
+NOTE: KT257856.1.1480 (identical to GQ261829.1.1477) is ignored but added at the end
+NOTE: KX581190.1.1516 (identical to GQ261829.1.1477) is ignored but added at the end
+NOTE: KY235977.1.1474 (identical to GQ261829.1.1477) is ignored but added at the end
+NOTE: ASV1887 (identical to GQ261829.1.1477) is ignored but added at the end
+NOTE: HM057667.1.1487 (identical to HM057681.1.1486) is ignored but added at the end
+NOTE: HM057692.1.1487 (identical to HM057681.1.1486) is ignored but added at the end
+NOTE: ASV196 (identical to HM057681.1.1486) is ignored but added at the end
+NOTE: ASV774 (identical to HM057681.1.1486) is ignored but added at the end
+NOTE: ASV913 (identical to HM057681.1.1486) is ignored but added at the end
+NOTE: JQ611206.1.1378 (identical to HM591345.1.1479) is ignored but added at the end
+NOTE: HM591433.1.1479 (identical to HM591345.1.1479) is ignored but added at the end
+NOTE: JN233480.1.1439 (identical to AB015529.1.1478) is ignored but added at the end
+NOTE: KC682350.1.1482 (identical to AB015529.1.1478) is ignored but added at the end
+NOTE: JN233497.1.1440 (identical to AB015529.1.1478) is ignored but added at the end
+NOTE: CP001999.237935.239439 (identical to CP001999.2328945.2330449) is ignored but added at the end
+NOTE: CP001999.3087363.3088867 (identical to CP001999.2328945.2330449) is ignored but added at the end
+NOTE: L14627.1.1461 (identical to CP001999.2328945.2330449) is ignored but added at the end
+NOTE: ASV849 (identical to AM084124.1.1453) is ignored but added at the end
+NOTE: FJ612335.1.1474 (identical to FJ612312.1.1424) is ignored but added at the end
+NOTE: JQ211124.1.1344 (identical to FJ612312.1.1424) is ignored but added at the end
+NOTE: JQ215660.1.1345 (identical to FJ612312.1.1424) is ignored but added at the end
+NOTE: JX403025.1.1514 (identical to FJ612312.1.1424) is ignored but added at the end
+NOTE: LK392734.1.1244 (identical to FJ612312.1.1424) is ignored but added at the end
+NOTE: KM410309.1.1510 (identical to GQ844379.1.1481) is ignored but added at the end
+NOTE: ASV4671 (identical to GQ844379.1.1481) is ignored but added at the end
+NOTE: JQ895021.1.1435 (identical to HM057798.1.1502) is ignored but added at the end
+NOTE: KM820506.1.1479 (identical to HM057798.1.1502) is ignored but added at the end
+NOTE: ASV1973 (identical to HM057798.1.1502) is ignored but added at the end
+NOTE: ASV2272 (identical to DQ234101.1.1546) is ignored but added at the end
+NOTE: JQ213296.1.1350 (identical to JQ213174.1.1347) is ignored but added at the end
+NOTE: JQ214547.1.1346 (identical to JQ213174.1.1347) is ignored but added at the end
+NOTE: KY235965.1.1476 (identical to GQ357014.1.1479) is ignored but added at the end
+NOTE: HQ203962.1.1486 (identical to GQ357014.1.1479) is ignored but added at the end
+NOTE: KY235976.1.1491 (identical to GQ357014.1.1479) is ignored but added at the end
+NOTE: JX016315.1.1478 (identical to GQ357014.1.1479) is ignored but added at the end
+NOTE: ASV155 (identical to GQ357014.1.1479) is ignored but added at the end
+NOTE: ASV267 (identical to GQ357014.1.1479) is ignored but added at the end
+NOTE: ASV331 (identical to GU061291.1.1416) is ignored but added at the end
+NOTE: ASV526 (identical to GU061291.1.1416) is ignored but added at the end
+NOTE: JX391668.1.1479 (identical to JX391660.1.1485) is ignored but added at the end
+NOTE: JX391694.1.1483 (identical to JX391660.1.1485) is ignored but added at the end
+NOTE: KC682366.1.1483 (identical to JX391660.1.1485) is ignored but added at the end
+NOTE: ASV4621 (identical to JX391660.1.1485) is ignored but added at the end
+NOTE: HQ729100.1.1479 (identical to JX521798.1.1496) is ignored but added at the end
+NOTE: ASV2197 (identical to JX521798.1.1496) is ignored but added at the end
+NOTE: JX521734.1.1489 (identical to KX176915.1.1484) is ignored but added at the end
+NOTE: KX177125.1.1485 (identical to KX176915.1.1484) is ignored but added at the end
+NOTE: ASV5532 (identical to KC527458.1.1215) is ignored but added at the end
+NOTE: ASV4212 (identical to KY235946.1.1476) is ignored but added at the end
+NOTE: ASV5247 (identical to KY235946.1.1476) is ignored but added at the end
+NOTE: ASV5285 (identical to JF904743.1.1478) is ignored but added at the end
+NOTE: ASV2244 (identical to ASV247) is ignored but added at the end
+NOTE: ASV712 (identical to ASV475) is ignored but added at the end
+NOTE: ASV1523 (identical to ASV785) is ignored but added at the end
+Alignment was printed to Arcobacter_silva.fa.uniqueseq.phy
+
+For your convenience alignment with unique sequences printed to Arcobacter_silva.fa.uniqueseq.phy
+
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 0.029 seconds
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+Perform fast likelihood tree search using GTR+I+G model...
+Estimate model parameters (epsilon = 5.000)
+Perform nearest neighbor interchange...
+Estimate model parameters (epsilon = 1.000)
+1. Initial log-likelihood: -3211.716
+Optimal log-likelihood: -3211.687
+Rate parameters:  A-C: 0.96228  A-G: 3.22586  A-T: 1.35423  C-G: 1.77802  C-T: 5.25649  G-T: 1.00000
+Base frequencies:  A: 0.292  C: 0.191  G: 0.315  T: 0.201
+Proportion of invariable sites: 0.271
+Gamma shape alpha: 0.349
+Parameters optimization took 1 rounds (0.044 sec)
+Time for fast ML tree search: 0.582 seconds
+
+NOTE: ModelFinder requires 12 MB RAM!
+ModelFinder will test up to 286 DNA models (sample size: 355) ...
+ No. Model         -LnL         df  AIC          AICc         BIC
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+  1  GTR+F         3529.518     489 8037.035     487257.035   9930.501
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+  2  GTR+F+I       3360.247     490 7700.494     488880.494   9597.831
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+  3  GTR+F+G4      3215.952     490 7411.905     488591.905   9309.243
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+  4  GTR+F+I+G4    3211.645     491 7405.289     490549.289   9306.499
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+  5  GTR+F+R2      3177.866     491 7337.733     490481.733   9238.943
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+  6  GTR+F+R3      3161.278     493 7308.556     494392.556   9217.510
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+  7  GTR+F+R4      3160.728     495 7311.456     498351.456   9228.154
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+ 19  SYM+R3        3175.022     490 7330.043     488510.043   9227.381
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+ 32  TVM+F+R3      3171.883     492 7327.766     492439.766   9232.848
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+ 45  TVMe+R3       3175.412     489 7328.825     486548.825   9222.290
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+ 58  TIM3+F+R3     3165.461     491 7312.922     490456.922   9214.132
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+ 71  TIM3e+R3      3179.496     488 7334.991     484598.991   9224.585
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+ 84  TIM2+F+R3     3165.082     491 7312.164     490456.164   9213.374
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+ 97  TIM2e+R3      3178.726     488 7333.452     484597.452   9223.045
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+110  TIM+F+R3      3161.800     491 7305.600     490449.600   9206.810
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+123  TIMe+R3       3175.808     488 7327.616     484591.616   9217.209
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+136  TPM3u+F+R3    3175.830     490 7331.660     488511.660   9228.998
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+149  TPM3+F+R3     3175.830     490 7331.660     488511.660   9228.998
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+162  TPM2u+F+R3    3175.591     490 7331.183     488511.183   9228.520
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+175  TPM2+F+R3     3175.591     490 7331.183     488511.183   9228.520
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+188  K3Pu+F+R3     3172.213     490 7324.426     488504.426   9221.763
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+201  K3P+R3        3176.164     487 7326.328     482638.328   9212.049
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+214  TN+F+R3       3165.524     490 7311.047     488491.047   9208.385
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+227  TNe+R3        3179.507     487 7333.015     482645.015   9218.736
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+240  HKY+F+R3      3175.842     489 7329.685     486549.685   9223.150
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+253  K2P+R3        3179.853     486 7331.706     480695.706   9213.555
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+266  F81+F+R3      3239.556     488 7455.111     484719.111   9344.705
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+279  JC+R3         3254.503     485 7479.006     478899.006   9356.983
+Akaike Information Criterion:           TIM+F+R3
+Corrected Akaike Information Criterion: JC+R3
+Bayesian Information Criterion:         TIM+F+R3
+Best-fit model: TIM+F+R3 chosen according to BIC
+
+All model information printed to Arcobacter_silva.fa.model.gz
+CPU time for ModelFinder: 97.344 seconds (0h:1m:37s)
+Wall-clock time for ModelFinder: 13.870 seconds (0h:0m:13s)
+Generating 1000 samples for ultrafast bootstrap (seed: 564430)...
+
+NOTE: 4 MB RAM (0 GB) is required!
+WARNING: Number of threads seems too high for short alignments. Use -nt AUTO to determine best number of threads.
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -3160.884
+2. Current log-likelihood: -3155.118
+Optimal log-likelihood: -3155.116
+Rate parameters:  A-C: 1.00000  A-G: 3.19413  A-T: 1.62388  C-G: 1.62388  C-T: 6.26294  G-T: 1.00000
+Base frequencies:  A: 0.292  C: 0.191  G: 0.315  T: 0.201
+Site proportion and rates:  (0.902,0.329) (0.082,5.280) (0.016,16.541)
+Parameters optimization took 2 rounds (0.141 sec)
+Computing ML distances based on estimated model parameters... 1.034 sec
+Computing BIONJ tree...
+0.071 seconds
+Log-likelihood of BIONJ tree: -3151.365
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 3.262 second
+Computing log-likelihood of 98 initial trees ... 1.551 seconds
+Current best score: -3128.261
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -3121.857
+Iteration 10 / LogL: -3150.912 / Time: 0h:0m:18s
+Iteration 20 / LogL: -3145.126 / Time: 0h:0m:31s
+Finish initializing candidate tree set (20)
+Current best tree score: -3121.857 / CPU time: 30.674
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 23: -3114.911
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 27: -3112.487
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 29: -3110.995
+Iteration 30 / LogL: -3119.786 / Time: 0h:0m:48s (0h:2m:44s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 37: -3103.807
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 39: -3100.422
+Iteration 40 / LogL: -3113.693 / Time: 0h:1m:6s (0h:2m:48s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 43: -3097.072
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 45: -3092.934
+Iteration 50 / LogL: -3146.763 / Time: 0h:1m:24s (0h:2m:43s left)
+Log-likelihood cutoff on original alignment: -3172.663
+Iteration 60 / LogL: -3102.454 / Time: 0h:1m:40s (0h:2m:24s left)
+Iteration 70 / LogL: -3094.399 / Time: 0h:1m:56s (0h:2m:6s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 75: -3092.613
+Iteration 80 / LogL: -3094.632 / Time: 0h:2m:12s (0h:2m:39s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 83: -3090.968
+Iteration 90 / LogL: -3091.927 / Time: 0h:2m:29s (0h:2m:35s left)
+Iteration 100 / LogL: -3103.392 / Time: 0h:2m:44s (0h:2m:17s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.983
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 101: -3088.115
+Iteration 110 / LogL: -3092.673 / Time: 0h:3m:0s (0h:2m:30s left)
+Iteration 120 / LogL: -3091.280 / Time: 0h:3m:16s (0h:2m:13s left)
+Iteration 130 / LogL: -3097.219 / Time: 0h:3m:33s (0h:1m:57s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 132: -3087.881
+Iteration 140 / LogL: -3097.617 / Time: 0h:3m:49s (0h:2m:32s left)
+Iteration 150 / LogL: -3112.976 / Time: 0h:4m:7s (0h:2m:16s left)
+Log-likelihood cutoff on original alignment: -3172.663
+BETTER TREE FOUND at iteration 159: -3087.875
+Iteration 160 / LogL: -3103.570 / Time: 0h:4m:26s (0h:2m:46s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 164: -3083.390
+Iteration 170 / LogL: -3107.627 / Time: 0h:4m:44s (0h:2m:38s left)
+Iteration 180 / LogL: -3092.333 / Time: 0h:5m:1s (0h:2m:21s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 182: -3076.552
+Iteration 190 / LogL: -3097.207 / Time: 0h:5m:18s (0h:2m:35s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 198: -3076.174
+Iteration 200 / LogL: -3102.847 / Time: 0h:5m:35s (0h:2m:45s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.923
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 210 / LogL: -3098.136 / Time: 0h:5m:54s (0h:2m:32s left)
+Iteration 220 / LogL: -3079.569 / Time: 0h:6m:12s (0h:2m:15s left)
+Iteration 230 / LogL: -3094.948 / Time: 0h:6m:31s (0h:1m:59s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 238: -3073.887
+Iteration 240 / LogL: -3085.411 / Time: 0h:6m:48s (0h:2m:47s left)
+Iteration 250 / LogL: -3073.944 / Time: 0h:7m:6s (0h:2m:30s left)
+Log-likelihood cutoff on original alignment: -3172.663
+Iteration 260 / LogL: -3081.677 / Time: 0h:7m:26s (0h:2m:14s left)
+BETTER TREE FOUND at iteration 264: -3073.884
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 269: -3073.745
+Iteration 270 / LogL: -3080.548 / Time: 0h:7m:47s (0h:2m:51s left)
+Iteration 280 / LogL: -3087.463 / Time: 0h:8m:7s (0h:2m:35s left)
+Iteration 290 / LogL: -3088.651 / Time: 0h:8m:26s (0h:2m:18s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 296: -3072.511
+Iteration 300 / LogL: -3073.782 / Time: 0h:8m:45s (0h:2m:48s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.914
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 302: -3072.080
+Iteration 310 / LogL: -3076.037 / Time: 0h:9m:4s (0h:2m:42s left)
+Iteration 320 / LogL: -3080.210 / Time: 0h:9m:24s (0h:2m:25s left)
+Iteration 330 / LogL: -3075.377 / Time: 0h:9m:44s (0h:2m:7s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 332: -3071.655
+Iteration 340 / LogL: -3073.691 / Time: 0h:10m:1s (0h:2m:43s left)
+Iteration 350 / LogL: -3081.838 / Time: 0h:10m:21s (0h:2m:25s left)
+Log-likelihood cutoff on original alignment: -3172.663
+Iteration 360 / LogL: -3077.952 / Time: 0h:10m:40s (0h:2m:8s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 362: -3071.595
+Iteration 370 / LogL: -3087.027 / Time: 0h:11m:0s (0h:2m:44s left)
+Iteration 380 / LogL: -3072.568 / Time: 0h:11m:19s (0h:2m:27s left)
+BETTER TREE FOUND at iteration 388: -3071.590
+Iteration 390 / LogL: -3075.448 / Time: 0h:11m:37s (0h:2m:55s left)
+Iteration 400 / LogL: -3092.833 / Time: 0h:11m:55s (0h:2m:37s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.956
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 410 / LogL: -3079.018 / Time: 0h:12m:16s (0h:2m:42s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 411: -3070.904
+Iteration 420 / LogL: -3073.419 / Time: 0h:12m:36s (0h:2m:44s left)
+Iteration 430 / LogL: -3113.566 / Time: 0h:12m:54s (0h:2m:26s left)
+Iteration 440 / LogL: -3072.795 / Time: 0h:13m:13s (0h:2m:8s left)
+Iteration 450 / LogL: -3075.884 / Time: 0h:13m:33s (0h:1m:50s left)
+Log-likelihood cutoff on original alignment: -3172.663
+Iteration 460 / LogL: -3074.761 / Time: 0h:13m:53s (0h:1m:32s left)
+Iteration 470 / LogL: -3080.570 / Time: 0h:14m:13s (0h:1m:14s left)
+Iteration 480 / LogL: -3076.708 / Time: 0h:14m:32s (0h:0m:56s left)
+Iteration 490 / LogL: -3071.501 / Time: 0h:14m:50s (0h:0m:38s left)
+Iteration 500 / LogL: -3106.563 / Time: 0h:15m:9s (0h:0m:20s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.966
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 510 / LogL: -3076.347 / Time: 0h:15m:30s (0h:2m:44s left)
+Iteration 520 / LogL: -3075.232 / Time: 0h:15m:51s (0h:2m:26s left)
+Iteration 530 / LogL: -3076.989 / Time: 0h:16m:12s (0h:2m:8s left)
+Iteration 540 / LogL: -3072.096 / Time: 0h:16m:33s (0h:1m:50s left)
+Iteration 550 / LogL: -3075.811 / Time: 0h:16m:52s (0h:1m:32s left)
+Log-likelihood cutoff on original alignment: -3172.663
+Iteration 560 / LogL: -3075.144 / Time: 0h:17m:12s (0h:1m:13s left)
+Iteration 570 / LogL: -3120.925 / Time: 0h:17m:32s (0h:0m:55s left)
+Iteration 580 / LogL: -3081.683 / Time: 0h:17m:53s (0h:0m:37s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 587: -3070.808
+Iteration 590 / LogL: -3094.570 / Time: 0h:18m:13s (0h:3m:0s left)
+BETTER TREE FOUND at iteration 598: -3070.807
+Iteration 600 / LogL: -3081.588 / Time: 0h:18m:33s (0h:3m:2s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.973
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 610 / LogL: -3073.960 / Time: 0h:18m:55s (0h:2m:47s left)
+Iteration 620 / LogL: -3090.784 / Time: 0h:19m:17s (0h:2m:29s left)
+Iteration 630 / LogL: -3085.839 / Time: 0h:19m:37s (0h:2m:11s left)
+Iteration 640 / LogL: -3097.677 / Time: 0h:19m:58s (0h:1m:52s left)
+Iteration 650 / LogL: -3087.025 / Time: 0h:20m:18s (0h:1m:33s left)
+Log-likelihood cutoff on original alignment: -3172.663
+Iteration 660 / LogL: -3078.154 / Time: 0h:20m:41s (0h:1m:15s left)
+Iteration 670 / LogL: -3088.240 / Time: 0h:21m:1s (0h:0m:56s left)
+Iteration 680 / LogL: -3090.064 / Time: 0h:21m:22s (0h:0m:37s left)
+Iteration 690 / LogL: -3106.248 / Time: 0h:21m:43s (0h:0m:18s left)
+Iteration 700 / LogL: -3079.161 / Time: 0h:22m:3s (0h:0m:0s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.978
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 710 / LogL: -3108.804 / Time: 0h:22m:25s (0h:2m:50s left)
+Iteration 720 / LogL: -3073.142 / Time: 0h:22m:46s (0h:2m:32s left)
+Iteration 730 / LogL: -3079.306 / Time: 0h:23m:7s (0h:2m:13s left)
+Iteration 740 / LogL: -3089.580 / Time: 0h:23m:28s (0h:1m:54s left)
+Iteration 750 / LogL: -3075.926 / Time: 0h:23m:49s (0h:1m:35s left)
+Log-likelihood cutoff on original alignment: -3172.663
+Iteration 760 / LogL: -3080.871 / Time: 0h:24m:10s (0h:1m:16s left)
+Iteration 770 / LogL: -3125.481 / Time: 0h:24m:31s (0h:0m:57s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 777: -3070.746
+Iteration 780 / LogL: -3089.903 / Time: 0h:24m:51s (0h:3m:5s left)
+Iteration 790 / LogL: -3081.784 / Time: 0h:25m:12s (0h:2m:46s left)
+Iteration 800 / LogL: -3099.409 / Time: 0h:25m:32s (0h:2m:27s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.983
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 810 / LogL: -3079.457 / Time: 0h:25m:54s (0h:2m:52s left)
+Iteration 820 / LogL: -3072.205 / Time: 0h:26m:15s (0h:2m:33s left)
+Iteration 830 / LogL: -3071.453 / Time: 0h:26m:38s (0h:2m:14s left)
+Iteration 840 / LogL: -3082.556 / Time: 0h:26m:59s (0h:1m:55s left)
+Iteration 850 / LogL: -3086.152 / Time: 0h:27m:23s (0h:1m:36s left)
+Log-likelihood cutoff on original alignment: -3172.663
+Iteration 860 / LogL: -3082.287 / Time: 0h:27m:46s (0h:1m:17s left)
+Iteration 870 / LogL: -3093.810 / Time: 0h:28m:7s (0h:0m:58s left)
+Iteration 880 / LogL: -3076.055 / Time: 0h:28m:28s (0h:0m:38s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 884: -3070.226
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 890: -3069.695
+Iteration 890 / LogL: -3069.695 / Time: 0h:28m:51s (0h:3m:14s left)
+Iteration 900 / LogL: -3070.315 / Time: 0h:29m:13s (0h:2m:55s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.989
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 910 / LogL: -3078.598 / Time: 0h:29m:37s (0h:2m:55s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 917: -3069.644
+Iteration 920 / LogL: -3085.290 / Time: 0h:29m:59s (0h:3m:9s left)
+BETTER TREE FOUND at iteration 921: -3069.643
+Iteration 930 / LogL: -3077.611 / Time: 0h:30m:21s (0h:2m:58s left)
+Iteration 940 / LogL: -3084.280 / Time: 0h:30m:45s (0h:2m:39s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 942: -3069.283
+BETTER TREE FOUND at iteration 945: -3069.282
+Iteration 950 / LogL: -3080.151 / Time: 0h:31m:8s (0h:3m:7s left)
+Log-likelihood cutoff on original alignment: -3172.663
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 957: -3068.481
+Iteration 960 / LogL: -3078.922 / Time: 0h:31m:32s (0h:3m:11s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 970: -3068.429
+Iteration 970 / LogL: -3068.429 / Time: 0h:31m:55s (0h:3m:17s left)
+Iteration 980 / LogL: -3094.942 / Time: 0h:32m:15s (0h:2m:57s left)
+Iteration 990 / LogL: -3090.820 / Time: 0h:32m:39s (0h:2m:38s left)
+Iteration 1000 / LogL: -3072.859 / Time: 0h:33m:2s (0h:2m:18s left)
+Log-likelihood cutoff on original alignment: -3172.663
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.989
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+WARNING: bootstrap analysis did not converge. You should rerun with higher number of iterations (-nm option)
+TREE SEARCH COMPLETED AFTER 1001 ITERATIONS / Time: 0h:33m:6s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -3068.429
+Optimal log-likelihood: -3068.429
+Rate parameters:  A-C: 1.00000  A-G: 3.83565  A-T: 1.62394  C-G: 1.62394  C-T: 7.60808  G-T: 1.00000
+Base frequencies:  A: 0.292  C: 0.191  G: 0.315  T: 0.201
+Site proportion and rates:  (0.903,0.333) (0.078,4.727) (0.018,17.931)
+Parameters optimization took 1 rounds (0.075 sec)
+BEST SCORE FOUND : -3068.429
+Creating bootstrap support values...
+Split supports printed to NEXUS file Arcobacter_silva.fa.splits.nex
+Total tree length: 1.415
+
+Total number of iterations: 1001
+CPU time used for tree search: 13383.191 sec (3h:43m:3s)
+Wall-clock time used for tree search: 1986.153 sec (0h:33m:6s)
+Total CPU time used: 13388.016 sec (3h:43m:8s)
+Total wall-clock time used: 1988.304 sec (0h:33m:8s)
+
+Computing bootstrap consensus tree...
+Reading input file Arcobacter_silva.fa.splits.nex...
+242 taxa and 5543 splits.
+Consensus tree written to Arcobacter_silva.fa.contree
+Reading input trees file Arcobacter_silva.fa.contree
+Log-likelihood of consensus tree: -3071.871
+
+Analysis results written to: 
+  IQ-TREE report:                Arcobacter_silva.fa.iqtree
+  Maximum-likelihood tree:       Arcobacter_silva.fa.treefile
+  Likelihood distances:          Arcobacter_silva.fa.mldist
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          Arcobacter_silva.fa.splits.nex
+  Consensus tree:                Arcobacter_silva.fa.contree
+  Screen log file:               Arcobacter_silva.fa.log
+
+Date and Time: Mon Dec 21 06:03:07 2020
+
+real	33m23.758s
+user	224m47.481s
+sys	0m51.867s
