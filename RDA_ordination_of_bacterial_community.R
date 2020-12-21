@@ -42,7 +42,6 @@ all.data$DistanceWW <- ifelse(all.data$Location == "R-Estuary-1", "750", ifelse(
                                                                                        ifelse(all.data$Location == "OS-Marine", "2600", "0"))))
 all.data$DistanceWW <- as.numeric(all.data$DistanceWW)
 
-
 #Import phyloseq (variance stabilased data)
 phy_obj3 <- readRDS("./data/ps.vst.20.RDS")
 

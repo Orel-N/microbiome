@@ -11,7 +11,6 @@ library("ape")
 library("ggtree") 
 library(tidyr)
 
-
 #Load data
 phy_obj3 <- readRDS("./data/phyloseqFiltered.RDS")
 

@@ -19,6 +19,7 @@ theme_set(theme_bw())
 location.col <- readRDS("./data/location_col.RDS")
 season.col <- readRDS("./data/season_col.RDS")
 
+
 ##################################
 #Import dada2 output into phyloseq
 ##################################
