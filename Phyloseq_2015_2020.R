@@ -18,7 +18,6 @@ theme_set(theme_bw())
 #Import collor palette
 source("./scripts/Color_palettes.R")
 
-
 ##################################
 #Import dada2 output into phyloseq
 ##################################
