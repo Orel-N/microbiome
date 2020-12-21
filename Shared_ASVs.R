@@ -22,11 +22,8 @@ source("./scripts/pres_abs_matrix.R")
 BAC_pruned <- readRDS("./data/phyloseqFiltered.RDS")
 Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
 
-#Import collor pallets
-phyla.col <- readRDS("./data/phyla_col.RDS")
-indicators.col <- readRDS("./data/indicators_col.RDS")
-season.col <- readRDS("./data/season_col.RDS")
-location.col <- readRDS("./data/location_col.RDS")
+#Import collor palette
+source("./scripts/Color_palettes.R")
 
 
 ##########################################################
@@ -122,18 +119,18 @@ BAC_CN01.a <- prune_taxa(taxa_sums(BAC_CN01.a)>0, BAC_CN01.a)
 
 #make a list
 y <- list()
-y[["R-Estuary-1"]] <- as.character(row.names(otu_table(BAC_ERI2)))
-y[["R-Estuary-2"]] <- as.character(row.names(otu_table(BAC_0014)))
-y[["NS-Marine"]] <- as.character(row.names(otu_table(BAC_000K)))
-y[["OS-Marine"]] <- as.character(row.names(otu_table(BAC_00BF)))
-y[["SM-Outfall"]] <- as.character(row.names(otu_table(BAC_CN01)))
+y[["REstuary1"]] <- as.character(row.names(otu_table(BAC_ERI2)))
+y[["REstuary2"]] <- as.character(row.names(otu_table(BAC_0014)))
+y[["NSMarine"]] <- as.character(row.names(otu_table(BAC_000K)))
+y[["OSMarine"]] <- as.character(row.names(otu_table(BAC_00BF)))
+y[["SMOutfall"]] <- as.character(row.names(otu_table(BAC_CN01)))
 
 y.mic <- list()
-y.mic[["R-Estuary-1"]] <- as.character(row.names(otu_table(Mic_ERI2)))
-y.mic[["R-Estuary-2"]] <- as.character(row.names(otu_table(Mic_0014)))
-y.mic[["NS-Marine"]] <- as.character(row.names(otu_table(Mic_000K)))
-y.mic[["OS-Marine"]] <- as.character(row.names(otu_table(Mic_00BF)))
-y.mic[["SM-Outfall"]] <- as.character(row.names(otu_table(Mic_CN01)))
+y.mic[["REstuary1"]] <- as.character(row.names(otu_table(Mic_ERI2)))
+y.mic[["REstuary2"]] <- as.character(row.names(otu_table(Mic_0014)))
+y.mic[["NSMarine"]] <- as.character(row.names(otu_table(Mic_000K)))
+y.mic[["OSMarine"]] <- as.character(row.names(otu_table(Mic_00BF)))
+y.mic[["SMOutfall"]] <- as.character(row.names(otu_table(Mic_CN01)))
 
 y2 <- list ()
 
@@ -249,20 +246,20 @@ names(metadata2) <- c("sets", "Location","Season")
 
 #Shared ASVs between locations - all seasons together
 upset(otu_overlaps_merged, number.angles = 30, nintersects = 20,
-      sets = c("SM-Outfall", "OS-Marine", "NS-Marine","R-Estuary-2", "R-Estuary-1"),
+      sets = c("SMOutfall", "OSMarine", "NSMarine","REstuary2", "REstuary1"),
       keep.order = TRUE,
       mainbar.y.label = "No. of overlaping OTU",
       order.by = "freq",
-      boxplot.summary = c("Abundance"),
+      #boxplot.summary = c("Abundance"),
       empty.intersections = "on",
       queries = list(list(query = intersects, 
-                          params = list("R-Estuary-1", "R-Estuary-2", "NS-Marine", "OS-Marine", "SM-Outfall"), 
+                          params = list("REstuary1", "REstuary2", "NSMarine", "OSMarine", "SMOutfall"), 
                           color = "red"),
                      list(query = intersects, 
-                          params = list("R-Estuary-1", "R-Estuary-2"), 
+                          params = list("REstuary1", "REstuary2"), 
                           color = "yellow"),
                      list(query = intersects, 
-                          params = list("OS-Marine", "SM-Outfall"), 
+                          params = list("OSMarine", "SMOutfall"), 
                           color = "blue")))
 
 #Shared ASVs between locations - ONLY MICROBIAL INDICATORS
@@ -274,10 +271,10 @@ upset(otu_overlaps_merged.mic, number.angles = 30, nintersects = 20,
       boxplot.summary = c("Abundance"),
       empty.intersections = "on",
       queries = list(list(query = intersects, 
-                        params = list("R-Estuary-1", "R-Estuary-2", "NS-Marine", "OS-Marine", "SM-Outfall"), 
+                        params = list("REstuary1", "REstuary2", "NSMarine", "OSMarine", "SMOutfall"), 
                         color = "red"),
                      list(query = intersects, 
-                        params = list("R-Estuary-1", "R-Estuary-2"), 
+                        params = list("REstuary1", "REstuary2"), 
                         color = "yellow")))
 
 #Shared ASVs between locations and seasons
@@ -306,12 +303,27 @@ dev.off()
 #Select only ASVs present at all locations
 BAC_pruned.ra.long.shared <- BAC_pruned.ra.long[BAC_pruned.ra.long$OTU %in% rownames(pres_abs_matrix(y))[rowSums(pres_abs_matrix(y))==5],]
 
+#Calculate % of reads
+seq <- subset_taxa(BAC_pruned, taxa_names(BAC_pruned) %in% c(BAC_pruned.ra.long.shared$OTU))
+seq <- prune_taxa(taxa_sums(seq)>0, seq)
+a <- sum(sample_sums(seq))
+b <- sum(sample_sums(BAC_pruned))
+a/b
+
 #Aggregate by taxonomy
 BAC_pruned.ra.long.shared.agg <- aggregate(Abundance~Location+Season+Depth+Class, BAC_pruned.ra.long.shared, FUN= sum)
 BAC_pruned.ra.long.shared.agg$Abundance <- BAC_pruned.ra.long.shared.agg$Abundance*100
 
 #Remove below 0.5% ra
 BAC_pruned.ra.long.shared.agg <- BAC_pruned.ra.long.shared.agg[BAC_pruned.ra.long.shared.agg$Abundance>3,]
+#remove below 1% ra
+threshold <- 3
+BAC_pruned.ra.long.shared.agg$Class <- as.character(BAC_pruned.ra.long.shared.agg$Class)
+taxa_classes <- unique(BAC_pruned.ra.long.shared.agg$Class[!BAC_pruned.ra.long.shared.agg$Abundance<threshold])
+BAC_pruned.ra.long.shared.agg$Class[BAC_pruned.ra.long.shared.agg$Abundance<threshold] <- "Other taxa"
+BAC_pruned.ra.long.shared.agg$Class <- factor(BAC_pruned.ra.long.shared.agg$Class,
+                           levels=c(taxa_classes,"Other taxa"))
+
 
 #Plot
 BAC_pruned.ra.long.shared.agg$Location <- factor(BAC_pruned.ra.long.shared.agg$Location, levels = c("SM-Outfall", "OS-Marine", "NS-Marine","R-Estuary-2", "R-Estuary-1"))
@@ -345,6 +357,13 @@ colnames(otu_overlaps_merged2)[13] <- "SMOutfall"
 #Filter only selected locations
 BAC_pruned.ra.long.shared.Estuary <- filter(otu_overlaps_merged2, REstuary1 == 1 & REstuary2 == 1 & NSMarine == 0 & OSMarine == 0 & SMOutfall == 0)
 
+#Calculate % of reads
+seq <- subset_taxa(BAC_pruned, taxa_names(BAC_pruned) %in% c(BAC_pruned.ra.long.shared.Estuary$OTU))
+seq <- prune_taxa(taxa_sums(seq)>0, seq)
+a <- sum(sample_sums(seq))
+b <- sum(sample_sums(BAC_pruned))
+a/b
+
 #Aggregate by taxonomy
 BAC_pruned.ra.long.shared.Estuary.agg <- aggregate(Abundance~Location+Season+Depth+Class, BAC_pruned.ra.long.shared.Estuary, FUN= sum)
 
@@ -370,6 +389,13 @@ BAC_shared.otu.plot
 
 #Filter only selected location
 BAC_pruned.ra.long.shared.Offshore <- filter(otu_overlaps_merged2, REstuary1 == 0 & REstuary2 == 0 & NSMarine == 0 & OSMarine == 1 & SMOutfall == 1)
+
+#Calculate % of reads
+seq <- subset_taxa(BAC_pruned, taxa_names(BAC_pruned) %in% c(BAC_pruned.ra.long.shared.Offshore$OTU))
+seq <- prune_taxa(taxa_sums(seq)>0, seq)
+a <- sum(sample_sums(seq))
+b <- sum(sample_sums(BAC_pruned))
+a/b
 
 #Aggregate by taxonomy
 BAC_pruned.ra.long.shared.Offshore.agg <- aggregate(Abundance~Location+Season+Depth+Class, BAC_pruned.ra.long.shared.Offshore, FUN= sum)
@@ -521,6 +547,33 @@ BAC_shared.otu.plot <- ggplot(BAC_pruned.ra.long.shared.Estuary.agg, aes(x = Abu
 BAC_shared.otu.plot
 
 
+##############
+#Venn diagram
+##############
+
+library(nVennR)
+
+#All
+RE1 <- subset(otu_overlaps, REstuary1 == "1")$OTU
+RE2 <- subset(otu_overlaps, REstuary2 == "1")$OTU
+NSM <- subset(otu_overlaps, NSMarine == "1")$OTU
+OSM <- subset(otu_overlaps, OSMarine == "1")$OTU
+SMO <- subset(otu_overlaps, SMOutfall == "1")$OTU
+
+myV <- plotVenn(list(REstuary1=RE1, REstuary2=RE2, NSMarine=NSM, OSMarine=OSM, SMOutfall=SMO), nCycles = 7000, 
+                setColors=c('red', 'yellow', "orange", "blue", "green"), opacity=0.2, labelRegions = F, showNumbers = T, systemShow=TRUE)
+
+#Mic indicators
+mi.RE1 <- subset(otu_overlaps.mic, REstuary1 == "1")$OTU
+mi.RE2 <- subset(otu_overlaps.mic, REstuary2 == "1")$OTU
+mi.NSM <- subset(otu_overlaps.mic, NSMarine == "1")$OTU
+mi.OSM <- subset(otu_overlaps.mic, OSMarine == "1")$OTU
+mi.SMO <- subset(otu_overlaps.mic, SMOutfall == "1")$OTU
+
+myV <- plotVenn(list(REstuary1=mi.RE1, REstuary2=mi.RE2, NSMarine=mi.NSM, OSMarine=mi.OSM, SMOutfall=mi.SMO), nCycles = 7000, 
+                setColors=c('red', 'yellow', "orange", "blue", "green"), opacity=0.2, labelRegions = F, showNumbers = T, systemShow=TRUE)
+
+citation("nVennR")
 
 # CLEAN UP #################################################
 
