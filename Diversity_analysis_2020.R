@@ -1,33 +1,35 @@
-#MICROBIOME - Diversity analysis separate for 2020 dataset
-#Neža Orel, neza.orel@nib.si
-#Script for diversity analyses: graphs and statistic
-############################################################################
-
-#Set working directory
-setwd("C:/Users/nezao/Documents/5-R/Microbiome2015_2020")
+#################################
+#Diversity analysis:Dataset 2020
+#################################
 
 #Load libraries
 library(ggplot2)
 library(dplyr)
-library(ggpubr)
 library(phyloseq)
 library(RColorBrewer)
 library(DESeq2)
-library(rstatix)
 library(vegan)
 
+#Set theme
+theme_set(theme_bw())
+
+#Import collor palette
+source("./scripts/Color_palettes.R")
+
+
+############
 #Import data
-phy_obj3 <- readRDS("./data/phyloseqFiltered.RDS")
+############
+
+#Import data
+phy_obj3 <- readRDS("./data/phyloseqPrevFiltered.RDS")
 phy_obj3
-prevdf3 <- readRDS("./data/prevdfFiltered.RDS")
 
 #Edit data - subset based on dataset
 phy_obj3_20 <- subset_samples(phy_obj3, Dataset == "2020")
 phy_obj3_20 <- prune_taxa(taxa_sums(phy_obj3_20)>0, phy_obj3_20)
 phy_obj3_20
 
-#Import collor palette
-source("./scripts/Color_palettes.R")
 
 #############################################
 #Preparation of data for taxonomic comparison
@@ -93,6 +95,8 @@ ggplot(phy_obj3_melt.agg.class, aes(x = Abundance, y = Location, fill = Class))+
   scale_fill_manual(values=phyla.col)+
   geom_bar(stat = "identity",position="fill")
 
+ggsave("./output_graphs/CommunityCompositionClass.pdf", last_plot())
+
 
 #Plot community composition on family level - selected groups
 #############################################################
@@ -120,6 +124,7 @@ ggplot(Alpha.melt, aes(x = Abundance, y = Location, fill = Order))+
   geom_bar(stat = "identity", position="stack")+
   scale_fill_manual(values=getPalette(colourCount))
 
+ggsave("./output_graphs/CommunityCompositionAlphaproteobacteria.pdf", last_plot())
 
 ### Gammaproteobacteria 
 Gamma.melt <- subset(x=phy_obj3_melt.agg.family , subset = Class == "Gammaproteobacteria")
@@ -140,6 +145,8 @@ ggplot(Gamma.melt, aes(x = Abundance, y = Location, fill = Order))+
   geom_bar(stat = "identity", position="stack")+
   scale_fill_manual(values=getPalette(colourCount))
 
+ggsave("./output_graphs/CommunityCompositionGammaproteobacteria.pdf", last_plot())
+
 ###Bacteroidia
 Bacter.melt <- subset(phy_obj3_melt.agg.family , subset = Class == "Bacteroidia")
 
@@ -148,13 +155,16 @@ ggplot(Bacter.melt, aes(x = Abundance, y = Location, fill = Order))+
   scale_fill_manual(values=getPalette(colourCount))+
   geom_bar(stat = "identity", position="stack")
 
+ggsave("./output_graphs/CommunityCompositionBacteroidia.pdf", last_plot())
+
 
 ###############################
 #Microbial pollution indicators
 ###############################
 
+#Select microbial indicators
 Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
-ps_Mic_Ind_ra <- subset_taxa(phy_obj.ra, Family %in% c(Mic_Ind$Family))
+ps_Mic_Ind_ra <- subset_taxa(phy_obj3ra_20, Family %in% c(Mic_Ind$Family))
 
 #Melt data
 ps_Mic_Ind_ra.melt <- psmelt(ps_Mic_Ind_ra)
@@ -173,30 +183,16 @@ ggplot(ps_Mic_Ind_ra.melt.agg.genus, aes(x = Abundance, y = Location, fill = Fam
   geom_bar(stat = "identity", position="stack")+
   scale_fill_manual(values=indicators.col)
 
+ggsave("./output_graphs/MicrobialIndicators.pdf", last_plot())
+
 # Heatmap
 ps_Mic_Ind_ra_glom = tax_glom(ps_Mic_Ind_ra, taxrank="Family")
 fig <- plot_heatmap(ps_Mic_Ind_ra_glom, "Family", taxa.label = "Family", sample.label="Location", taxa.order="Class", sample.order="Location")
 fig
 
-Enterobac <- subset(ps_Mic_Ind_ra.melt.agg.genus, (Family %in% c("Enterobacteriaceae")))
-Arco <- subset(ps_Mic_Ind_ra.melt.agg.genus, (Family %in% c("Arcobacteraceae")))
-Chlad <- subset(ps_Mic_Ind_ra.melt.agg.genus, (Family %in% c("Chlamydiaceae")))
-
-ggplot(Enterobac, aes(x = Abundance, y = Location, fill = Genus))+
-  facet_grid(Season~Depth, space= "fixed")+
-  geom_bar(stat = "identity", position="stack")
-
-ggplot(Arco, aes(x = Abundance, y = Location, fill = Genus))+
-  facet_grid(Season~Depth, space= "fixed")+
-  geom_bar(stat = "identity", position="stack")
-
-ggplot(Chlad, aes(x = Abundance, y = Location, fill = Genus))+
-  facet_grid(Season~Depth, space= "fixed")+
-  geom_bar(stat = "identity", position="stack")
-
 
 #################
-#Plot nMDS / RDA
+#Plot nMDS 
 #################
 
 # DESeq conversion 
@@ -217,35 +213,19 @@ dim(otu_table(phy_obj3_20))
 ps.vst<-phy_obj3_20
 otu_table(ps.vst)<- otu_table(otu.vst, taxa_are_rows = TRUE)
 
-# Do the ordination with variance stabilized data
-phy_obj3.vst.rda <- ordinate(ps.vst, "RDA", "euclidean")
-plot_ordination(ps.vst, phy_obj3.vst.rda, label = "Location", shape = "Depth", color = "Season") + 
-  theme_bw() + geom_point(size=3) + scale_color_manual(values=season.col)
-ggsave("./output_graphs/RDA_var.pdf")
-
+# Plot the ordination with variance stabilized data
 phy_obj3.vst.nmds <- ordinate(ps.vst, method = "NMDS", distance = "euclidean")
 plot_ordination(ps.vst, phy_obj3.vst.nmds, label ="Location", color = "Season") + geom_point(aes(shape=Depth), size=3) + 
   stat_ellipse(geom = "polygon", alpha = 0.1, level = 0.95) + theme_bw() + scale_color_manual(values=season.col)
+
 ggsave("./output_graphs/nMDS_var.pdf")
-
-phy_obj3.vst.nmds <- ordinate(phy_obj3ra_20, method = "NMDS", distance = "bray")
-plot_ordination(phy_obj3ra_20, phy_obj3.vst.nmds, label ="Location", color = "Season") + geom_point(aes(shape=Depth), size=3) + 
-  stat_ellipse(geom = "polygon", alpha = 0.1, level = 0.95) + theme_bw() + scale_color_manual(values=season.col)
-ggsave("./output_graphs/nMDS_var.pdf")
-
-saveRDS(ps.vst, "./data/ps.vst.20.RDS")
-
+saveRDS(ps.vst, "./data/phyloseqVarStab_20.RDS")
 
 ###########
 #PERMANOVA
 ###########
 
 ###statistical significance of the groups
-df <- as(sample_data(phy_obj3ra_20), "data.frame")
-d <- phyloseq::distance(phy_obj3ra_20, "bray")
-adonis_all <- adonis2(d ~ Season+Location+Depth, data= df)
-adonis_all
-
 df <- as(sample_data(ps.vst), "data.frame")
 d <- phyloseq::distance(ps.vst, "euclidean")
 adonis_all <- adonis2(d ~ Location+Season+Depth, data= df)
@@ -267,10 +247,10 @@ plot(mod.HSD)
 # CLEAN UP #################################################
 
 # Clear plots
-dev.off()  # But only if there IS a plot
+dev.off() 
 
 # Clear environment
 rm(list = ls()) 
 
 # Clear console
-cat("\014")  # ctrl+L
+cat("\014")
