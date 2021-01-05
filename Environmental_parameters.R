@@ -1,52 +1,45 @@
-#MICROBIOME - Dynamics of water biotic and abiotic paremeters
-#Neža Orel, neza.orel@nib.si
-#Script for graphs of accompining physical, chemical and biological properties.
-#Data was collected during in situ survey 2020, project MIKROBIOM
-
-############################################################################
-
-#Set working directory
-setwd("C:/Users/nezao/Documents/5-R/Microbiome2015_2020")
+##################################################
+#Environmental parameters: Dataset 2020
+##################################################
 
 #Load packages
-library(readxl)
 library(ggplot2)
-library(ggpubr)
 library(rstatix);packageVersion("rstatix")
 library(dplyr);packageVersion("dplyr")
 library(tidyr);packageVersion("tidyr")
-library(tidyverse);packageVersion("tidyverse")
-library("vegan"); packageVersion("vegan")
-install.packages("stringr")
-library(stringr)
+
+#Set theme
+theme_set(theme_bw())
+
+#Import collor palette
+source("./scripts/Color_palettes.R")
+
+
+#############
+#Import data
+#############
 
 #Import Sample Data - "metadata"
-meta <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ",")
-
+all.data <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ",")
 
 # Checking data structure
-summary(meta)
-str(meta)
+summary(all.data)
+str(all.data)
 
-#Edit order
-all.data <- filter(meta, Dataset == "2020")
+#Edit metadeta dataframe
+all.data <- filter(all.data, Dataset == "2020")
 all.data$Season <- factor(all.data$Season, levels = c("winter", "spring", "summer", "autumn"))
 all.data$Location <- factor(all.data$Location, levels = c("R-Estuary-1", "R-Estuary-2", "NS-Marine","OS-Marine", "SM-Outfall"))
 all.data$Depth <- factor(all.data$Depth, levels = c("bottom", "surface"))
-str(all.data)
 
-
+#Make separated files for surface 
 all.data.surf=filter(all.data, Depth == "surface")
 all.data.bot=filter(all.data, Depth == "bottom")
-mean(subset(all.data, Season == "autumn")$DOC)
-mean(subset(all.data, Season == "autumn")$TDN)
 
 
-
-#Edit colour pallete
-location.col <- readRDS("./data/location_col.RDS")
-season.col <- readRDS("./data/season_col.RDS")
-
+#############
+#Plots
+#############
 
 #Graph A: Temperature and dissolved oxygen
 all.data.a <- ggplot(data = all.data) +
@@ -74,7 +67,6 @@ all.data.b <- ggplot(data = all.data) +
   labs(shape = NULL)
 all.data.b 
 
-
 #Graph C: DOC (y) / C/N (y2)
 all.data.c <- ggplot(data = all.data) +
   geom_bar(mapping = aes(x = Season, y = DOC, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
@@ -89,7 +81,6 @@ all.data.c <- ggplot(data = all.data) +
   labs(shape = NULL, fill = NULL)
 all.data.c 
 
-
 #Graph D: TDN
 all.data.d <- ggplot(data = all.data) +
   geom_bar(mapping = aes(x = Season, y = TDN, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
@@ -101,7 +92,6 @@ all.data.d <- ggplot(data = all.data) +
         axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=9), strip.text = element_blank()) +
   labs(shape = NULL, fill = NULL)
 all.data.d 
-
 
 #Graph E: NH4 (y1) / NO2+NO3 (y2)
 all.data.e <- ggplot(data = all.data) +
@@ -117,7 +107,6 @@ all.data.e <- ggplot(data = all.data) +
   labs(shape = NULL, fill = NULL)
 all.data.e
 
-
 #Graph F: PO4 (y1) 
 all.data.f <- ggplot(data = all.data) +
   geom_bar(mapping = aes(x = Season, y = PO4, fill = Location), stat = 'identity', width = .5, position = position_dodge(), show.legend = FALSE) +
@@ -130,7 +119,6 @@ all.data.f <- ggplot(data = all.data) +
         axis.text.x = element_blank(), axis.title.x = element_blank(), axis.title.y = element_text(size=9), strip.text = element_blank()) +
   labs(shape = NULL, fill = NULL)
 all.data.f
-
 
 #Graph G: Bacterial abundance
 all.data.g <- ggplot(data = all.data, aes(fill=Location)) +
@@ -161,6 +149,11 @@ all.data.h
 ggarrange(all.data.a, all.data.b, all.data.c, all.data.d, all.data.e,  all.data.f, all.data.h, all.data.g,
           labels = c("B", "C", "D", "E", "F", "G", "H", "I"), font.label = list(size=9), nrow = 4, ncol = 2, align = c("v"))
 
+
+##################################
+#Supplementary figure: Chl a, SiO3
+##################################
+
 #Supplementary 1: SiO3
 all.data.s1 <- ggplot(data = all.data) +
   geom_bar(mapping = aes(x = Season, y = SiO3, fill = Location), stat = 'identity', width = .5, position = position_dodge()) +
@@ -185,19 +178,18 @@ all.data.s2 <- ggplot(data = all.data) +
   labs(shape = NULL, fill = NULL)
 all.data.s2
 
-############################################
-#PCA on environmental matrix
-###########################################
+
+##################################################
+#Supplementary figure: PCA on environmental matrix
+##################################################
 
 #From https://www.davidzeleny.net/anadat-r/doku.php/en:pca_examples
-
-
 #define scale function
 scale_par <- function(x) scale(x, center = FALSE, scale = TRUE)[,1]
 
 #import env.par. data
 metadata.raw <- all.data
-env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen", "DOC", "TDN", "C_N", "NO2", "NO3", "PO4", "SiO3", "NH4", "BA_FC", "BCP_C", "Coliform_bacteria")
+env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen", "DOC", "TDN", "C_N", "NO2_NO3", "PO4", "SiO3", "NH4", "BA_FC", "BCP_C", "Coliform_bacteria")
 
 #scale all parameters
 metadata.scaled.SRF <- metadata.raw %>% 
@@ -205,80 +197,52 @@ metadata.scaled.SRF <- metadata.raw %>%
   as.data.frame()
 
 #Select parameters
-envpar_corr <- metadata.scaled.SRF %>% select(env.par)
-locations <- metadata.scaled.SRF [,7]
-rownames(envpar_corr) <- metadata.scaled.SRF$SampleID
+envpar_corr <- metadata.scaled.SRF %>% 
+  select(env.par)%>% 
+  cor_mat(method = "pearson")
 
-#Remove NA in env.par
-envpar_corr_2 <- filter(envpar_corr, !is.na(BCP_C))
+#check the p-values
+envpar_corr.pvalues <- envpar_corr %>% cor_get_pval()
 
-#Calculate PCA
-PCA <- rda (envpar_corr_2, scale = TRUE) 
-
-#Analyzing the results
-head (summary (PCA))
-
-stand.chem <- scale (envpar_corr)
-stand.chem.var <- apply (envpar_corr, 2, var)
-stand.chem.var
-sum (stand.chem.var)
-
-loadings <- scores (PCA, display = 'species', scaling = 0)
-loadings
-
-#A quick sorting reveals which variables have the highest absolute correlation to the first and second axis: 
-sort (abs (loadings[,1]), decreasing = TRUE)
-sort (abs (loadings[,2]), decreasing = TRUE)
-
-#Make plot
-biplot (PCA, display = c("sites", "species"), scaling = "sites")
-
-source ('https://raw.githubusercontent.com/zdealveindy/anadat-r/master/scripts/NumEcolR2/cleanplot.pca.R')
-cleanplot.pca (PCA, scaling = 1)
+#plot
+envpar_corr %>%
+  cor_reorder() %>%
+  pull_lower_triangle() %>%
+  cor_plot(label = TRUE)
 
 
-#Problem: cannot install ggbiplot
 
-install.packages("devtools")
-library(devtools)
-install_github("vqv/ggbiplot")
+###########
+#Statistic
+###########
 
-#############################################
-#ANOVA
-#############################################
 #Shapiro-Wilk's test
-all.data %>% shapiro_test(Temperature_sea, Salinity, Dissolved_Oxygen, DOC, C_N, TDN, BCP, BA_FC, NO2_NO3, NO2, NO3, NH4, PO4)
+all.data %>% shapiro_test(Temperature_sea, Salinity, Dissolved_Oxygen, DOC, C_N, TDN, BCP_C, BA_FC, NO2_NO3, NO2, NO3, NH4, PO4)
 
 #C_N, DOC - normal distribution - ANOVA
-DOC.anova <- aov(all.data$DOC ~ Depth+Season+Location, data = all.data)
-summary(DOC.anova)
-C_N.anova <- aov(all.data$C_N ~ Depth+Season+Location, data = all.data)
-summary(C_N.anova)
+all.data %>% anova_test(DOC ~ Depth + Season + Location) 
+all.data %>% tukey_hsd(DOC ~ Depth + Season + Location)
+
+all.data %>% anova_test(C_N ~ Depth + Season + Location) 
+all.data %>% tukey_hsd(C_N ~ Depth + Season + Location)
 
 #Other - Kruskal-Wallis test
+lapply(all.data[,c("Temperature_sea", "Salinity", "Dissolved_Oxygen", "TDN", "NO2_NO3", "NH4", "PO4")], function(x) kruskal.test(x ~ all.data$Season))
+lapply(all.data[,c("Temperature_sea", "Salinity", "Dissolved_Oxygen", "TDN", "NO2_NO3", "NH4", "PO4")], function(x) kruskal.test(x ~ all.data$Location))
+lapply(all.data[,c("Temperature_sea", "Salinity", "Dissolved_Oxygen", "TDN", "NO2_NO3", "NH4", "PO4")], function(x) kruskal.test(x ~ all.data$Depth))
 
-kruskal.test(all.data$Temperature_sea ~ Season, data = all.data)
-pairwise.wilcox.test(all.data$Temperature_sea, all.data$Season, p.adjust.method = "BH")
+lapply(all.data[,c("BCP_C", "BA_FC")], function(x) kruskal.test(x ~ all.data$Season))
+lapply(all.data[,c("BCP_C", "BA_FC")], function(x) kruskal.test(x ~ all.data$Location))
+lapply(all.data[,c("BCP_C", "BA_FC")], function(x) kruskal.test(x ~ all.data$Depth))
 
-kruskal.test(all.data$Salinity ~ Location, data = all.data)
-kruskal.test(all.data$Dissolved_Oxygen ~ Depth, data = all.data)
-kruskal.test(all.data$TDN ~ Season, data = all.data)
-all.data$NO2_NO3 <- all.data$NO2 + all.data$NO3
-kruskal.test(all.data$NO2_NO3 ~ Depth, data = all.data)
-kruskal.test(all.data$NH4 ~ Location, data = all.data)
-kruskal.test(all.data$PO4 ~ Depth, data = all.data)
-kruskal.test(all.data$BCP ~ Season, data = all.data)
-kruskal.test(all.data$BA_FC ~ Location, data = all.data)
 
 # CLEAN UP #################################################
 
-
 # Clear plots
-dev.off()  # But only if there IS a plot
+dev.off() 
 
 # Clear environment
 rm(list = ls()) 
 
 # Clear console
-cat("\014")  # ctrl+L
-
+cat("\014")
