@@ -90,7 +90,7 @@
 # train.envs - the names of the source environments
 # samplenames - the names of the test samples
 "predict.sourcetracker" <- function(stobj, test=NULL, 
-            burnin=100, nrestarts=100, ndraws.per.restart=100, delay=10,
+            burnin=100, nrestarts=10, ndraws.per.restart=1, delay=10,
             alpha1=1e-3, alpha2=1e-1, beta=10, rarefaction_depth=1000,
             verbosity=1, full.results=FALSE){
 
@@ -150,19 +150,19 @@
                 full.draws.i <- draws.i$full.draws
                 draws.i <- draws.i$draws
             }
-            # if(verbosity >= 1) cat(sprintf('%3d of %d: ',i,N))
+            #if(verbosity >= 1) cat(sprintf('%3d of %d: ',i,N))
             # handle case where there are no other samples from this env
-            if(sum(envs[-i] == envs[i])==0){
-                draws[,-which(rownames(stobj$sources)==envs[i]),i] <- drop(draws.i)
-                if(full.results){
-                    full.draws[,-which(rownames(stobj$sources)==envs[i]),,i] <- drop(full.draws.i)
-                }
-            } else {
+            #if(sum(envs[-i] == envs[i])==0){
+             #   draws[,-which(rownames(stobj$sources)==envs[i]),i] <- drop(draws.i)
+              #  if(full.results){
+               #     full.draws[,-which(rownames(stobj$sources)==envs[i]),,i] <- drop(full.draws.i)
+               # }
+            #} else {
                 draws[,,i] <- drop(draws.i)
                 if(full.results){
                     full.draws[,,,i] <- drop(full.draws.i)
                 }
-            }
+            #}
         }
     }
 
@@ -267,7 +267,7 @@
 # predictions for printing status updates
 # full.results returns the source env. x taxon counts for every draw
 "run.gibbs" <- function(sources, test, V, T, N,
-        burnin=100, nrestarts=100, ndraws.per.restart=100, delay=10,
+        burnin=100, nrestarts=10, ndraws.per.restart=10, delay=10,
         alpha1=1e-3, alpha2=.1, beta=10, maxdepth=NULL,
         verbosity=1, printing.index=NULL, printing.total=NULL,
         full.results=FALSE){

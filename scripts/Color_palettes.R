@@ -28,8 +28,6 @@ phyla.col <- c("Acidimicrobiia"="#AA4488",
                #"Vicinamibacteria" ="#DDDD77",
                "Other taxa"= "#114477")
 
-saveRDS(phyla.col, "./data/phyla_col.RDS")
-
 indicators.col <- c("Aeromonadaceae"="#AA4488",
                     "Arcobacteraceae" = "#771155",
                     "Bacteroidaceae"= "#DDAA77",
@@ -58,8 +56,6 @@ indicators.col <- c("Aeromonadaceae"="#AA4488",
                     "Yersiniaceae"= "#117744",
                     "Other taxa"= "#114477")
 
-saveRDS(indicators.col, "./data/indicators_col.RDS")
-
 location.col <- c("R-Estuary-1" = "#FC8D62", 
                   "R-Estuary-2" = "#FFD92F", 
                   "NS-Marine" = "#E5C494", 
@@ -67,11 +63,29 @@ location.col <- c("R-Estuary-1" = "#FC8D62",
                   "SM-Outfall" = "#66C2A5", 
                   "R-Mouth" = "#E41A1C")
 
-saveRDS(location.col, "./data/location_col.RDS")
-
 season.col <- c("winter" = "#377EB8", 
                 "spring" = "#4cbb30", 
                 "summer" = "#E41A1C", 
                 "autumn" = "#A65628")
 
-saveRDS(season.col, "./data/season_col.RDS")
+tol21rainbow<- c("#771155",
+                 "#AA4488",
+                 "#CC99BB",
+                 "#114477", 
+                 "#4477AA",
+                 "#117744",
+                 "#117777",
+                 "#88CCAA", 
+                 "#77CCCC",
+                 "#00ffff",
+                 "#44AA77",
+                 "#44AAAA", 
+                 "#777711",
+                 "#AAAA44",
+                 "#DDDD77",
+                 "#774411", 
+                 "#AA7744",
+                 "#DDAA77",
+                 "#771122",
+                 "#AA4455", 
+                 "#DD7788")
