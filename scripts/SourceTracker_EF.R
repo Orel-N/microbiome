@@ -152,17 +152,17 @@
             }
             #if(verbosity >= 1) cat(sprintf('%3d of %d: ',i,N))
             # handle case where there are no other samples from this env
-            #if(sum(envs[-i] == envs[i])==0){
-             #   draws[,-which(rownames(stobj$sources)==envs[i]),i] <- drop(draws.i)
-              #  if(full.results){
-               #     full.draws[,-which(rownames(stobj$sources)==envs[i]),,i] <- drop(full.draws.i)
-               # }
-            #} else {
+            if(sum(envs[-i] == envs[i])==0){
+                draws[,-which(rownames(stobj$sources)==envs[i]),i] <- drop(draws.i)
+                if(full.results){
+                    full.draws[,-which(rownames(stobj$sources)==envs[i]),,i] <- drop(full.draws.i)
+                }
+            } else {
                 draws[,,i] <- drop(draws.i)
                 if(full.results){
                     full.draws[,,,i] <- drop(full.draws.i)
                 }
-            #}
+            }
         }
     }
 

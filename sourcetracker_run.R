@@ -29,6 +29,9 @@ envs <- metadata$Location
 #####################################
 #Run SourceTracker
 #####################################
+#no need to run this section, the results already in the data directory:
+load("./data/ST_2020.RData")
+
 # tune the alpha values using cross-validation (this is slow!)
 #tune.results <- tune.st(otus[train.ix,], envs[train.ix])
 #alpha1 <- tune.results$best.alpha1
@@ -44,6 +47,10 @@ ST_results_no_season <- predict.sourcetracker(st_no_season,otus[test.ix,], alpha
 
 # Estimate leave-one-out source proportions in training data 
 ST_results.train_no_season <- predict.sourcetracker(st_no_season, alpha1=alpha1, alpha2=alpha2, rarefaction_depth=1000, full.results=TRUE)
+
+#####################################
+#Plot results
+#####################################
 
 #make labels
 labels <- sprintf('%s %s %s', metadata$Location, metadata$Season, metadata$Depth)
@@ -69,14 +76,21 @@ resluts_merged_plot <- ggplot() +
            data = resluts_merged, stat="identity")+
   facet_grid(Depth~Season)+
   labs(y="Average source contribution")+
-  scale_fill_manual(values = tol21rainbow)+
+  scale_fill_manual(values = sample(tol21rainbow))+
   theme_bw() + 
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
         text=element_text(size=14),legend.position = "bottom")
 
+ggsave("./Figures/mic_sourcetracker.pdf", 
+       plot = resluts_merged_plot,
+       units = "cm",
+       width = 30, height = 30, 
+       #scale = 1,
+       dpi = 300)
+
 #####################################
-#Explore full results
+#Explore affiliation of specific taxa to the different sources
 #####################################
 #To get a matrix of ASV x Probability(ASV came from source) across all samples
 ASV.source.prob <- t(apply(ST_results.train_no_season$full.results,c(2,3),mean))
@@ -104,7 +118,10 @@ taxa_sourcetracker_SM <- taxa_sourcetracker %>%
   group_by(Phylum,Class,Order,Family) %>% 
   summarise(ASVs=n())
 
-taxa_sourcetracker_ASVs<- merge(taxa_sourcetracker_WW,taxa_sourcetracker_SM, by =c("Phylum","Class","Order","Family"), all = TRUE)
+taxa_sourcetracker_ASVs<- merge(taxa_sourcetracker_WW,taxa_sourcetracker_SM, by =c("Phylum","Class","Order","Family"), all = TRUE) %>% 
+                            plyr::rename(c("ASVs.x" = "WW","ASVs.y" = "SM"))
+
+write.csv(taxa_sourcetracker_ASVs,"./data/taxa_sourcetracker_ASVs.csv", h=T)
 
 #Select microbial indicators
 Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
