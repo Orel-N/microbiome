@@ -1,0 +1,1553 @@
+IQ-TREE 2.0.3 built Apr 26 2020
+
+Input file name: Arcobacter_silva.fa
+Type of analysis: ModelFinder + tree reconstruction + ultrafast bootstrap (1000 replicates)
+Random seed number: 564430
+
+REFERENCES
+----------
+
+To cite IQ-TREE please use:
+
+Bui Quang Minh, Heiko A. Schmidt, Olga Chernomor, Dominik Schrempf,
+Michael D. Woodhams, Arndt von Haeseler, and Robert Lanfear (2020)
+IQ-TREE 2: New models and efficient methods for phylogenetic inference
+in the genomic era. Mol. Biol. Evol., in press.
+https://doi.org/10.1093/molbev/msaa015
+
+To cite ModelFinder please use: 
+
+Subha Kalyaanamoorthy, Bui Quang Minh, Thomas KF Wong, Arndt von Haeseler,
+and Lars S Jermiin (2017) ModelFinder: Fast model selection for
+accurate phylogenetic estimates. Nature Methods, 14:587–589.
+https://doi.org/10.1038/nmeth.4285
+
+Since you used ultrafast bootstrap (UFBoot) please also cite: 
+
+Diep Thi Hoang, Olga Chernomor, Arndt von Haeseler, Bui Quang Minh,
+and Le Sy Vinh (2018) UFBoot2: Improving the ultrafast bootstrap
+approximation. Mol. Biol. Evol., 35:518–522.
+https://doi.org/10.1093/molbev/msx281
+
+SEQUENCE ALIGNMENT
+------------------
+
+Input data: 436 sequences with 355 nucleotide sites
+Number of constant sites: 207 (= 58.3099% of all sites)
+Number of invariant (constant or ambiguous constant) sites: 207 (= 58.3099% of all sites)
+Number of parsimony informative sites: 67
+Number of distinct site patterns: 146
+
+ModelFinder
+-----------
+
+Best-fit model according to BIC: TIM+F+R3
+
+List of models sorted by BIC scores: 
+
+Model                  LogL         AIC      w-AIC        AICc     w-AICc         BIC      w-BIC
+TIM+F+R3          -3161.800    7305.600 +    0.709  490449.600 -        0    9206.810 +     0.61
+TN+F+R3           -3165.524    7311.047 -   0.0465  488491.047 -        0    9208.385 +    0.277
+K3P+R3            -3176.164    7326.328 - 2.24e-05  482638.328 -        0    9212.049 -   0.0444
+TIM2+F+R3         -3165.082    7312.164 -   0.0266  490456.164 -        0    9213.374 -   0.0229
+K2P+R3            -3179.853    7331.706 - 1.52e-06  480695.706 -        0    9213.555 -   0.0209
+TIM3+F+R3         -3165.461    7312.922 -   0.0182  490456.922 -        0    9214.132 -   0.0157
+TIMe+R3           -3175.808    7327.616 - 1.17e-05  484591.616 -        0    9217.209 -  0.00336
+GTR+F+R3          -3161.278    7308.556 +    0.162  494392.556 -        0    9217.510 -  0.00289
+TNe+R3            -3179.507    7333.015 -  7.9e-07  482645.015 -        0    9218.736 -  0.00157
+K3Pu+F+R3         -3172.213    7324.426 - 5.79e-05  488504.426 -        0    9221.763 - 0.000345
+TVMe+R3           -3175.412    7328.825 - 6.42e-06  486548.825 -        0    9222.290 - 0.000265
+TIM2e+R3          -3178.726    7333.452 - 6.35e-07  484597.452 -        0    9223.045 - 0.000182
+HKY+F+R3          -3175.842    7329.685 - 4.18e-06  486549.685 -        0    9223.150 - 0.000173
+TIM3e+R3          -3179.496    7334.991 - 2.94e-07  484598.991 -        0    9224.585 - 8.42e-05
+SYM+R3            -3175.022    7330.043 - 3.49e-06  488510.043 -        0    9227.381 - 2.08e-05
+GTR+F+R4          -3160.728    7311.456 -   0.0379  498351.456 -        0    9228.154 - 1.41e-05
+TPM2u+F+R3        -3175.591    7331.183 - 1.97e-06  488511.183 -        0    9228.520 - 1.18e-05
+TPM2+F+R3         -3175.591    7331.183 - 1.97e-06  488511.183 -        0    9228.520 - 1.18e-05
+TPM3+F+R3         -3175.830    7331.660 - 1.56e-06  488511.660 -        0    9228.998 - 9.27e-06
+TPM3u+F+R3        -3175.830    7331.660 - 1.56e-06  488511.660 -        0    9228.998 - 9.27e-06
+TVM+F+R3          -3171.883    7327.766 - 1.09e-05  492439.766 -        0    9232.848 - 1.35e-06
+GTR+F+R2          -3177.866    7337.733 - 7.47e-08  490481.733 -        0    9238.943 - 6.42e-08
+GTR+F+I+G4        -3211.645    7405.289 -  1.6e-22  490549.289 -        0    9306.499 - 1.37e-22
+GTR+F+G4          -3215.952    7411.905 - 5.84e-24  488591.905 -        0    9309.243 - 3.48e-23
+F81+F+R3          -3239.556    7455.111 - 2.42e-33  484719.111 -        0    9344.705 - 6.94e-31
+JC+R3             -3254.503    7479.006 - 1.57e-38  478899.006 +        1    9356.983 -  1.5e-33
+GTR+F+I           -3360.247    7700.494 - 1.26e-86  488880.494 -        0    9597.831 - 7.51e-86
+GTR+F             -3529.518    8037.035 - 1.05e-159  487257.035 -        0    9930.501 - 4.34e-158
+
+AIC, w-AIC   : Akaike information criterion scores and weights.
+AICc, w-AICc : Corrected AIC scores and weights.
+BIC, w-BIC   : Bayesian information criterion scores and weights.
+
+Plus signs denote the 95% confidence sets.
+Minus signs denote significant exclusion.
+
+SUBSTITUTION PROCESS
+--------------------
+
+Model of substitution: TIM+F+R3
+
+Rate parameter R:
+
+  A-C: 1.0000
+  A-G: 3.8357
+  A-T: 1.6239
+  C-G: 1.6239
+  C-T: 7.6081
+  G-T: 1.0000
+
+State frequencies: (empirical counts from alignment)
+
+  pi(A) = 0.2921
+  pi(C) = 0.1913
+  pi(G) = 0.315
+  pi(T) = 0.2015
+
+Rate matrix Q:
+
+  A   -0.9002   0.09974    0.6299    0.1706
+  C    0.1523    -1.218    0.2667    0.7991
+  G    0.5841     0.162   -0.8511     0.105
+  T    0.2473    0.7588    0.1642     -1.17
+
+Model of rate heterogeneity: FreeRate with 3 categories
+Site proportion and rates:  (0.9034,0.3326) (0.07816,4.727) (0.01841,17.93)
+
+ Category  Relative_rate  Proportion
+  1         0.3326         0.9034
+  2         4.727          0.07816
+  3         17.93          0.01841
+
+MAXIMUM LIKELIHOOD TREE
+-----------------------
+
+Log-likelihood of the tree: -3068.4291 (s.e. 260.3838)
+Unconstrained log-likelihood (without tree): -1257.8139
+Number of free parameters (#branches + #model parameters): 491
+Akaike information criterion (AIC) score: 7118.8581
+Corrected Akaike information criterion (AICc) score: 490262.8581
+Bayesian information criterion (BIC) score: 9020.0680
+
+**************************** WARNING ****************************
+Number of parameters (K, model parameters and branch lengths): 491
+Sample size (n, alignment length): 355
+
+Given that K>=n, the parameter estimates might be inaccurate.
+Thus, phylogenetic estimates should be interpreted with caution.
+
+Ideally, it is desirable that n >> K. When selecting optimal models,
+1. use AIC or BIC if n > 40K;
+2. use AICc or BIC if 40K >= n > K;
+3. be extremely cautious if n <= K
+
+To improve the situation (3), consider the following options:
+  1. Increase the sample size (n)
+  2. Decrease the number of parameters (K) to be estimated. If
+     possible:
+     a. Remove the least important sequences from the alignment
+     b. Specify some of the parameter values for the substitution
+        model (e.g., the nucleotide or amino acid frequencies)
+     c. Specify some of the parameter values for the rates-across-
+        sites model (e.g., the shape parameter for the discrete
+        Gamma distribution, the proportion of invariable sites, or
+        the rates of change for different rate categories under
+        the FreeRate model)
+
+Reference:
+Burnham KR, Anderson DR (2002). Model Selection and Multimodel
+Inference: A Practical Information-Theoretic Approach. Springer,
+New York.
+************************ END OF WARNING ***********************
+
+Total tree length (sum of branch lengths): 1.4148
+Sum of internal branch lengths: 0.6293 (44.4791% of tree length)
+
+WARNING: 141 near-zero internal branches (<0.0028) should be treated with caution
+         Such branches are denoted by '**' in the figure below
+
+NOTE: Tree is UNROOTED although outgroup taxon 'AB030598.1.1449' is drawn at root
+Numbers in parentheses are  ultrafast bootstrap support (%)
+
++**AB030598.1.1449
+|
+|                                                                                                         +**AB243994.1.1486
+|                                                                                                      +--| (100)
+|                                                                                                      |  +--GU179720.1.1374
+|                                                                                               +------| (100)
+|                                                                                               |      |           +**AB539948.1.1383
+|                                                                                               |      |        +**| (59)
+|                                                                                               |      |        |  +**AB244002.1.1494
+|                                                                                               |      |     +**| (10)
+|                                                                                               |      |     |  +--GU179711.1.1373
+|                                                                                               |      |  +**| (16)
+|                                                                                               |      |  |  +--EU721819.1.1379
+|                                                                                               |      +**| (59)
+|                                                                                               |         +--AB546073.1.1479
+|                                                                                            +**| (21)
+|                                                                                            |  |     +**AB013832.1.1477
+|                                                                                            |  |  +**| (60)
+|                                                                                            |  |  |  |  +--EU617862.1.1482
+|                                                                                            |  |  |  +**| (25)
+|                                                                                            |  |  |     |  +**EU142043.1.1479
+|                                                                                            |  |  |     +--| (87)
+|                                                                                            |  |  |        |  +--KP994454.1.1353
+|                                                                                            |  |  |        +--| (92)
+|                                                                                            |  |  |           +**ASV1413
+|                                                                                            |  +--| (82)
+|                                                                                            |     |  +**AJ271653.1.1508
+|                                                                                            |     +--| (92)
+|                                                                                            |        +**AJ810559.1.1432
+|                                                                                         +**| (3)
+|                                                                                         |  +--FPLP01003601.2.1453
+|                                                                                      +**| (1)
+|                                                                                      |  |  +**CP032100.2265641.2267146
+|                                                                                      |  +**| (72)
+|                                                                                      |     +**FJ573216.1.1454
+|                                                                                   +**| (4)
+|                                                                                   |  |  +--FJ946551.1.1290
+|                                                                                   |  +**| (2)
+|                                                                                   |     +--JQ845768.1.1324
+|                                                                                +--| (19)
+|                                                                                |  +--EF515690.1.1375
+|                                                                             +--| (17)
+|                                                                             |  +--KJ808094.1.1477
+|                                                                          +**| (19)
+|                                                                          |  |                                               +**CP031217.2599245.2600750
+|                                                                          |  |                                            +**| (69)
+|                                                                          |  |                                            |  +**CP031217.341658.343163
+|                                                                          |  |                                         +**| (85)
+|                                                                          |  |                                         |  +--FJ717121.1.1510
+|                                                                          |  |                                      +--| (93)
+|                                                                          |  |                                      |  +--ASV3246
+|                                                                          |  |                                   +**| (62)
+|                                                                          |  |                                   |  +**JN118550.1.1426
+|                                                                          |  |                                +--| (76)
+|                                                                          |  |                                |  |  +--FJ202091.1.1461
+|                                                                          |  |                                |  +**| (67)
+|                                                                          |  |                                |     |  +--KX014304.1.1482
+|                                                                          |  |                                |     +--| (99)
+|                                                                          |  |                                |        +**KC121364.1.1413
+|                                                                          |  |                             +**| (6)
+|                                                                          |  |                             |  +--FJ203167.1.1440
+|                                                                          |  |                          +**| (3)
+|                                                                          |  |                          |  |  +**FJ717083.1.1513
+|                                                                          |  |                          |  +**| (64)
+|                                                                          |  |                          |     +**FJ203093.1.1440
+|                                                                          |  |                       +**| (13)
+|                                                                          |  |                       |  +--JX170305.1.1217
+|                                                                          |  |                    +--| (82)
+|                                                                          |  |                    |  |  +**KC527458.1.1215
+|                                                                          |  |                    |  +--| (96)
+|                                                                          |  |                    |     +**JQ211910.1.1343
+|                                                                          |  |                 +**| (15)
+|                                                                          |  |                 |  |  +--EF645952.1.1476
+|                                                                          |  |                 |  +**| (21)
+|                                                                          |  |                 |     |     +**KU524867.1.1478
+|                                                                          |  |                 |     |  +**| (25)
+|                                                                          |  |                 |     |  |  +**ASV1439
+|                                                                          |  |                 |     +**| (44)
+|                                                                          |  |                 |        +**ASV785
+|                                                                          |  |              +--| (9)
+|                                                                          |  |              |  +--FR744554.1.1439
+|                                                                          |  |           +--| (4)
+|                                                                          |  |           |  +**ASV6143
+|                                                                          |  |        +**| (2)
+|                                                                          |  |        |  |                          +----------------ASV10271
+|                                                                          |  |        |  +--------------------------| (100)
+|                                                                          |  |        |                             +-----ASV10287
+|                                                                          |  |     +--| (6)
+|                                                                          |  |     |  +**EF029030.1.1439
+|                                                                          |  |  +**| (1)
+|                                                                          |  |  |  +**EU052236.1.1481
+|                                                                          |  +--| (17)
+|                                                                          |     |  +--EF028937.1.1438
+|                                                                          |     +--| (87)
+|                                                                          |        |  +**HE576787.1.1388
+|                                                                          |        +**| (72)
+|                                                                          |           +**KX550224.1.1517
+|                                                                       +**| (3)
+|                                                                       |  +--LK393042.1.1397
+|                                                                    +**| (2)
+|                                                                    |  +--ASV589
+|                                                                 +**| (10)
+|                                                                 |  |                 +**AJ810558.1.1445
+|                                                                 |  |              +--| (81)
+|                                                                 |  |              |  +--AB806738.1.1440
+|                                                                 |  |           +--| (61)
+|                                                                 |  |           |  |                             +**CP019070.2095178.2096695
+|                                                                 |  |           |  |                          +--| (99)
+|                                                                 |  |           |  |                          |  +**CP019070.609339.610856
+|                                                                 |  |           |  |                       +--| (93)
+|                                                                 |  |           |  |                       |  |     +**AB100003.1.1328
+|                                                                 |  |           |  |                       |  |  +**| (15)
+|                                                                 |  |           |  |                       |  |  |  +--KF799046.1.1481
+|                                                                 |  |           |  |                       |  +**| (54)
+|                                                                 |  |           |  |                       |     |  +**GU061291.1.1416
+|                                                                 |  |           |  |                       |     +**| (75)
+|                                                                 |  |           |  |                       |        +**JX559229.1.1472
+|                                                                 |  |           |  |                    +--| (83)
+|                                                                 |  |           |  |                    |  +**ASV752
+|                                                                 |  |           |  |                 +**| (59)
+|                                                                 |  |           |  |                 |  +--KU143708.1.1442
+|                                                                 |  |           |  |              +**| (74)
+|                                                                 |  |           |  |              |  |     +**HM057681.1.1486
+|                                                                 |  |           |  |              |  |  +**| (69)
+|                                                                 |  |           |  |              |  |  |  +**HQ203914.1.1479
+|                                                                 |  |           |  |              |  +**| (25)
+|                                                                 |  |           |  |              |     |  +--KC682188.1.1482
+|                                                                 |  |           |  |              |     +**| (31)
+|                                                                 |  |           |  |              |        +--KP994482.1.1382
+|                                                                 |  |           |  |           +--| (87)
+|                                                                 |  |           |  |           |  +--FR683715.1.1521
+|                                                                 |  |           |  |        +--| (82)
+|                                                                 |  |           |  |        |  +**EU265967.1.1479
+|                                                                 |  |           |  |     +--| (77)
+|                                                                 |  |           |  |     |  |                 +**HM591345.1.1479
+|                                                                 |  |           |  |     |  |              +--| (98)
+|                                                                 |  |           |  |     |  |              |  +**HM591472.1.1485
+|                                                                 |  |           |  |     |  |           +--| (91)
+|                                                                 |  |           |  |     |  |           |  +--EU236320.1.1370
+|                                                                 |  |           |  |     |  |        +**| (65)
+|                                                                 |  |           |  |     |  |        |  |  +**KT318714.1.1372
+|                                                                 |  |           |  |     |  |        |  +**| (84)
+|                                                                 |  |           |  |     |  |        |     +**JQ197538.1.1344
+|                                                                 |  |           |  |     |  |     +--| (94)
+|                                                                 |  |           |  |     |  |     |  +--JQ199442.1.1346
+|                                                                 |  |           |  |     |  |  +**| (22)
+|                                                                 |  |           |  |     |  |  |  +--JQ862035.1.1484
+|                                                                 |  |           |  |     |  +**| (42)
+|                                                                 |  |           |  |     |     |  +**LLEL01000725.12.1508
+|                                                                 |  |           |  |     |     +**| (62)
+|                                                                 |  |           |  |     |        +**LT629298.1.1382
+|                                                                 |  |           |  |  +--| (71)
+|                                                                 |  |           |  |  |  |  +**ASV247
+|                                                                 |  |           |  |  |  +**| (84)
+|                                                                 |  |           |  |  |     +**ASV1438
+|                                                                 |  |           |  +**| (69)
+|                                                                 |  |           |     |  +**FJ717163.1.1513
+|                                                                 |  |           |     +--| (100)
+|                                                                 |  |           |        +**FJ717168.1.1511
+|                                                                 |  |        +**| (14)
+|                                                                 |  |        |  |  +**DQ234101.1.1546
+|                                                                 |  |        |  +--| (93)
+|                                                                 |  |        |     +**ASV1783
+|                                                                 |  |     +**| (4)
+|                                                                 |  |     |  +--LK392947.1.1390
+|                                                                 |  |  +**| (2)
+|                                                                 |  |  |  +**AP012048.2429210.2430725
+|                                                                 |  +**| (3)
+|                                                                 |     +**GU179723.1.1377
+|                                                              +--| (64)
+|                                                              |  +--ASV551
+|                                                           +**| (7)
+|                                                           |  |                                                        +**AF513455.1.1402
+|                                                           |  |                                                     +**| (91)
+|                                                           |  |                                                     |  +**CP031218.1972423.1973928
+|                                                           |  |                                                  +--| (94)
+|                                                           |  |                                                  |  +--JX391310.1.1479
+|                                                           |  |                                               +**| (33)
+|                                                           |  |                                               |  +--EF648116.1.1463
+|                                                           |  |                                            +--| (36)
+|                                                           |  |                                            |  +**DQ234096.1.1547
+|                                                           |  |                                         +**| (2)
+|                                                           |  |                                         |  +--KF268902.1.1385
+|                                                           |  |                                      +**| (2)
+|                                                           |  |                                      |  |  +**HM057798.1.1502
+|                                                           |  |                                      |  +**| (77)
+|                                                           |  |                                      |     +**KC527298.1.1215
+|                                                           |  |                                   +--| (21)
+|                                                           |  |                                   |  +--KF179644.1.1445
+|                                                           |  |                                +--| (74)
+|                                                           |  |                                |  |  +**GQ245902.1.1404
+|                                                           |  |                                |  +**| (96)
+|                                                           |  |                                |     +**KC527463.1.1216
+|                                                           |  |                             +**| (6)
+|                                                           |  |                             |  |  +--JN619794.1.1423
+|                                                           |  |                             |  +**| (51)
+|                                                           |  |                             |     +--KC527432.1.1217
+|                                                           |  |                          +--| (75)
+|                                                           |  |                          |  |               +--HM057725.1.1504
+|                                                           |  |                          |  |            +**| (95)
+|                                                           |  |                          |  |            |  +**ASV2894
+|                                                           |  |                          |  |     +------| (99)
+|                                                           |  |                          |  |     |      +-----------ASV10742
+|                                                           |  |                          |  |  +**| (67)
+|                                                           |  |                          |  |  |  |              +--AY340831.1.1402
+|                                                           |  |                          |  |  |  |           +**| (13)
+|                                                           |  |                          |  |  |  |           |  +--FJ900977.1.1282
+|                                                           |  |                          |  |  |  |        +**| (15)
+|                                                           |  |                          |  |  |  |        |  |  +**GQ844379.1.1481
+|                                                           |  |                          |  |  |  |        |  +**| (67)
+|                                                           |  |                          |  |  |  |        |     +**JN685494.1.1497
+|                                                           |  |                          |  |  |  |     +**| (72)
+|                                                           |  |                          |  |  |  |     |  +--GQ844391.1.1485
+|                                                           |  |                          |  |  |  |  +--| (93)
+|                                                           |  |                          |  |  |  |  |  +---JQ088367.1.1471
+|                                                           |  |                          |  |  |  +--| (100)
+|                                                           |  |                          |  |  |     +**KM410320.1.1423
+|                                                           |  |                          |  +--| (56)
+|                                                           |  |                          |     +--ASV5389
+|                                                           |  |                       +**| (34)
+|                                                           |  |                       |  +--ASV1017
+|                                                           |  |                    +--| (72)
+|                                                           |  |                    |  |  +**HQ203797.1.1479
+|                                                           |  |                    |  +**| (90)
+|                                                           |  |                    |     +**GQ245905.1.1423
+|                                                           |  |                 +**| (5)
+|                                                           |  |                 |  +--ASV1454
+|                                                           |  |              +**| (1)
+|                                                           |  |              |  |  +--HM057749.1.1488
+|                                                           |  |              |  +**| (73)
+|                                                           |  |              |     +-----ASV7511
+|                                                           |  |           +--| (80)
+|                                                           |  |           |  |  +**ASV6
+|                                                           |  |           |  +**| (4)
+|                                                           |  |           |     +--ASV1481
+|                                                           |  |        +**| (6)
+|                                                           |  |        |  |                       +**FJ628198.1.1480
+|                                                           |  |        |  |                    +**| (88)
+|                                                           |  |        |  |                    |  +**FJ628348.1.1478
+|                                                           |  |        |  |                 +**| (57)
+|                                                           |  |        |  |                 |  +--HM057719.1.1503
+|                                                           |  |        |  |              +--| (98)
+|                                                           |  |        |  |              |  +--MH916846.1.1379
+|                                                           |  |        |  |           +**| (86)
+|                                                           |  |        |  |           |  |  +**KM270348.1.1470
+|                                                           |  |        |  |           |  +--| (100)
+|                                                           |  |        |  |           |     +**ASV2047
+|                                                           |  |        |  |        +**| (69)
+|                                                           |  |        |  |        |  |  +**HQ203800.1.1480
+|                                                           |  |        |  |        |  +**| (79)
+|                                                           |  |        |  |        |     +**ASV709
+|                                                           |  |        |  |     +--| (75)
+|                                                           |  |        |  |     |  |  +--KP183021.1.1481
+|                                                           |  |        |  |     |  +--| (73)
+|                                                           |  |        |  |     |     +--KM873085.1.1399
+|                                                           |  |        |  |  +**| (18)
+|                                                           |  |        |  |  |  +--FJ901115.1.1381
+|                                                           |  |        |  +--| (62)
+|                                                           |  |        |     |              +**CP001999.2328945.2330449
+|                                                           |  |        |     |           +**| (65)
+|                                                           |  |        |     |           |  +**CP001999.2660340.2661844
+|                                                           |  |        |     |        +**| (26)
+|                                                           |  |        |     |        |  |  +**JF904743.1.1478
+|                                                           |  |        |     |        |  +--| (99)
+|                                                           |  |        |     |        |     +**ASV1087
+|                                                           |  |        |     |     +--| (99)
+|                                                           |  |        |     |     |  +--JX403044.1.1509
+|                                                           |  |        |     |  +**| (50)
+|                                                           |  |        |     |  |  +--ASV2674
+|                                                           |  |        |     +--| (96)
+|                                                           |  |        |        |  +**ASV475
+|                                                           |  |        |        +**| (75)
+|                                                           |  |        |           +**ASV522
+|                                                           |  |     +**| (20)
+|                                                           |  |     |  |     +**JX391660.1.1485
+|                                                           |  |     |  |  +**| (70)
+|                                                           |  |     |  |  |  +**EF999357.1.1405
+|                                                           |  |     |  +**| (11)
+|                                                           |  |     |     +--KC682198.1.1478
+|                                                           |  |  +--| (71)
+|                                                           |  |  |  +--FJ664785.1.1320
+|                                                           |  +--| (71)
+|                                                           |     +**ASV165
+|                                                        +**| (2)
+|                                                        |  +--HQ860672.1.1449
+|                                                     +**| (0)
+|                                                     |  |  +--FJ612320.1.1411
+|                                                     |  +**| (2)
+|                                                     |     |        +**AB015529.1.1478
+|                                                     |     |     +**| (81)
+|                                                     |     |     |  +**KP182996.1.1480
+|                                                     |     |  +--| (84)
+|                                                     |     |  |  |  +**ASV2487
+|                                                     |     |  |  +--| (86)
+|                                                     |     |  |     |  +**ASV7578
+|                                                     |     |  |     +--| (100)
+|                                                     |     |  |        +--ASV8898
+|                                                     |     +**| (2)
+|                                                     |        +--FN428747.1.1480
+|                                                  +**| (0)
+|                                                  |  +**JQ215058.1.1344
+|                                               +**| (1)
+|                                               |  +**FJ612312.1.1424
+|                                            +**| (2)
+|                                            |  +--FN428763.1.1481
+|                                         +--| (64)
+|                                         |  +--ASV1216
+|                                      +--| (66)
+|                                      |  |           +--FJ959781.1.1385
+|                                      |  |        +**| (85)
+|                                      |  |        |  |        +--ASV5382
+|                                      |  |        |  |     +**| (27)
+|                                      |  |        |  |     |  +--ASV8860
+|                                      |  |        |  |  +--| (99)
+|                                      |  |        |  |  |  +--ASV7112
+|                                      |  |        |  +--| (96)
+|                                      |  |        |     +-------------ASV9725
+|                                      |  |     +--| (92)
+|                                      |  |     |  +**JQ216693.1.1343
+|                                      |  |  +--| (93)
+|                                      |  |  |  +**JQ214780.1.1346
+|                                      |  +**| (57)
+|                                      |     +--JN397809.1.1439
+|                                   +--| (69)
+|                                   |  +**ASV1664
+|                                +**| (62)
+|                                |  |        +**AM084124.1.1453
+|                                |  |     +**| (91)
+|                                |  |     |  +**JF497852.1.1469
+|                                |  |  +**| (91)
+|                                |  |  |  +--LK393052.1.1379
+|                                |  +--| (83)
+|                                |     |  +--KX422127.1.1475
+|                                |     +--| (80)
+|                                |        +--ASV4041
+|                             +--| (81)
+|                             |  |  +**AP012047.791244.792758
+|                             |  +**| (94)
+|                             |     +**AP012047.1881956.1883470
+|                          +--| (86)
+|                          |  |     +**JQ213174.1.1347
+|                          |  |  +**| (92)
+|                          |  |  |  +**JQ212073.1.1346
+|                          |  +--| (97)
+|                          |     +--JQ215863.1.1346
+|                       +--| (84)
+|                       |  |  +**AY314753.1.1410
+|                       |  +**| (92)
+|                       |     +**AJ607391.1.1460
+|                    +**| (42)
+|                    |  |  +**CP031367.1764819.1766324
+|                    |  +**| (95)
+|                    |     +**CP032823.102401.103906
+|                 +--| (86)
+|                 |  |  +**ASV32
+|                 |  +--| (95)
+|                 |     +--ASV1537
+|              +--| (86)
+|              |  +**EF111153.1.1268
+|           +--| (89)
+|           |  |                                      +--AY922182.1.1381
+|           |  |                                   +**| (21)
+|           |  |                                   |  +--KX177047.1.1484
+|           |  |                                +**| (2)
+|           |  |                                |  +--KX177624.1.1478
+|           |  |                             +**| (2)
+|           |  |                             |  |  +**KX176915.1.1484
+|           |  |                             |  +**| (64)
+|           |  |                             |     +**KX177630.1.1483
+|           |  |                          +**| (11)
+|           |  |                          |  |  +--AY922205.1.1380
+|           |  |                          |  +**| (5)
+|           |  |                          |     +--HG513895.1.1486
+|           |  |                       +--| (72)
+|           |  |                       |  +--KX177620.1.1482
+|           |  |                    +--| (64)
+|           |  |                    |  |  +**KU242456.1.1394
+|           |  |                    |  +--| (90)
+|           |  |                    |     |     +**KX422126.1.1475
+|           |  |                    |     |  +--| (100)
+|           |  |                    |     |  |  +**ASV685
+|           |  |                    |     +--| (97)
+|           |  |                    |        +--JQ611225.1.1361
+|           |  |                 +**| (54)
+|           |  |                 |  +**ASV2516
+|           |  |              +--| (46)
+|           |  |              |  +--ASV2057
+|           |  |           +--| (63)
+|           |  |           |  |     +**FR666867.1.1476
+|           |  |           |  |  +**| (87)
+|           |  |           |  |  |  +**AB530236.1.1479
+|           |  |           |  +--| (82)
+|           |  |           |     |     +--JF344171.1.1476
+|           |  |           |     |  +**| (85)
+|           |  |           |     |  |  |   +**EF123613.1.1496
+|           |  |           |     |  |  +---| (74)
+|           |  |           |     |  |      +---EU245155.1.1478
+|           |  |           |     +--| (86)
+|           |  |           |        |  +**ASV2528
+|           |  |           |        +**| (94)
+|           |  |           |           +**ASV3335
+|           |  |        +**| (14)
+|           |  |        |  |                                +**FR683719.1.1479
+|           |  |        |  |                             +**| (76)
+|           |  |        |  |                             |  +**JF268371.1.1474
+|           |  |        |  |                          +**| (17)
+|           |  |        |  |                          |  |     +--KY235971.1.1476
+|           |  |        |  |                          |  |  +**| (27)
+|           |  |        |  |                          |  |  |  +--KM873116.1.1478
+|           |  |        |  |                          |  +**| (5)
+|           |  |        |  |                          |     +--KY236000.1.1476
+|           |  |        |  |                       +**| (48)
+|           |  |        |  |                       |  +--KT257834.1.1480
+|           |  |        |  |                    +--| (75)
+|           |  |        |  |                    |  |  +**ASV1357
+|           |  |        |  |                    |  +--| (68)
+|           |  |        |  |                    |     +--ASV5487
+|           |  |        |  |                 +**| (50)
+|           |  |        |  |                 |  +--KY969129.1.1481
+|           |  |        |  |              +**| (44)
+|           |  |        |  |              |  |  +**KY235946.1.1476
+|           |  |        |  |              |  +**| (91)
+|           |  |        |  |              |     +**ASV782
+|           |  |        |  |           +--| (89)
+|           |  |        |  |           |  +--KY235939.1.1203
+|           |  |        |  |        +**| (48)
+|           |  |        |  |        |  |           +**JX521798.1.1496
+|           |  |        |  |        |  |        +**| (89)
+|           |  |        |  |        |  |        |  +**LLEK01000564.3498.4995
+|           |  |        |  |        |  |     +**| (49)
+|           |  |        |  |        |  |     |  +--JX521786.1.1491
+|           |  |        |  |        |  |  +**| (67)
+|           |  |        |  |        |  |  |  +--KX422118.1.1476
+|           |  |        |  |        |  +--| (72)
+|           |  |        |  |        |     +--ASV1485
+|           |  |        |  |     +--| (54)
+|           |  |        |  |     |  +**ASV3051
+|           |  |        |  |  +**| (52)
+|           |  |        |  |  |  |  +**GQ261829.1.1477
+|           |  |        |  |  |  +**| (92)
+|           |  |        |  |  |     +**FR666861.1.1474
+|           |  |        |  +--| (92)
+|           |  |        |     +--JX391518.1.1481
+|           |  |     +**| (19)
+|           |  |     |  |           +--AB189374.1.1478
+|           |  |     |  |        +**| (31)
+|           |  |     |  |        |  +--JQ712417.1.1381
+|           |  |     |  |     +--| (79)
+|           |  |     |  |     |  |     +**FR666862.1.1474
+|           |  |     |  |     |  |  +**| (92)
+|           |  |     |  |     |  |  |  +**JQ712383.1.1385
+|           |  |     |  |     |  +**| (24)
+|           |  |     |  |     |     |        +--KT257771.1.1479
+|           |  |     |  |     |     |     +--| (99)
+|           |  |     |  |     |     |     |  +**JQ712391.1.1392
+|           |  |     |  |     |     |  +--| (73)
+|           |  |     |  |     |     |  |  +--ASV4375
+|           |  |     |  |     |     +**| (28)
+|           |  |     |  |     |        |  +--JQ712382.1.1383
+|           |  |     |  |     |        +--| (77)
+|           |  |     |  |     |           +-----ASV7034
+|           |  |     |  |  +**| (19)
+|           |  |     |  |  |  +--KP994483.1.1382
+|           |  |     |  +**| (13)
+|           |  |     |     |  +**GQ357014.1.1479
+|           |  |     |     +**| (69)
+|           |  |     |        +**JQ199082.1.1345
+|           |  |  +--| (68)
+|           |  |  |  +--ASV3494
+|           |  +--| (77)
+|           |     +**HM057704.1.1488
+|        +--| (95)
+|        |  +**FJ820447.1.1476
+|     +**| (71)
+|     |  +--KY235963.1.1468
+|  +**| (30)
+|  |  +--HQ538624.1.1477
++**| (78)
+|  |  +--DQ676345.1.1410
+|  +**| (29)
+|     +--AB030594.1.1454
+|
++**EU662492.1.1477
+
+Tree in newick format:
+
+(AB030598.1.1449:0.0000024692,((((((((((((((((((((((((((((((((((AB243994.1.1486:0.0000020645,GU179720.1.1374:0.0028696220)100:0.0058087692,((((AB539948.1.1383:0.0000024692,AB244002.1.1494:0.0000010375)59:0.0000021055,GU179711.1.1373:0.0028673707)10:0.0000024187,EU721819.1.1379:0.0028672246)16:0.0000024239,AB546073.1.1479:0.0028675223)59:0.0000023299)100:0.0272733155,((AB013832.1.1477:0.0000029164,(EU617862.1.1482:0.0028773630,(EU142043.1.1479:0.0000025016,(KP994454.1.1353:0.0057788766,ASV1413:0.0000028760)92:0.0028949350)87:0.0058861035)25:0.0000021034)60:0.0000021920,(AJ271653.1.1508:0.0000020227,AJ810559.1.1432:0.0000020673)92:0.0058257900)82:0.0058284571)21:0.0000023298,FPLP01003601.2.1453:0.0028770227)3:0.0000021930,(CP032100.2265641.2267146:0.0000024692,FJ573216.1.1454:0.0000010375)72:0.0000023966)1:0.0000023019,(FJ946551.1.1290:0.0028768727,JQ845768.1.1324:0.0058536193)2:0.0000019655)4:0.0000023487,EF515690.1.1375:0.0028790075)19:0.0028550250,KJ808094.1.1477:0.0031066191)17:0.0029163243,((((((((((((((((CP031217.2599245.2600750:0.0000024692,CP031217.341658.343163:0.0000010375)69:0.0000021550,FJ717121.1.1510:0.0028872394)85:0.0000022162,ASV3246:0.0028877647)93:0.0058494698,JN118550.1.1426:0.0000022931)62:0.0000022214,(FJ202091.1.1461:0.0031011085,(KX014304.1.1482:0.0028798586,KC121364.1.1413:0.0000023674)99:0.0060161455)67:0.0027234124)76:0.0058459002,FJ203167.1.1440:0.0058348679)6:0.0000021338,(FJ717083.1.1513:0.0000024692,FJ203093.1.1440:0.0000010375)64:0.0000020984)3:0.0000020702,JX170305.1.1217:0.0028846579)13:0.0000022112,(KC527458.1.1215:0.0000021542,JQ211910.1.1343:0.0000021874)96:0.0028828146)82:0.0058956839,(EF645952.1.1476:0.0028814797,((KU524867.1.1478:0.0000024692,ASV1439:0.0000010375)25:0.0000021192,ASV785:0.0000024692)44:0.0000023701)21:0.0000023601)15:0.0000024100,FR744554.1.1439:0.0088623808)9:0.0028893714,ASV6143:0.0000020838)4:0.0058425985,(ASV10271:0.0652162257,ASV10287:0.0222465146)100:0.1013565284)2:0.0000029825,EF029030.1.1439:0.0000025016)6:0.0059035172,EU052236.1.1481:0.0000021075)1:0.0000026976,(EF028937.1.1438:0.0028813185,(HE576787.1.1388:0.0000024692,KX550224.1.1517:0.0000010375)72:0.0000020467)87:0.0088497964)17:0.0058845418)19:0.0000023663,LK393042.1.1397:0.0028766716)3:0.0000024352,ASV589:0.0028873608)2:0.0000022077,((((((AJ810558.1.1445:0.0026552154,AB806738.1.1440:0.0061794123)81:0.0063195939,((((((((((CP019070.2095178.2096695:0.0000023563,CP019070.609339.610856:0.0000023331)99:0.0029330125,((AB100003.1.1328:0.0000024692,KF799046.1.1481:0.0028671858)15:0.0000027869,(GU061291.1.1416:0.0000021885,JX559229.1.1472:0.0000010375)75:0.0000021483)54:0.0000024083)93:0.0058205645,ASV752:0.0000023414)83:0.0028764963,KU143708.1.1442:0.0122264475)59:0.0000023945,((HM057681.1.1486:0.0000024692,HQ203914.1.1479:0.0000010375)69:0.0000027951,(KC682188.1.1482:0.0058710835,KP994482.1.1382:0.0030060744)31:0.0000027183)25:0.0000020756)74:0.0000023337,FR683715.1.1521:0.0088371600)87:0.0059089678,EU265967.1.1479:0.0000022138)82:0.0058549142,((((((HM591345.1.1479:0.0000010375,HM591472.1.1485:0.0000010375)98:0.0028911290,EU236320.1.1370:0.0029337522)91:0.0028779936,(KT318714.1.1372:0.0000024692,JQ197538.1.1344:0.0000010375)84:0.0000022858)65:0.0000022453,JQ199442.1.1346:0.0058368927)94:0.0059108528,JQ862035.1.1484:0.0028815685)22:0.0000022631,(LLEL01000725.12.1508:0.0000024692,LT629298.1.1382:0.0000010375)62:0.0000023238)42:0.0000024158)77:0.0028872241,(ASV247:0.0000021961,ASV1438:0.0000029170)84:0.0000024286)71:0.0029348887,(FJ717163.1.1513:0.0000022889,FJ717168.1.1511:0.0000022922)100:0.0029378243)69:0.0000023758)61:0.0028342864,(DQ234101.1.1546:0.0000024449,ASV1783:0.0000024433)93:0.0058281070)14:0.0000022199,LK392947.1.1390:0.0028768208)4:0.0000027608,AP012048.2429210.2430725:0.0000024692)2:0.0000022817,GU179723.1.1377:0.0000024692)3:0.0000020310)10:0.0000023157,ASV551:0.0028763163)64:0.0058858863,(((((((((((((((((((AF513455.1.1402:0.0000025100,CP031218.1972423.1973928:0.0000010375)91:0.0000026847,JX391310.1.1479:0.0028836203)94:0.0058380236,EF648116.1.1463:0.0088514711)33:0.0000021010,DQ234096.1.1547:0.0000022366)36:0.0028835829,KF268902.1.1385:0.0058485813)2:0.0000029492,(HM057798.1.1502:0.0000024692,KC527298.1.1215:0.0000010375)77:0.0000023436)2:0.0000024356,KF179644.1.1445:0.0028835037)21:0.0028840369,(GQ245902.1.1404:0.0000010375,KC527463.1.1216:0.0000010375)96:0.0000023983)74:0.0058309348,(JN619794.1.1423:0.0126780576,KC527432.1.1217:0.0058332767)51:0.0000026880)6:0.0000024238,((((HM057725.1.1504:0.0058183803,ASV2894:0.0000027585)95:0.0001598476,ASV10742:0.0453258047)99:0.0290726748,(((((AY340831.1.1402:0.0058381689,FJ900977.1.1282:0.0028815297)13:0.0000021998,(GQ844379.1.1481:0.0000024692,JN685494.1.1497:0.0000010375)67:0.0000028585)15:0.0000020500,GQ844391.1.1485:0.0058317689)72:0.0000021230,JQ088367.1.1471:0.0153440770)93:0.0058351209,KM410320.1.1423:0.0000020144)100:0.0118633584)67:0.0000024770,ASV5389:0.0031000633)56:0.0059144054)75:0.0058306348,ASV1017:0.0028837895)34:0.0000028346,(HQ203797.1.1479:0.0000022949,GQ245905.1.1423:0.0000010375)90:0.0000024098)72:0.0028839072,ASV1454:0.0028822676)5:0.0000021767,(HM057749.1.1488:0.0028810564,ASV7511:0.0256919072)73:0.0000022511)1:0.0000020249,(ASV6:0.0000024692,ASV1481:0.0028848287)4:0.0000023738)80:0.0059122822,((((((((FJ628198.1.1480:0.0000024692,FJ628348.1.1478:0.0000010375)88:0.0000020300,HM057719.1.1503:0.0028781751)57:0.0000023359,MH916846.1.1379:0.0028782207)98:0.0114858945,(KM270348.1.1470:0.0000025092,ASV2047:0.0000025463)100:0.0063432058)86:0.0005149132,(HQ203800.1.1480:0.0000010375,ASV709:0.0000010375)79:0.0000022715)69:0.0000020799,(KP183021.1.1481:0.0029062760,KM873085.1.1399:0.0029181229)73:0.0028591514)75:0.0058327267,FJ901115.1.1381:0.0088599324)18:0.0000023802,(((((CP001999.2328945.2330449:0.0000024692,CP001999.2660340.2661844:0.0000021182)65:0.0000021749,(JF904743.1.1478:0.0000025494,ASV1087:0.0000020137)99:0.0028701938)26:0.0000022157,JX403044.1.1509:0.0028735260)99:0.0029020253,ASV2674:0.0147602970)50:0.0000028944,(ASV475:0.0000024692,ASV522:0.0000023611)75:0.0000022226)96:0.0028815357)62:0.0028793810)6:0.0000024305,((JX391660.1.1485:0.0000024692,EF999357.1.1405:0.0000010375)70:0.0000021775,KC682198.1.1478:0.0028828593)11:0.0000021146)20:0.0000023845,FJ664785.1.1320:0.0058377518)71:0.0028878812,ASV165:0.0000023877)71:0.0058415275)7:0.0000024089,HQ860672.1.1449:0.0058297659)2:0.0000021423,(FJ612320.1.1411:0.0028776966,(((AB015529.1.1478:0.0000021531,KP182996.1.1480:0.0000026574)81:0.0000022126,(ASV2487:0.0000021655,(ASV7578:0.0000022016,ASV8898:0.0120909380)100:0.0143130397)86:0.0059073067)84:0.0058298863,FN428747.1.1480:0.0028777199)2:0.0000024175)2:0.0000020041)0:0.0000021764,JQ215058.1.1344:0.0000010375)0:0.0000021813,FJ612312.1.1424:0.0000024692)1:0.0000021028,FN428763.1.1481:0.0028775488)2:0.0000021770,ASV1216:0.0028883507)64:0.0058341787,((((FJ959781.1.1385:0.0088299663,(((ASV5382:0.0029160756,ASV8860:0.0029178118)27:0.0000020414,ASV7112:0.0029177456)99:0.0094516489,ASV9725:0.0530253305)96:0.0099483379)85:0.0000026617,JQ216693.1.1343:0.0000023087)92:0.0059063066,JQ214780.1.1346:0.0000019848)93:0.0058478404,JN397809.1.1439:0.0028854386)57:0.0000023094)66:0.0028954866,ASV1664:0.0000022211)69:0.0028805028,(((AM084124.1.1453:0.0000024692,JF497852.1.1469:0.0000010375)91:0.0000026559,LK393052.1.1379:0.0028718272)91:0.0000022322,(KX422127.1.1475:0.0091961636,ASV4041:0.0033499065)80:0.0055528681)83:0.0088286518)62:0.0000023869,(AP012047.791244.792758:0.0000023972,AP012047.1881956.1883470:0.0000020728)94:0.0000029018)81:0.0060351135,((JQ213174.1.1347:0.0000010375,JQ212073.1.1346:0.0000020531)92:0.0000020569,JQ215863.1.1346:0.0058665440)97:0.0089301040)86:0.0029728075,(AY314753.1.1410:0.0000010375,AJ607391.1.1460:0.0000010375)92:0.0000021753)84:0.0028826070,(CP031367.1764819.1766324:0.0000023983,CP032823.102401.103906:0.0000023839)95:0.0000023849)42:0.0000021807,(ASV32:0.0000023683,ASV1537:0.0028925719)95:0.0058692526)86:0.0028799404,EF111153.1.1268:0.0000022986)86:0.0028832000,(((((((((((((AY922182.1.1381:0.0028716206,KX177047.1.1484:0.0028690699)21:0.0000026312,KX177624.1.1478:0.0028690747)2:0.0000020659,(KX176915.1.1484:0.0000024692,KX177630.1.1483:0.0000010375)64:0.0000021466)2:0.0000024053,(AY922205.1.1380:0.0028691532,HG513895.1.1486:0.0058096124)5:0.0000023951)11:0.0000023961,KX177620.1.1482:0.0028690846)72:0.0029220783,(KU242456.1.1394:0.0000022966,((KX422126.1.1475:0.0000010375,ASV685:0.0000010375)100:0.0061734106,JQ611225.1.1361:0.0031342922)97:0.0055732369)90:0.0119912219)64:0.0029599240,ASV2516:0.0000023262)54:0.0000022942,ASV2057:0.0118370770)46:0.0030285363,((FR666867.1.1476:0.0000021611,AB530236.1.1479:0.0000023937)87:0.0000025395,((JF344171.1.1476:0.0128846154,(EF123613.1.1496:0.0000023862,EU245155.1.1478:0.0168010324)74:0.0148929379)85:0.0000023255,(ASV2528:0.0000019886,ASV3335:0.0000021260)94:0.0000024023)86:0.0058276787)82:0.0056864479)63:0.0029890804,(((((((((((FR683719.1.1479:0.0000024692,JF268371.1.1474:0.0000010375)76:0.0000023314,((KY235971.1.1476:0.0028714263,KM873116.1.1478:0.0028712939)27:0.0000021298,KY236000.1.1476:0.0028713189)5:0.0000020816)17:0.0000023745,KT257834.1.1480:0.0028713772)48:0.0000023812,(ASV1357:0.0000020585,ASV5487:0.0058084135)68:0.0028718700)75:0.0028809035,KY969129.1.1481:0.0028575627)50:0.0000025618,(KY235946.1.1476:0.0000024692,ASV782:0.0000010375)91:0.0000020915)44:0.0000026204,KY235939.1.1203:0.0057847303)89:0.0057848134,((((JX521798.1.1496:0.0000024692,LLEK01000564.3498.4995:0.0000010375)89:0.0000021025,JX521786.1.1491:0.0028564817)49:0.0000024577,KX422118.1.1476:0.0028568130)67:0.0000027336,ASV1485:0.0088858877)72:0.0057841898)48:0.0000023877,ASV3051:0.0000021203)54:0.0028806088,(GQ261829.1.1477:0.0000021541,FR666861.1.1474:0.0000020988)92:0.0000024165)52:0.0000029720,JX391518.1.1481:0.0118883727)92:0.0058162806)14:0.0000028261,((((AB189374.1.1478:0.0057947604,JQ712417.1.1381:0.0028621898)31:0.0000024232,((FR666862.1.1474:0.0000010375,JQ712383.1.1385:0.0000021656)92:0.0000029430,(((KT257771.1.1479:0.0028707880,JQ712391.1.1392:0.0000023363)99:0.0059674874,ASV4375:0.0058190678)73:0.0029663572,(JQ712382.1.1383:0.0094070126,ASV7034:0.0228742332)77:0.0124406315)28:0.0000021980)24:0.0000023123)79:0.0059112564,KP994483.1.1382:0.0028708902)19:0.0000022363,(GQ357014.1.1479:0.0000024692,JQ199082.1.1345:0.0000010375)69:0.0000028969)13:0.0000022350)19:0.0000023525,ASV3494:0.0029066702)68:0.0058865055,HM057704.1.1488:0.0000028238)77:0.0059437619)89:0.0029733675,FJ820447.1.1476:0.0000020174)95:0.0057905810,KY235963.1.1468:0.0059050449)71:0.0000025609,HQ538624.1.1477:0.0028585285)30:0.0000026278,(DQ676345.1.1410:0.0028589230,AB030594.1.1454:0.0028585614)29:0.0000021020)78:0.0000021356,EU662492.1.1477:0.0000010375);
+
+CONSENSUS TREE
+--------------
+
+Consensus tree is constructed from 1000 bootstrap trees
+Log-likelihood of consensus tree: -3071.871035
+Robinson-Foulds distance between ML tree and consensus tree: 132
+
+Branches with support >0.000000% are kept (extended consensus)
+Branch lengths are optimized by maximum likelihood on original alignment
+Numbers in parentheses are bootstrap supports (%)
+
++**AB030598.1.1449
+|
+|                                                                                                +--AB243994.1.1486
+|                                                                                             +--| (100)
+|                                                                                             |  +--GU179720.1.1374
+|                                                                                      +------| (100)
+|                                                                                      |      |                    +**AB539948.1.1383
+|                                                                                      |      |                 +**|
+|                                                                                      |      |                 |  +**GU179704.1.1385
+|                                                                                      |      |              +**|
+|                                                                                      |      |              |  +**HQ218501.1.1480
+|                                                                                      |      |           +**|
+|                                                                                      |      |           |  +**AY570594.1.1479
+|                                                                                      |      |        +--|
+|                                                                                      |      |        |  +**ASV2897
+|                                                                                      |      |     +--| (59)
+|                                                                                      |      |     |  +--AB244002.1.1494
+|                                                                                      |      |  +--| (28)
+|                                                                                      |      |  |  |  +--GU179711.1.1373
+|                                                                                      |      |  |  +--| (27)
+|                                                                                      |      |  |     +--AB546073.1.1479
+|                                                                                      |      +--| (59)
+|                                                                                      |         +--EU721819.1.1379
+|                                                                                   +--| (61)
+|                                                                                   |  |                                                     +**CP032100.2265641.2267146
+|                                                                                   |  |                                                  +**|
+|                                                                                   |  |                                                  |  +**AM084114.1.1464
+|                                                                                   |  |                                               +**|
+|                                                                                   |  |                                               |  +**JQ845805.1.1325
+|                                                                                   |  |                                            +**|
+|                                                                                   |  |                                            |  +**JX403059.1.1507
+|                                                                                   |  |                                         +**|
+|                                                                                   |  |                                         |  +**ASV279
+|                                                                                   |  |                                      +**|
+|                                                                                   |  |                                      |  +**DQ234254.1.1547
+|                                                                                   |  |                                   +**|
+|                                                                                   |  |                                   |  +**HE565359.1.1401
+|                                                                                   |  |                                +**|
+|                                                                                   |  |                                |  +**CP032100.2549892.2551397
+|                                                                                   |  |                             +**|
+|                                                                                   |  |                             |  +**ASV684
+|                                                                                   |  |                          +**|
+|                                                                                   |  |                          |  +**LK393014.1.1392
+|                                                                                   |  |                       +**|
+|                                                                                   |  |                       |  +**CP032100.2137959.2139464
+|                                                                                   |  |                    +**|
+|                                                                                   |  |                    |  +**GU061286.1.1415
+|                                                                                   |  |                 +**|
+|                                                                                   |  |                 |  +**CP032100.2049452.2050957
+|                                                                                   |  |              +**|
+|                                                                                   |  |              |  +**ASV703
+|                                                                                   |  |           +--|
+|                                                                                   |  |           |  +**CP032100.1735385.1736890
+|                                                                                   |  |        +--| (72)
+|                                                                                   |  |        |  +--FJ573216.1.1454
+|                                                                                   |  |     +--| (11)
+|                                                                                   |  |     |  |     +--EF515690.1.1375
+|                                                                                   |  |     |  |  +--| (60)
+|                                                                                   |  |     |  |  |  |                            +--------------ASV10271
+|                                                                                   |  |     |  |  |  +----------------------------| (100)
+|                                                                                   |  |     |  |  |                               +-------ASV10287
+|                                                                                   |  |     |  +--| (7)
+|                                                                                   |  |     |     +--FPLP01003601.2.1453
+|                                                                                   |  |  +--| (8)
+|                                                                                   |  |  |  +--FJ946551.1.1290
+|                                                                                   |  +--| (28)
+|                                                                                   |     |           +--AB013832.1.1477
+|                                                                                   |     |        +--| (48)
+|                                                                                   |     |        |  +--EU617862.1.1482
+|                                                                                   |     |     +--| (60)
+|                                                                                   |     |     |  |  +--EU142043.1.1479
+|                                                                                   |     |     |  +--| (87)
+|                                                                                   |     |     |     |  +--KP994454.1.1353
+|                                                                                   |     |     |     +--| (92)
+|                                                                                   |     |     |        +--ASV1413
+|                                                                                   |     |  +--| (82)
+|                                                                                   |     |  |  |  +--AJ271653.1.1508
+|                                                                                   |     |  |  +--| (92)
+|                                                                                   |     |  |     +--AJ810559.1.1432
+|                                                                                   |     +--| (13)
+|                                                                                   |        +--JQ845768.1.1324
+|                                                                                +--| (61)
+|                                                                                |  +--KJ808094.1.1477
+|                                                                             +--| (64)
+|                                                                             |  |                       +--AJ810558.1.1445
+|                                                                             |  |                    +--| (81)
+|                                                                             |  |                    |  +--AB806738.1.1440
+|                                                                             |  |                 +--| (61)
+|                                                                             |  |                 |  |                                               +**CP019070.2095178.2096695
+|                                                                             |  |                 |  |                                            +**|
+|                                                                             |  |                 |  |                                            |  +**CP019070.2682675.2684192
+|                                                                             |  |                 |  |                                         +**|
+|                                                                             |  |                 |  |                                         |  +**CP019070.1936360.1937877
+|                                                                             |  |                 |  |                                      +**|
+|                                                                             |  |                 |  |                                      |  +**CP019070.2816412.2817929
+|                                                                             |  |                 |  |                                   +**|
+|                                                                             |  |                 |  |                                   |  +**CP019070.2388699.2390216
+|                                                                             |  |                 |  |                                +**|
+|                                                                             |  |                 |  |                                |  +**ASV1471
+|                                                                             |  |                 |  |                             +--|
+|                                                                             |  |                 |  |                             |  +**ASV527
+|                                                                             |  |                 |  |                          +--| (99)
+|                                                                             |  |                 |  |                          |  +--CP019070.609339.610856
+|                                                                             |  |                 |  |                       +--| (93)
+|                                                                             |  |                 |  |                       |  |     +--AB100003.1.1328
+|                                                                             |  |                 |  |                       |  |  +--| (59)
+|                                                                             |  |                 |  |                       |  |  |  |        +**GU061291.1.1416
+|                                                                             |  |                 |  |                       |  |  |  |     +**|
+|                                                                             |  |                 |  |                       |  |  |  |     |  +**ASV526
+|                                                                             |  |                 |  |                       |  |  |  |  +--|
+|                                                                             |  |                 |  |                       |  |  |  |  |  +**ASV331
+|                                                                             |  |                 |  |                       |  |  |  +--| (75)
+|                                                                             |  |                 |  |                       |  |  |     +--JX559229.1.1472
+|                                                                             |  |                 |  |                       |  +--| (54)
+|                                                                             |  |                 |  |                       |     +--KF799046.1.1481
+|                                                                             |  |                 |  |                    +--| (83)
+|                                                                             |  |                 |  |                    |  +--ASV752
+|                                                                             |  |                 |  |                 +--| (59)
+|                                                                             |  |                 |  |                 |  +--KU143708.1.1442
+|                                                                             |  |                 |  |              +--| (74)
+|                                                                             |  |                 |  |              |  |                    +**HM057681.1.1486
+|                                                                             |  |                 |  |              |  |                 +**|
+|                                                                             |  |                 |  |              |  |                 |  +**ASV913
+|                                                                             |  |                 |  |              |  |              +**|
+|                                                                             |  |                 |  |              |  |              |  +**ASV196
+|                                                                             |  |                 |  |              |  |           +**|
+|                                                                             |  |                 |  |              |  |           |  +**HM057692.1.1487
+|                                                                             |  |                 |  |              |  |        +**|
+|                                                                             |  |                 |  |              |  |        |  +**HM057667.1.1487
+|                                                                             |  |                 |  |              |  |     +--|
+|                                                                             |  |                 |  |              |  |     |  +**ASV774
+|                                                                             |  |                 |  |              |  |  +--| (69)
+|                                                                             |  |                 |  |              |  |  |  +--HQ203914.1.1479
+|                                                                             |  |                 |  |              |  +--| (25)
+|                                                                             |  |                 |  |              |     |  +--KC682188.1.1482
+|                                                                             |  |                 |  |              |     +--| (31)
+|                                                                             |  |                 |  |              |        +--KP994482.1.1382
+|                                                                             |  |                 |  |           +--| (87)
+|                                                                             |  |                 |  |           |  +--FR683715.1.1521
+|                                                                             |  |                 |  |        +--| (82)
+|                                                                             |  |                 |  |        |  +--EU265967.1.1479
+|                                                                             |  |                 |  |     +--| (77)
+|                                                                             |  |                 |  |     |  |                    +**HM591345.1.1479
+|                                                                             |  |                 |  |     |  |                 +**|
+|                                                                             |  |                 |  |     |  |                 |  +**HM591433.1.1479
+|                                                                             |  |                 |  |     |  |              +--|
+|                                                                             |  |                 |  |     |  |              |  +**JQ611206.1.1378
+|                                                                             |  |                 |  |     |  |           +--| (98)
+|                                                                             |  |                 |  |     |  |           |  +--HM591472.1.1485
+|                                                                             |  |                 |  |     |  |        +--| (91)
+|                                                                             |  |                 |  |     |  |        |  +--EU236320.1.1370
+|                                                                             |  |                 |  |     |  |     +--| (65)
+|                                                                             |  |                 |  |     |  |     |  |  +--KT318714.1.1372
+|                                                                             |  |                 |  |     |  |     |  +--| (84)
+|                                                                             |  |                 |  |     |  |     |     +--JQ197538.1.1344
+|                                                                             |  |                 |  |     |  |  +--| (94)
+|                                                                             |  |                 |  |     |  |  |  +--JQ199442.1.1346
+|                                                                             |  |                 |  |     |  +--| (42)
+|                                                                             |  |                 |  |     |     |  +--JQ862035.1.1484
+|                                                                             |  |                 |  |     |     +--| (24)
+|                                                                             |  |                 |  |     |        |  +--LLEL01000725.12.1508
+|                                                                             |  |                 |  |     |        +--| (62)
+|                                                                             |  |                 |  |     |           +--LT629298.1.1382
+|                                                                             |  |                 |  |  +--| (71)
+|                                                                             |  |                 |  |  |  |     +**ASV247
+|                                                                             |  |                 |  |  |  |  +--|
+|                                                                             |  |                 |  |  |  |  |  +**ASV2244
+|                                                                             |  |                 |  |  |  +--| (84)
+|                                                                             |  |                 |  |  |     +--ASV1438
+|                                                                             |  |                 |  +--| (69)
+|                                                                             |  |                 |     |  +--FJ717163.1.1513
+|                                                                             |  |                 |     +--| (100)
+|                                                                             |  |                 |        +--FJ717168.1.1511
+|                                                                             |  |              +--| (22)
+|                                                                             |  |              |  |                                            +**CP031217.2599245.2600750
+|                                                                             |  |              |  |                                         +**|
+|                                                                             |  |              |  |                                         |  +**LT904750.1.1202
+|                                                                             |  |              |  |                                      +**|
+|                                                                             |  |              |  |                                      |  +**CP031217.1961684.1963189
+|                                                                             |  |              |  |                                   +**|
+|                                                                             |  |              |  |                                   |  +**FJ573217.1.1451
+|                                                                             |  |              |  |                                +--|
+|                                                                             |  |              |  |                                |  +**CP031217.1945484.1946989
+|                                                                             |  |              |  |                             +--| (69)
+|                                                                             |  |              |  |                             |  +--CP031217.341658.343163
+|                                                                             |  |              |  |                          +--| (85)
+|                                                                             |  |              |  |                          |  +--FJ717121.1.1510
+|                                                                             |  |              |  |                       +--| (93)
+|                                                                             |  |              |  |                       |  +--ASV3246
+|                                                                             |  |              |  |                    +--| (62)
+|                                                                             |  |              |  |                    |  +--JN118550.1.1426
+|                                                                             |  |              |  |                 +--| (76)
+|                                                                             |  |              |  |                 |  |  +--FJ202091.1.1461
+|                                                                             |  |              |  |                 |  +--| (67)
+|                                                                             |  |              |  |                 |     |  +--KX014304.1.1482
+|                                                                             |  |              |  |                 |     +--| (99)
+|                                                                             |  |              |  |                 |        +--KC121364.1.1413
+|                                                                             |  |              |  |              +--| (38)
+|                                                                             |  |              |  |              |  |     +**KC527458.1.1215
+|                                                                             |  |              |  |              |  |  +--|
+|                                                                             |  |              |  |              |  |  |  +**ASV5532
+|                                                                             |  |              |  |              |  +--| (96)
+|                                                                             |  |              |  |              |     +--JQ211910.1.1343
+|                                                                             |  |              |  |           +--| (82)
+|                                                                             |  |              |  |           |  |                 +**FJ717083.1.1513
+|                                                                             |  |              |  |           |  |              +**|
+|                                                                             |  |              |  |           |  |              |  +**JX170279.1.1405
+|                                                                             |  |              |  |           |  |           +**|
+|                                                                             |  |              |  |           |  |           |  +**JQ195744.1.1344
+|                                                                             |  |              |  |           |  |        +--|
+|                                                                             |  |              |  |           |  |        |  +**JX170315.1.1383
+|                                                                             |  |              |  |           |  |     +--| (64)
+|                                                                             |  |              |  |           |  |     |  +--FJ203093.1.1440
+|                                                                             |  |              |  |           |  |  +--| (26)
+|                                                                             |  |              |  |           |  |  |  +--JX170305.1.1217
+|                                                                             |  |              |  |           |  +--| (28)
+|                                                                             |  |              |  |           |     +--FJ203167.1.1440
+|                                                                             |  |              |  |        +--| (18)
+|                                                                             |  |              |  |        |  |  +--EF029030.1.1439
+|                                                                             |  |              |  |        |  +--| (38)
+|                                                                             |  |              |  |        |     +--ASV6143
+|                                                                             |  |              |  |     +--| (39)
+|                                                                             |  |              |  |     |  |     +--EF645952.1.1476
+|                                                                             |  |              |  |     |  |  +--| (21)
+|                                                                             |  |              |  |     |  |  |  |  +--KU524867.1.1478
+|                                                                             |  |              |  |     |  |  |  +--| (44)
+|                                                                             |  |              |  |     |  |  |     |     +**ASV785
+|                                                                             |  |              |  |     |  |  |     |  +--|
+|                                                                             |  |              |  |     |  |  |     |  |  +**ASV1523
+|                                                                             |  |              |  |     |  |  |     +--| (38)
+|                                                                             |  |              |  |     |  |  |        +--ASV1439
+|                                                                             |  |              |  |     |  +--| (9)
+|                                                                             |  |              |  |     |     +--FR744554.1.1439
+|                                                                             |  |              |  |  +--| (66)
+|                                                                             |  |              |  |  |  |  +--EF028937.1.1438
+|                                                                             |  |              |  |  |  +--| (87)
+|                                                                             |  |              |  |  |     |  +--HE576787.1.1388
+|                                                                             |  |              |  |  |     +--| (72)
+|                                                                             |  |              |  |  |        +--KX550224.1.1517
+|                                                                             |  |              |  +--| (62)
+|                                                                             |  |              |     +--EU052236.1.1481
+|                                                                             |  |           +--| (10)
+|                                                                             |  |           |  |     +**DQ234101.1.1546
+|                                                                             |  |           |  |  +--|
+|                                                                             |  |           |  |  |  +**ASV2272
+|                                                                             |  |           |  +--| (93)
+|                                                                             |  |           |     +--ASV1783
+|                                                                             |  |        +--| (7)
+|                                                                             |  |        |  |                                                                                                  +**AP012048.2429210.2430725
+|                                                                             |  |        |  |                                                                                               +**|
+|                                                                             |  |        |  |                                                                                               |  +**GU179716.1.1374
+|                                                                             |  |        |  |                                                                                            +**|
+|                                                                             |  |        |  |                                                                                            |  +**GU451405.1.1215
+|                                                                             |  |        |  |                                                                                         +**|
+|                                                                             |  |        |  |                                                                                         |  +**GU179703.1.1379
+|                                                                             |  |        |  |                                                                                      +**|
+|                                                                             |  |        |  |                                                                                      |  +**LK393019.1.1384
+|                                                                             |  |        |  |                                                                                   +**|
+|                                                                             |  |        |  |                                                                                   |  +**ASV194
+|                                                                             |  |        |  |                                                                                +**|
+|                                                                             |  |        |  |                                                                                |  +**MF040336.1.1478
+|                                                                             |  |        |  |                                                                             +**|
+|                                                                             |  |        |  |                                                                             |  +**HQ203977.1.1485
+|                                                                             |  |        |  |                                                                          +**|
+|                                                                             |  |        |  |                                                                          |  +**LK392962.1.1383
+|                                                                             |  |        |  |                                                                       +**|
+|                                                                             |  |        |  |                                                                       |  +**AP012048.2586203.2587718
+|                                                                             |  |        |  |                                                                    +**|
+|                                                                             |  |        |  |                                                                    |  +**LK392968.1.1384
+|                                                                             |  |        |  |                                                                 +**|
+|                                                                             |  |        |  |                                                                 |  +**CP032097.951489.952994
+|                                                                             |  |        |  |                                                              +**|
+|                                                                             |  |        |  |                                                              |  +**LK393053.1.1367
+|                                                                             |  |        |  |                                                           +**|
+|                                                                             |  |        |  |                                                           |  +**CP032097.2142906.2144411
+|                                                                             |  |        |  |                                                        +**|
+|                                                                             |  |        |  |                                                        |  +**KT283075.1.1478
+|                                                                             |  |        |  |                                                     +**|
+|                                                                             |  |        |  |                                                     |  +**LK393070.1.1366
+|                                                                             |  |        |  |                                                  +**|
+|                                                                             |  |        |  |                                                  |  +**HE565360.1.1402
+|                                                                             |  |        |  |                                               +**|
+|                                                                             |  |        |  |                                               |  +**GU179722.1.1362
+|                                                                             |  |        |  |                                            +**|
+|                                                                             |  |        |  |                                            |  +**LK392931.1.1391
+|                                                                             |  |        |  |                                         +**|
+|                                                                             |  |        |  |                                         |  +**ASV566
+|                                                                             |  |        |  |                                      +**|
+|                                                                             |  |        |  |                                      |  +**HQ115595.1.1402
+|                                                                             |  |        |  |                                   +**|
+|                                                                             |  |        |  |                                   |  +**CP032097.2715696.2717201
+|                                                                             |  |        |  |                                +**|
+|                                                                             |  |        |  |                                |  +**JQ845780.1.1325
+|                                                                             |  |        |  |                             +**|
+|                                                                             |  |        |  |                             |  +**CP032097.2437538.2439043
+|                                                                             |  |        |  |                          +**|
+|                                                                             |  |        |  |                          |  +**KM668167.1.1480
+|                                                                             |  |        |  |                       +**|
+|                                                                             |  |        |  |                       |  +**ASV4426
+|                                                                             |  |        |  |                    +**|
+|                                                                             |  |        |  |                    |  +**CP032097.2284812.2286317
+|                                                                             |  |        |  |                 +**|
+|                                                                             |  |        |  |                 |  +**AP012048.2850041.2851556
+|                                                                             |  |        |  |              +**|
+|                                                                             |  |        |  |              |  +**ASV1867
+|                                                                             |  |        |  |           +**|
+|                                                                             |  |        |  |           |  +**LK393101.1.1364
+|                                                                             |  |        |  |        +**|
+|                                                                             |  |        |  |        |  +**AP012048.2339767.2341282
+|                                                                             |  |        |  |     +**|
+|                                                                             |  |        |  |     |  +**FJ900992.1.1315
+|                                                                             |  |        |  |  +--|
+|                                                                             |  |        |  |  |  +**AP012048.1097572.1099087
+|                                                                             |  |        |  +--| (13)
+|                                                                             |  |        |     +--GU179723.1.1377
+|                                                                             |  |     +--| (6)
+|                                                                             |  |     |  +--LK392947.1.1390
+|                                                                             |  |  +--| (7)
+|                                                                             |  |  |  |  +--ASV551
+|                                                                             |  |  |  +--| (19)
+|                                                                             |  |  |     +--ASV589
+|                                                                             |  +--| (26)
+|                                                                             |     +--LK393042.1.1397
+|                                                                          +--| (52)
+|                                                                          |  |           +--FJ612320.1.1411
+|                                                                          |  |        +--| (21)
+|                                                                          |  |        |  +--FN428747.1.1480
+|                                                                          |  |     +--| (20)
+|                                                                          |  |     |  |                 +**FJ612312.1.1424
+|                                                                          |  |     |  |              +**|
+|                                                                          |  |     |  |              |  +**FJ612335.1.1474
+|                                                                          |  |     |  |           +**|
+|                                                                          |  |     |  |           |  +**LK392734.1.1244
+|                                                                          |  |     |  |        +**|
+|                                                                          |  |     |  |        |  +**JQ215660.1.1345
+|                                                                          |  |     |  |     +**|
+|                                                                          |  |     |  |     |  +**JQ211124.1.1344
+|                                                                          |  |     |  |  +--|
+|                                                                          |  |     |  |  |  +**JX403025.1.1514
+|                                                                          |  |     |  +--| (26)
+|                                                                          |  |     |     +--JQ215058.1.1344
+|                                                                          |  |  +--| (7)
+|                                                                          |  |  |  |  +--FN428763.1.1481
+|                                                                          |  |  |  +--| (8)
+|                                                                          |  |  |     +--ASV1216
+|                                                                          |  +--| (10)
+|                                                                          |     |                 +**AB015529.1.1478
+|                                                                          |     |              +**|
+|                                                                          |     |              |  +**JN233480.1.1439
+|                                                                          |     |           +**|
+|                                                                          |     |           |  +**JN233497.1.1440
+|                                                                          |     |        +--|
+|                                                                          |     |        |  +**KC682350.1.1482
+|                                                                          |     |     +--| (81)
+|                                                                          |     |     |  +--KP182996.1.1480
+|                                                                          |     |  +--| (84)
+|                                                                          |     |  |  |  +--ASV2487
+|                                                                          |     |  |  +--| (86)
+|                                                                          |     |  |     |   +--ASV7578
+|                                                                          |     |  |     +---| (100)
+|                                                                          |     |  |         +--ASV8898
+|                                                                          |     +--| (21)
+|                                                                          |        +--HQ860672.1.1449
+|                                                                       +--| (64)
+|                                                                       |  |                                                        +**AF513455.1.1402
+|                                                                       |  |                                                     +**|
+|                                                                       |  |                                                     |  +**JN118552.1.1427
+|                                                                       |  |                                                  +**|
+|                                                                       |  |                                                  |  +**CP031218.2758484.2759989
+|                                                                       |  |                                               +**|
+|                                                                       |  |                                               |  +**CP031218.166581.168086
+|                                                                       |  |                                            +**|
+|                                                                       |  |                                            |  +**CP031218.230734.232239
+|                                                                       |  |                                         +**|
+|                                                                       |  |                                         |  +**HM057804.1.1502
+|                                                                       |  |                                      +**|
+|                                                                       |  |                                      |  +**CP031218.2006547.2008052
+|                                                                       |  |                                   +**|
+|                                                                       |  |                                   |  +**ASV4559
+|                                                                       |  |                                +--|
+|                                                                       |  |                                |  +**CP031218.2298512.2300017
+|                                                                       |  |                             +--| (91)
+|                                                                       |  |                             |  +--CP031218.1972423.1973928
+|                                                                       |  |                          +--| (94)
+|                                                                       |  |                          |  +--JX391310.1.1479
+|                                                                       |  |                       +--| (33)
+|                                                                       |  |                       |  +--EF648116.1.1463
+|                                                                       |  |                    +--| (36)
+|                                                                       |  |                    |  +--DQ234096.1.1547
+|                                                                       |  |                 +--| (74)
+|                                                                       |  |                 |  |           +--GQ245902.1.1404
+|                                                                       |  |                 |  |        +--| (96)
+|                                                                       |  |                 |  |        |  +--KC527463.1.1216
+|                                                                       |  |                 |  |     +--| (38)
+|                                                                       |  |                 |  |     |  +--KF268902.1.1385
+|                                                                       |  |                 |  |  +--| (24)
+|                                                                       |  |                 |  |  |  |           +**HM057798.1.1502
+|                                                                       |  |                 |  |  |  |        +**|
+|                                                                       |  |                 |  |  |  |        |  +**KM820506.1.1479
+|                                                                       |  |                 |  |  |  |     +**|
+|                                                                       |  |                 |  |  |  |     |  +**JQ895021.1.1435
+|                                                                       |  |                 |  |  |  |  +--|
+|                                                                       |  |                 |  |  |  |  |  +**ASV1973
+|                                                                       |  |                 |  |  |  +--| (77)
+|                                                                       |  |                 |  |  |     +--KC527298.1.1215
+|                                                                       |  |                 |  +--| (49)
+|                                                                       |  |                 |     +--KF179644.1.1445
+|                                                                       |  |              +--| (62)
+|                                                                       |  |              |  |                +--HM057725.1.1504
+|                                                                       |  |              |  |             +--| (95)
+|                                                                       |  |              |  |             |  +--ASV2894
+|                                                                       |  |              |  |     +-------| (99)
+|                                                                       |  |              |  |     |       +-----------ASV10742
+|                                                                       |  |              |  |  +--| (67)
+|                                                                       |  |              |  |  |  |              +--AY340831.1.1402
+|                                                                       |  |              |  |  |  |           +--| (39)
+|                                                                       |  |              |  |  |  |           |  +--GQ844391.1.1485
+|                                                                       |  |              |  |  |  |        +--| (33)
+|                                                                       |  |              |  |  |  |        |  |        +**GQ844379.1.1481
+|                                                                       |  |              |  |  |  |        |  |     +**|
+|                                                                       |  |              |  |  |  |        |  |     |  +**KM410309.1.1510
+|                                                                       |  |              |  |  |  |        |  |  +--|
+|                                                                       |  |              |  |  |  |        |  |  |  +**ASV4671
+|                                                                       |  |              |  |  |  |        |  +--| (67)
+|                                                                       |  |              |  |  |  |        |     +--JN685494.1.1497
+|                                                                       |  |              |  |  |  |     +--| (72)
+|                                                                       |  |              |  |  |  |     |  +--FJ900977.1.1282
+|                                                                       |  |              |  |  |  |  +--| (93)
+|                                                                       |  |              |  |  |  |  |  +---JQ088367.1.1471
+|                                                                       |  |              |  |  |  +--| (100)
+|                                                                       |  |              |  |  |     +--KM410320.1.1423
+|                                                                       |  |              |  +--| (56)
+|                                                                       |  |              |     +--ASV5389
+|                                                                       |  |           +--| (75)
+|                                                                       |  |           |  |  +--JN619794.1.1423
+|                                                                       |  |           |  +--| (51)
+|                                                                       |  |           |     +--KC527432.1.1217
+|                                                                       |  |        +--| (72)
+|                                                                       |  |        |  |     +--HQ203797.1.1479
+|                                                                       |  |        |  |  +--| (90)
+|                                                                       |  |        |  |  |  +--GQ245905.1.1423
+|                                                                       |  |        |  +--| (45)
+|                                                                       |  |        |     +--ASV1017
+|                                                                       |  |     +--| (80)
+|                                                                       |  |     |  |           +--HM057749.1.1488
+|                                                                       |  |     |  |        +--| (73)
+|                                                                       |  |     |  |        |  +------ASV7511
+|                                                                       |  |     |  |     +--| (30)
+|                                                                       |  |     |  |     |  +--ASV1481
+|                                                                       |  |     |  |  +--| (26)
+|                                                                       |  |     |  |  |  +--ASV6
+|                                                                       |  |     |  +--| (57)
+|                                                                       |  |     |     +--ASV1454
+|                                                                       |  |  +--| (71)
+|                                                                       |  |  |  |                                                     +**FJ628198.1.1480
+|                                                                       |  |  |  |                                                  +**|
+|                                                                       |  |  |  |                                                  |  +**EU570854.1.1481
+|                                                                       |  |  |  |                                               +**|
+|                                                                       |  |  |  |                                               |  +**FJ628239.1.1477
+|                                                                       |  |  |  |                                            +**|
+|                                                                       |  |  |  |                                            |  +**ASV1280
+|                                                                       |  |  |  |                                         +**|
+|                                                                       |  |  |  |                                         |  +**FJ628197.1.1489
+|                                                                       |  |  |  |                                      +**|
+|                                                                       |  |  |  |                                      |  +**FJ628291.1.1488
+|                                                                       |  |  |  |                                   +**|
+|                                                                       |  |  |  |                                   |  +**FJ628352.1.1488
+|                                                                       |  |  |  |                                +**|
+|                                                                       |  |  |  |                                |  +**FJ628347.1.1476
+|                                                                       |  |  |  |                             +--|
+|                                                                       |  |  |  |                             |  +**FJ628196.1.1478
+|                                                                       |  |  |  |                          +--| (88)
+|                                                                       |  |  |  |                          |  +--FJ628348.1.1478
+|                                                                       |  |  |  |                       +--| (57)
+|                                                                       |  |  |  |                       |  +--HM057719.1.1503
+|                                                                       |  |  |  |                    +--| (98)
+|                                                                       |  |  |  |                    |  +--MH916846.1.1379
+|                                                                       |  |  |  |                 +--| (86)
+|                                                                       |  |  |  |                 |  |  +--KM270348.1.1470
+|                                                                       |  |  |  |                 |  +--| (100)
+|                                                                       |  |  |  |                 |     +--ASV2047
+|                                                                       |  |  |  |              +--| (69)
+|                                                                       |  |  |  |              |  |  +--HQ203800.1.1480
+|                                                                       |  |  |  |              |  +--| (79)
+|                                                                       |  |  |  |              |     +--ASV709
+|                                                                       |  |  |  |           +--| (75)
+|                                                                       |  |  |  |           |  |  +--KP183021.1.1481
+|                                                                       |  |  |  |           |  +--| (73)
+|                                                                       |  |  |  |           |     +--KM873085.1.1399
+|                                                                       |  |  |  |        +--| (62)
+|                                                                       |  |  |  |        |  |                          +**CP001999.2328945.2330449
+|                                                                       |  |  |  |        |  |                       +**|
+|                                                                       |  |  |  |        |  |                       |  +**CP001999.3087363.3088867
+|                                                                       |  |  |  |        |  |                    +**|
+|                                                                       |  |  |  |        |  |                    |  +**L14627.1.1461
+|                                                                       |  |  |  |        |  |                 +--|
+|                                                                       |  |  |  |        |  |                 |  +**CP001999.237935.239439
+|                                                                       |  |  |  |        |  |              +--| (65)
+|                                                                       |  |  |  |        |  |              |  +--CP001999.2660340.2661844
+|                                                                       |  |  |  |        |  |           +--| (53)
+|                                                                       |  |  |  |        |  |           |  +--JX403044.1.1509
+|                                                                       |  |  |  |        |  |        +--| (99)
+|                                                                       |  |  |  |        |  |        |  |     +**JF904743.1.1478
+|                                                                       |  |  |  |        |  |        |  |  +--|
+|                                                                       |  |  |  |        |  |        |  |  |  +**ASV5285
+|                                                                       |  |  |  |        |  |        |  +--| (99)
+|                                                                       |  |  |  |        |  |        |     +--ASV1087
+|                                                                       |  |  |  |        |  |     +--| (50)
+|                                                                       |  |  |  |        |  |     |  +---ASV2674
+|                                                                       |  |  |  |        |  |  +--| (96)
+|                                                                       |  |  |  |        |  |  |  |     +**ASV475
+|                                                                       |  |  |  |        |  |  |  |  +--|
+|                                                                       |  |  |  |        |  |  |  |  |  +**ASV712
+|                                                                       |  |  |  |        |  |  |  +--| (75)
+|                                                                       |  |  |  |        |  |  |     +--ASV522
+|                                                                       |  |  |  |        |  +--| (61)
+|                                                                       |  |  |  |        |     +--FJ901115.1.1381
+|                                                                       |  |  |  |     +--| (18)
+|                                                                       |  |  |  |     |  +--KC682198.1.1478
+|                                                                       |  |  |  |  +--| (33)
+|                                                                       |  |  |  |  |  |              +**JX391660.1.1485
+|                                                                       |  |  |  |  |  |           +**|
+|                                                                       |  |  |  |  |  |           |  +**ASV4621
+|                                                                       |  |  |  |  |  |        +**|
+|                                                                       |  |  |  |  |  |        |  +**JX391668.1.1479
+|                                                                       |  |  |  |  |  |     +**|
+|                                                                       |  |  |  |  |  |     |  +**JX391694.1.1483
+|                                                                       |  |  |  |  |  |  +--|
+|                                                                       |  |  |  |  |  |  |  +**KC682366.1.1483
+|                                                                       |  |  |  |  |  +--| (70)
+|                                                                       |  |  |  |  |     +--EF999357.1.1405
+|                                                                       |  |  |  +--| (44)
+|                                                                       |  |  |     +--FJ664785.1.1320
+|                                                                       |  +--| (71)
+|                                                                       |     +--ASV165
+|                                                                    +--| (66)
+|                                                                    |  |           +--FJ959781.1.1385
+|                                                                    |  |        +--| (85)
+|                                                                    |  |        |  |     +--ASV5382
+|                                                                    |  |        |  |  +--| (99)
+|                                                                    |  |        |  |  |  |  +--ASV7112
+|                                                                    |  |        |  |  |  +--| (73)
+|                                                                    |  |        |  |  |     +--ASV8860
+|                                                                    |  |        |  +--| (96)
+|                                                                    |  |        |     +-------------ASV9725
+|                                                                    |  |     +--| (92)
+|                                                                    |  |     |  +--JQ216693.1.1343
+|                                                                    |  |  +--| (93)
+|                                                                    |  |  |  +--JQ214780.1.1346
+|                                                                    |  +--| (57)
+|                                                                    |     +--JN397809.1.1439
+|                                                                 +--| (69)
+|                                                                 |  +--ASV1664
+|                                                              +--| (62)
+|                                                              |  |           +**AM084124.1.1453
+|                                                              |  |        +--|
+|                                                              |  |        |  +**ASV849
+|                                                              |  |     +--| (91)
+|                                                              |  |     |  +--JF497852.1.1469
+|                                                              |  |  +--| (91)
+|                                                              |  |  |  +--LK393052.1.1379
+|                                                              |  +--| (83)
+|                                                              |     |  +--KX422127.1.1475
+|                                                              |     +--| (80)
+|                                                              |        +--ASV4041
+|                                                           +--| (81)
+|                                                           |  |                                +**AP012047.791244.792758
+|                                                           |  |                             +**|
+|                                                           |  |                             |  +**JX393002.1.1430
+|                                                           |  |                          +**|
+|                                                           |  |                          |  +**CP000361.847461.848975
+|                                                           |  |                       +**|
+|                                                           |  |                       |  +**CP000361.2003610.2005124
+|                                                           |  |                    +**|
+|                                                           |  |                    |  +**CP000361.2274813.2276327
+|                                                           |  |                 +**|
+|                                                           |  |                 |  +**LT906455.2281175.2282679
+|                                                           |  |              +**|
+|                                                           |  |              |  +**LT906455.1918668.1920172
+|                                                           |  |           +**|
+|                                                           |  |           |  +**CP006615.2184913.2186417
+|                                                           |  |        +**|
+|                                                           |  |        |  +**FJ612319.1.1470
+|                                                           |  |     +**|
+|                                                           |  |     |  +**JQ743025.1.1413
+|                                                           |  |  +--|
+|                                                           |  |  |  +**CP006615.1882920.1884424
+|                                                           |  +--| (94)
+|                                                           |     +--AP012047.1881956.1883470
+|                                                        +--| (86)
+|                                                        |  |           +**JQ213174.1.1347
+|                                                        |  |        +**|
+|                                                        |  |        |  +**JQ214547.1.1346
+|                                                        |  |     +--|
+|                                                        |  |     |  +**JQ213296.1.1350
+|                                                        |  |  +--| (92)
+|                                                        |  |  |  +--JQ212073.1.1346
+|                                                        |  +--| (97)
+|                                                        |     +--JQ215863.1.1346
+|                                                     +--| (84)
+|                                                     |  |                       +**AY314753.1.1410
+|                                                     |  |                    +**|
+|                                                     |  |                    |  +**AJ607392.1.1468
+|                                                     |  |                 +**|
+|                                                     |  |                 |  +**FJ660508.1.1459
+|                                                     |  |              +**|
+|                                                     |  |              |  +**LK392738.1.1211
+|                                                     |  |           +**|
+|                                                     |  |           |  +**LK392700.1.1386
+|                                                     |  |        +**|
+|                                                     |  |        |  +**JARS01000027.280.1777
+|                                                     |  |     +**|
+|                                                     |  |     |  +**AY314754.1.1483
+|                                                     |  |  +--|
+|                                                     |  |  |  +**ASV2384
+|                                                     |  +--| (92)
+|                                                     |     +--AJ607391.1.1460
+|                                                  +--| (42)
+|                                                  |  |                                                                                   +**CP031367.1764819.1766324
+|                                                  |  |                                                                                +**|
+|                                                  |  |                                                                                |  +**CP031367.1837400.1838905
+|                                                  |  |                                                                             +**|
+|                                                  |  |                                                                             |  +**ASV897
+|                                                  |  |                                                                          +**|
+|                                                  |  |                                                                          |  +**GU300770.1.1377
+|                                                  |  |                                                                       +**|
+|                                                  |  |                                                                       |  +**AF324539.1.1486
+|                                                  |  |                                                                    +**|
+|                                                  |  |                                                                    |  +**JX392996.1.1417
+|                                                  |  |                                                                 +**|
+|                                                  |  |                                                                 |  +**DQ234115.1.1547
+|                                                  |  |                                                              +**|
+|                                                  |  |                                                              |  +**CP032825.1264110.1265615
+|                                                  |  |                                                           +**|
+|                                                  |  |                                                           |  +**ASV55
+|                                                  |  |                                                        +**|
+|                                                  |  |                                                        |  +**CP032825.83730.85235
+|                                                  |  |                                                     +**|
+|                                                  |  |                                                     |  +**CU925531.1.1345
+|                                                  |  |                                                  +**|
+|                                                  |  |                                                  |  +**CP032823.568634.570139
+|                                                  |  |                                               +**|
+|                                                  |  |                                               |  +**KM668178.1.1489
+|                                                  |  |                                            +**|
+|                                                  |  |                                            |  +**L14624.1.1462
+|                                                  |  |                                         +**|
+|                                                  |  |                                         |  +**CP032825.302516.304021
+|                                                  |  |                                      +**|
+|                                                  |  |                                      |  +**FN650333.1.1309
+|                                                  |  |                                   +**|
+|                                                  |  |                                   |  +**CP032823.785256.786761
+|                                                  |  |                                +**|
+|                                                  |  |                                |  +**CU926906.2.1345
+|                                                  |  |                             +**|
+|                                                  |  |                             |  +**CP031367.1626402.1627907
+|                                                  |  |                          +**|
+|                                                  |  |                          |  +**CP032825.540386.541891
+|                                                  |  |                       +**|
+|                                                  |  |                       |  +**EF064151.1.1390
+|                                                  |  |                    +**|
+|                                                  |  |                    |  +**FR682113.1.1402
+|                                                  |  |                 +**|
+|                                                  |  |                 |  +**CP032825.56100.57605
+|                                                  |  |              +**|
+|                                                  |  |              |  +**CP032823.69871.71376
+|                                                  |  |           +**|
+|                                                  |  |           |  +**KJ862122.1.1382
+|                                                  |  |        +**|
+|                                                  |  |        |  +**CP032823.303648.305153
+|                                                  |  |     +**|
+|                                                  |  |     |  +**CP031367.506253.507758
+|                                                  |  |  +--|
+|                                                  |  |  |  +**CP031367.1403197.1404702
+|                                                  |  +--| (95)
+|                                                  |     +--CP032823.102401.103906
+|                                               +--| (86)
+|                                               |  |  +--ASV32
+|                                               |  +--| (95)
+|                                               |     +--ASV1537
+|                                            +--| (86)
+|                                            |  +--EF111153.1.1268
+|                                         +--| (89)
+|                                         |  |                             +--AY922182.1.1381
+|                                         |  |                          +--| (25)
+|                                         |  |                          |  +--KX177620.1.1482
+|                                         |  |                       +--| (4)
+|                                         |  |                       |  |     +--AY922205.1.1380
+|                                         |  |                       |  |  +--| (14)
+|                                         |  |                       |  |  |  +--KX177624.1.1478
+|                                         |  |                       |  +--| (8)
+|                                         |  |                       |     |        +**KX176915.1.1484
+|                                         |  |                       |     |     +**|
+|                                         |  |                       |     |     |  +**KX177125.1.1485
+|                                         |  |                       |     |  +--|
+|                                         |  |                       |     |  |  +**JX521734.1.1489
+|                                         |  |                       |     +--| (64)
+|                                         |  |                       |        +--KX177630.1.1483
+|                                         |  |                    +--| (37)
+|                                         |  |                    |  +--KX177047.1.1484
+|                                         |  |                 +--| (72)
+|                                         |  |                 |  +--HG513895.1.1486
+|                                         |  |              +--| (64)
+|                                         |  |              |  |  +--KU242456.1.1394
+|                                         |  |              |  +--| (90)
+|                                         |  |              |     |     +--KX422126.1.1475
+|                                         |  |              |     |  +--| (100)
+|                                         |  |              |     |  |  +--ASV685
+|                                         |  |              |     +--| (97)
+|                                         |  |              |        +--JQ611225.1.1361
+|                                         |  |           +--| (54)
+|                                         |  |           |  +--ASV2516
+|                                         |  |        +--| (46)
+|                                         |  |        |  +--ASV2057
+|                                         |  |     +--| (63)
+|                                         |  |     |  |     +--FR666867.1.1476
+|                                         |  |     |  |  +--| (87)
+|                                         |  |     |  |  |  +--AB530236.1.1479
+|                                         |  |     |  +--| (82)
+|                                         |  |     |     |     +--JF344171.1.1476
+|                                         |  |     |     |  +--| (85)
+|                                         |  |     |     |  |  |   +--EF123613.1.1496
+|                                         |  |     |     |  |  +---| (74)
+|                                         |  |     |     |  |      +---EU245155.1.1478
+|                                         |  |     |     +--| (86)
+|                                         |  |     |        |  +--ASV2528
+|                                         |  |     |        +--| (94)
+|                                         |  |     |           +--ASV3335
+|                                         |  |  +--| (68)
+|                                         |  |  |  |                                                        +**FR683719.1.1479
+|                                         |  |  |  |                                                     +**|
+|                                         |  |  |  |                                                     |  +**ASV2880
+|                                         |  |  |  |                                                  +**|
+|                                         |  |  |  |                                                  |  +**KF799695.1.1483
+|                                         |  |  |  |                                               +**|
+|                                         |  |  |  |                                               |  +**KY235925.1.1411
+|                                         |  |  |  |                                            +**|
+|                                         |  |  |  |                                            |  +**KF799568.1.1479
+|                                         |  |  |  |                                         +--|
+|                                         |  |  |  |                                         |  +**ASV7711
+|                                         |  |  |  |                                      +--| (76)
+|                                         |  |  |  |                                      |  +--JF268371.1.1474
+|                                         |  |  |  |                                   +--| (17)
+|                                         |  |  |  |                                   |  |  +--KY235971.1.1476
+|                                         |  |  |  |                                   |  +--| (27)
+|                                         |  |  |  |                                   |     +--KM873116.1.1478
+|                                         |  |  |  |                                +--| (17)
+|                                         |  |  |  |                                |  +--KY236000.1.1476
+|                                         |  |  |  |                             +--| (48)
+|                                         |  |  |  |                             |  +--KT257834.1.1480
+|                                         |  |  |  |                          +--| (75)
+|                                         |  |  |  |                          |  |  +--ASV1357
+|                                         |  |  |  |                          |  +--| (68)
+|                                         |  |  |  |                          |     +--ASV5487
+|                                         |  |  |  |                       +--| (50)
+|                                         |  |  |  |                       |  +--KY969129.1.1481
+|                                         |  |  |  |                    +--| (44)
+|                                         |  |  |  |                    |  |        +**KY235946.1.1476
+|                                         |  |  |  |                    |  |     +**|
+|                                         |  |  |  |                    |  |     |  +**ASV4212
+|                                         |  |  |  |                    |  |  +--|
+|                                         |  |  |  |                    |  |  |  +**ASV5247
+|                                         |  |  |  |                    |  +--| (91)
+|                                         |  |  |  |                    |     +--ASV782
+|                                         |  |  |  |                 +--| (89)
+|                                         |  |  |  |                 |  +--KY235939.1.1203
+|                                         |  |  |  |              +--| (48)
+|                                         |  |  |  |              |  |                 +**JX521798.1.1496
+|                                         |  |  |  |              |  |              +**|
+|                                         |  |  |  |              |  |              |  +**ASV2197
+|                                         |  |  |  |              |  |           +--|
+|                                         |  |  |  |              |  |           |  +**HQ729100.1.1479
+|                                         |  |  |  |              |  |        +--| (89)
+|                                         |  |  |  |              |  |        |  +--LLEK01000564.3498.4995
+|                                         |  |  |  |              |  |     +--| (49)
+|                                         |  |  |  |              |  |     |  +--JX521786.1.1491
+|                                         |  |  |  |              |  |  +--| (67)
+|                                         |  |  |  |              |  |  |  +--KX422118.1.1476
+|                                         |  |  |  |              |  +--| (72)
+|                                         |  |  |  |              |     +--ASV1485
+|                                         |  |  |  |           +--| (54)
+|                                         |  |  |  |           |  +--ASV3051
+|                                         |  |  |  |        +--| (52)
+|                                         |  |  |  |        |  |                    +**GQ261829.1.1477
+|                                         |  |  |  |        |  |                 +**|
+|                                         |  |  |  |        |  |                 |  +**KX581190.1.1516
+|                                         |  |  |  |        |  |              +**|
+|                                         |  |  |  |        |  |              |  +**KY235977.1.1474
+|                                         |  |  |  |        |  |           +**|
+|                                         |  |  |  |        |  |           |  +**KT257856.1.1480
+|                                         |  |  |  |        |  |        +**|
+|                                         |  |  |  |        |  |        |  +**FR666869.1.1474
+|                                         |  |  |  |        |  |     +**|
+|                                         |  |  |  |        |  |     |  +**FR666864.1.1474
+|                                         |  |  |  |        |  |  +--|
+|                                         |  |  |  |        |  |  |  +**ASV1887
+|                                         |  |  |  |        |  +--| (92)
+|                                         |  |  |  |        |     +--FR666861.1.1474
+|                                         |  |  |  |     +--| (92)
+|                                         |  |  |  |     |  +--JX391518.1.1481
+|                                         |  |  |  |  +--| (28)
+|                                         |  |  |  |  |  +--ASV3494
+|                                         |  |  |  +--| (20)
+|                                         |  |  |     |        +--AB189374.1.1478
+|                                         |  |  |     |     +--| (79)
+|                                         |  |  |     |     |  |     +--FR666862.1.1474
+|                                         |  |  |     |     |  |  +--| (92)
+|                                         |  |  |     |     |  |  |  +--JQ712383.1.1385
+|                                         |  |  |     |     |  +--| (35)
+|                                         |  |  |     |     |     |     +--JQ712417.1.1381
+|                                         |  |  |     |     |     |  +--| (44)
+|                                         |  |  |     |     |     |  |  |  +--JQ712382.1.1383
+|                                         |  |  |     |     |     |  |  +--| (77)
+|                                         |  |  |     |     |     |  |     +-----ASV7034
+|                                         |  |  |     |     |     +--| (32)
+|                                         |  |  |     |     |        |     +--KT257771.1.1479
+|                                         |  |  |     |     |        |  +--| (99)
+|                                         |  |  |     |     |        |  |  +--JQ712391.1.1392
+|                                         |  |  |     |     |        +--| (73)
+|                                         |  |  |     |     |           +--ASV4375
+|                                         |  |  |     |  +--| (19)
+|                                         |  |  |     |  |  +--KP994483.1.1382
+|                                         |  |  |     +--| (13)
+|                                         |  |  |        |                    +**GQ357014.1.1479
+|                                         |  |  |        |                 +**|
+|                                         |  |  |        |                 |  +**KY235976.1.1491
+|                                         |  |  |        |              +**|
+|                                         |  |  |        |              |  +**JX016315.1.1478
+|                                         |  |  |        |           +**|
+|                                         |  |  |        |           |  +**HQ203962.1.1486
+|                                         |  |  |        |        +**|
+|                                         |  |  |        |        |  +**ASV267
+|                                         |  |  |        |     +**|
+|                                         |  |  |        |     |  +**KY235965.1.1476
+|                                         |  |  |        |  +--|
+|                                         |  |  |        |  |  +**ASV155
+|                                         |  |  |        +--| (69)
+|                                         |  |  |           +--JQ199082.1.1345
+|                                         |  +--| (77)
+|                                         |     +--HM057704.1.1488
+|                                      +--| (95)
+|                                      |  +--FJ820447.1.1476
+|                                   +--| (71)
+|                                   |  +--KY235963.1.1468
+|                                +--| (30)
+|                                |  +--HQ538624.1.1477
+|                             +--| (78)
+|                             |  |  +--DQ676345.1.1410
+|                             |  +--| (29)
+|                             |     +--AB030594.1.1454
+|                          +--|
+|                          |  +--EU662492.1.1477
+|                       +**|
+|                       |  +**ASV2344
+|                    +**|
+|                    |  +**ASV1248
+|                 +**|
+|                 |  +**EU662330.1.1487
+|              +**|
+|              |  +**AB030599.1.1452
+|           +**|
+|           |  +**DQ676433.1.1407
+|        +**|
+|        |  +**EU800814.1.1277
+|     +**|
+|     |  +**JFJP01051705.322.1797
+|  +**|
+|  |  +**DQ133925.1.1482
++**|
+|  +**EF467560.1.1480
+|
++**AB294336.1.1439
+
+
+Consensus tree in newick format: 
+
+(AB030598.1.1449:0.0000000000,(((((((((((((((((((((((((((((((AB243994.1.1486:0.0000023802,GU179720.1.1374:0.0028625508)100:0.0057943520,(((((((AB539948.1.1383:0.0000000000,GU179704.1.1385:0.0000000000):0.0000000000,HQ218501.1.1480:0.0000000000):0.0000000000,AY570594.1.1479:0.0000000000):0.0000000000,ASV2897:0.0000000000):0.0000023802,AB244002.1.1494:0.0000023802)59:0.0000023802,(GU179711.1.1373:0.0028602339,AB546073.1.1479:0.0028603811)27:0.0000023802)28:0.0000023802,EU721819.1.1379:0.0028600943)59:0.0000023802)100:0.0272056719,((((((((((((((((((CP032100.2265641.2267146:0.0000000000,AM084114.1.1464:0.0000000000):0.0000000000,JQ845805.1.1325:0.0000000000):0.0000000000,JX403059.1.1507:0.0000000000):0.0000000000,ASV279:0.0000000000):0.0000000000,DQ234254.1.1547:0.0000000000):0.0000000000,HE565359.1.1401:0.0000000000):0.0000000000,CP032100.2549892.2551397:0.0000000000):0.0000000000,ASV684:0.0000000000):0.0000000000,LK393014.1.1392:0.0000000000):0.0000000000,CP032100.2137959.2139464:0.0000000000):0.0000000000,GU061286.1.1415:0.0000000000):0.0000000000,CP032100.2049452.2050957:0.0000000000):0.0000000000,ASV703:0.0000000000):0.0000000000,CP032100.1735385.1736890:0.0000000000):0.0000023802,FJ573216.1.1454:0.0000023802)72:0.0000023802,((EF515690.1.1375:0.0000023802,(ASV10271:0.0562043957,ASV10287:0.0300566699)100:0.1038395629)60:0.0028710005,FPLP01003601.2.1453:0.0028698733)7:0.0000023802)11:0.0000023802,FJ946551.1.1290:0.0028697317)8:0.0000023802,((((AB013832.1.1477:0.0000023802,EU617862.1.1482:0.0028701371)48:0.0000023802,(EU142043.1.1479:0.0000023802,(KP994454.1.1353:0.0057635630,ASV1413:0.0000023802)92:0.0028878929)87:0.0058711946)60:0.0000023802,(AJ271653.1.1508:0.0000023802,AJ810559.1.1432:0.0000023802)92:0.0058111849)82:0.0058139818,JQ845768.1.1324:0.0058389743)13:0.0000023802)28:0.0000023802)61:0.0028479840,KJ808094.1.1477:0.0030976639)61:0.0029080863,((((((((AJ810558.1.1445:0.0026492270,AB806738.1.1440:0.0061633739)81:0.0063030487,((((((((((((((((CP019070.2095178.2096695:0.0000000000,CP019070.2682675.2684192:0.0000000000):0.0000000000,CP019070.1936360.1937877:0.0000000000):0.0000000000,CP019070.2816412.2817929:0.0000000000):0.0000000000,CP019070.2388699.2390216:0.0000000000):0.0000000000,ASV1471:0.0000000000):0.0000000000,ASV527:0.0000000000):0.0000023802,CP019070.609339.610856:0.0000023802)99:0.0029268083,((AB100003.1.1328:0.0000023802,(((GU061291.1.1416:0.0000000000,ASV526:0.0000000000):0.0000000000,ASV331:0.0000000000):0.0000023802,JX559229.1.1472:0.0000023802)75:0.0000023802)59:0.0000023802,KF799046.1.1481:0.0028602368)54:0.0000023802)93:0.0058064498,ASV752:0.0000023802)83:0.0028704666,KU143708.1.1442:0.0122077132)59:0.0000023802,(((((((HM057681.1.1486:0.0000000000,ASV913:0.0000000000):0.0000000000,ASV196:0.0000000000):0.0000000000,HM057692.1.1487:0.0000000000):0.0000000000,HM057667.1.1487:0.0000000000):0.0000000000,ASV774:0.0000000000):0.0000023802,HQ203914.1.1479:0.0000023802)69:0.0000023802,(KC682188.1.1482:0.0058567507,KP994482.1.1382:0.0029984681)31:0.0000023802)25:0.0000023802)74:0.0000023802,FR683715.1.1521:0.0088157652)87:0.0058943973,EU265967.1.1479:0.0000023802)82:0.0058406779,(((((((HM591345.1.1479:0.0000000000,HM591433.1.1479:0.0000000000):0.0000000000,JQ611206.1.1378:0.0000000000):0.0000023802,HM591472.1.1485:0.0000023802)98:0.0028855405,EU236320.1.1370:0.0029280157)91:0.0028723979,(KT318714.1.1372:0.0000023802,JQ197538.1.1344:0.0000023802)84:0.0000023802)65:0.0000023802,JQ199442.1.1346:0.0058238090)94:0.0058993712,(JQ862035.1.1484:0.0028745621,(LLEL01000725.12.1508:0.0000023802,LT629298.1.1382:0.0000023802)62:0.0000023802)24:0.0000023802)42:0.0000023802)77:0.0028801414,((ASV247:0.0000000000,ASV2244:0.0000000000):0.0000023802,ASV1438:0.0000023802)84:0.0000023802)71:0.0029284454,(FJ717163.1.1513:0.0000023802,FJ717168.1.1511:0.0000023802)100:0.0029304320)69:0.0000023802)61:0.0028283512,(((((((((((((((CP031217.2599245.2600750:0.0000000000,LT904750.1.1202:0.0000000000):0.0000000000,CP031217.1961684.1963189:0.0000000000):0.0000000000,FJ573217.1.1451:0.0000000000):0.0000000000,CP031217.1945484.1946989:0.0000000000):0.0000023802,CP031217.341658.343163:0.0000023802)69:0.0000023802,FJ717121.1.1510:0.0028809273)85:0.0028813020,ASV3246:0.0000023802)93:0.0058222626,JN118550.1.1426:0.0028809128)62:0.0000024831,(FJ202091.1.1461:0.0028744037,(KX014304.1.1482:0.0028735078,KC121364.1.1413:0.0000023802)99:0.0058220077)67:0.0000023802)76:0.0058182653,((KC527458.1.1215:0.0000000000,ASV5532:0.0000000000):0.0000023802,JQ211910.1.1343:0.0000023802)96:0.0000023802)38:0.0028763708,((((((FJ717083.1.1513:0.0000000000,JX170279.1.1405:0.0000000000):0.0000000000,JQ195744.1.1344:0.0000000000):0.0000000000,JX170315.1.1383:0.0000000000):0.0000023802,FJ203093.1.1440:0.0000023802)64:0.0000023802,JX170305.1.1217:0.0028783216)26:0.0000023802,FJ203167.1.1440:0.0058219838)28:0.0000023802)82:0.0058828310,(EF029030.1.1439:0.0058317575,ASV6143:0.0000023802)38:0.0028831091)18:0.0000023802,((EF645952.1.1476:0.0028751815,(KU524867.1.1478:0.0000023802,((ASV785:0.0000000000,ASV1523:0.0000000000):0.0000023802,ASV1439:0.0000023802)38:0.0000023802)44:0.0000023802)21:0.0000023802,FR744554.1.1439:0.0088427339)9:0.0000023802)39:0.0058977383,(EF028937.1.1438:0.0028743586,(HE576787.1.1388:0.0000023802,KX550224.1.1517:0.0000023802)72:0.0000023802)87:0.0000023802)66:0.0088286230,EU052236.1.1481:0.0000023802)62:0.0058724377)22:0.0000023802,((DQ234101.1.1546:0.0000000000,ASV2272:0.0000000000):0.0000023802,ASV1783:0.0000023802)93:0.0058134781)10:0.0000023802,(((((((((((((((((((((((((((((((((AP012048.2429210.2430725:0.0000000000,GU179716.1.1374:0.0000000000):0.0000000000,GU451405.1.1215:0.0000000000):0.0000000000,GU179703.1.1379:0.0000000000):0.0000000000,LK393019.1.1384:0.0000000000):0.0000000000,ASV194:0.0000000000):0.0000000000,MF040336.1.1478:0.0000000000):0.0000000000,HQ203977.1.1485:0.0000000000):0.0000000000,LK392962.1.1383:0.0000000000):0.0000000000,AP012048.2586203.2587718:0.0000000000):0.0000000000,LK392968.1.1384:0.0000000000):0.0000000000,CP032097.951489.952994:0.0000000000):0.0000000000,LK393053.1.1367:0.0000000000):0.0000000000,CP032097.2142906.2144411:0.0000000000):0.0000000000,KT283075.1.1478:0.0000000000):0.0000000000,LK393070.1.1366:0.0000000000):0.0000000000,HE565360.1.1402:0.0000000000):0.0000000000,GU179722.1.1362:0.0000000000):0.0000000000,LK392931.1.1391:0.0000000000):0.0000000000,ASV566:0.0000000000):0.0000000000,HQ115595.1.1402:0.0000000000):0.0000000000,CP032097.2715696.2717201:0.0000000000):0.0000000000,JQ845780.1.1325:0.0000000000):0.0000000000,CP032097.2437538.2439043:0.0000000000):0.0000000000,KM668167.1.1480:0.0000000000):0.0000000000,ASV4426:0.0000000000):0.0000000000,CP032097.2284812.2286317:0.0000000000):0.0000000000,AP012048.2850041.2851556:0.0000000000):0.0000000000,ASV1867:0.0000000000):0.0000000000,LK393101.1.1364:0.0000000000):0.0000000000,AP012048.2339767.2341282:0.0000000000):0.0000000000,FJ900992.1.1315:0.0000000000):0.0000000000,AP012048.1097572.1099087:0.0000000000):0.0000023802,GU179723.1.1377:0.0000023802)13:0.0000023802)7:0.0000023802,LK392947.1.1390:0.0028696553)6:0.0000023802,(ASV551:0.0028700991,ASV589:0.0028802291)19:0.0000023802)7:0.0000023802,LK393042.1.1397:0.0028695077)26:0.0000023802)64:0.0058707712,((((FJ612320.1.1411:0.0028701831,FN428747.1.1480:0.0028701808)21:0.0000023802,((((((FJ612312.1.1424:0.0000000000,FJ612335.1.1474:0.0000000000):0.0000000000,LK392734.1.1244:0.0000000000):0.0000000000,JQ215660.1.1345:0.0000000000):0.0000000000,JQ211124.1.1344:0.0000000000):0.0000000000,JX403025.1.1514:0.0000000000):0.0000023802,JQ215058.1.1344:0.0000023802)26:0.0000023802)20:0.0000023802,(FN428763.1.1481:0.0028700107,ASV1216:0.0028807346)8:0.0000023802)7:0.0000023802,((((((AB015529.1.1478:0.0000000000,JN233480.1.1439:0.0000000000):0.0000000000,JN233497.1.1440:0.0000000000):0.0000000000,KC682350.1.1482:0.0000000000):0.0000023802,KP182996.1.1480:0.0000023802)81:0.0000023802,(ASV2487:0.0000023802,(ASV7578:0.0000023802,ASV8898:0.0120605745)100:0.0142698748)86:0.0058948366)84:0.0058146296,HQ860672.1.1449:0.0058145613)21:0.0000023802)10:0.0000023802)52:0.0000023802,(((((((((((((((((((AF513455.1.1402:0.0000000000,JN118552.1.1427:0.0000000000):0.0000000000,CP031218.2758484.2759989:0.0000000000):0.0000000000,CP031218.166581.168086:0.0000000000):0.0000000000,CP031218.230734.232239:0.0000000000):0.0000000000,HM057804.1.1502:0.0000000000):0.0000000000,CP031218.2006547.2008052:0.0000000000):0.0000000000,ASV4559:0.0000000000):0.0000000000,CP031218.2298512.2300017:0.0000000000):0.0000023802,CP031218.1972423.1973928:0.0000023802)91:0.0000023802,JX391310.1.1479:0.0028765664)94:0.0058237274,EF648116.1.1463:0.0088299528)33:0.0000023802,DQ234096.1.1547:0.0000023802)36:0.0000023802,((((GQ245902.1.1404:0.0000023802,KC527463.1.1216:0.0000023802)96:0.0028771044,KF268902.1.1385:0.0058343098)38:0.0000023802,((((HM057798.1.1502:0.0000000000,KM820506.1.1479:0.0000000000):0.0000000000,JQ895021.1.1435:0.0000000000):0.0000000000,ASV1973:0.0000000000):0.0000023802,KC527298.1.1215:0.0000023802)77:0.0000023802)24:0.0000023802,KF179644.1.1445:0.0028764034)49:0.0028764726)74:0.0058379315,((((HM057725.1.1504:0.0058039763,ASV2894:0.0000023802)95:0.0001724771,ASV10742:0.0452025530)99:0.0289394994,(((((AY340831.1.1402:0.0058238890,GQ844391.1.1485:0.0058173988)39:0.0000023802,(((GQ844379.1.1481:0.0000000000,KM410309.1.1510:0.0000000000):0.0000000000,ASV4671:0.0000000000):0.0000023802,JN685494.1.1497:0.0000023802)67:0.0000023802)33:0.0000023802,FJ900977.1.1282:0.0028744905)72:0.0000023802,JQ088367.1.1471:0.0153064712)93:0.0058208523,KM410320.1.1423:0.0000023802)100:0.0118986984)67:0.0000023858,ASV5389:0.0028890424)56:0.0000023802)62:0.0058454655,(JN619794.1.1423:0.0127081772,KC527432.1.1217:0.0058284476)51:0.0000023802)75:0.0058774814,((HQ203797.1.1479:0.0000023802,GQ245905.1.1423:0.0000023802)90:0.0000023802,ASV1017:0.0028770203)45:0.0000021758)72:0.0028764994,((((HM057749.1.1488:0.0028750257,ASV7511:0.0256293300)73:0.0000023802,ASV1481:0.0028779186)30:0.0000023802,ASV6:0.0000023802)26:0.0000023802,ASV1454:0.0028762577)57:0.0000023802)80:0.0059001978,((((((((((((((((((FJ628198.1.1480:0.0000000000,EU570854.1.1481:0.0000000000):0.0000000000,FJ628239.1.1477:0.0000000000):0.0000000000,ASV1280:0.0000000000):0.0000000000,FJ628197.1.1489:0.0000000000):0.0000000000,FJ628291.1.1488:0.0000000000):0.0000000000,FJ628352.1.1488:0.0000000000):0.0000000000,FJ628347.1.1476:0.0000000000):0.0000000000,FJ628196.1.1478:0.0000000000):0.0000023802,FJ628348.1.1478:0.0000023802)88:0.0000023802,HM057719.1.1503:0.0028707394)57:0.0000023802,MH916846.1.1379:0.0028707901)98:0.0114784015,(KM270348.1.1470:0.0000023802,ASV2047:0.0000023802)100:0.0063344963)86:0.0004832182,(HQ203800.1.1480:0.0000023802,ASV709:0.0000023802)79:0.0000023802)69:0.0028724830,(KP183021.1.1481:0.0028734788,KM873085.1.1399:0.0028737370)73:0.0000023802)75:0.0058205443,(((((((((CP001999.2328945.2330449:0.0000000000,CP001999.3087363.3088867:0.0000000000):0.0000000000,L14627.1.1461:0.0000000000):0.0000000000,CP001999.237935.239439:0.0000000000):0.0000023802,CP001999.2660340.2661844:0.0000023802)65:0.0000023802,JX403044.1.1509:0.0028661077)53:0.0000023802,((JF904743.1.1478:0.0000000000,ASV5285:0.0000000000):0.0000023802,ASV1087:0.0000023802)99:0.0028627967)99:0.0028945276,ASV2674:0.0147127995)50:0.0000023802,((ASV475:0.0000000000,ASV712:0.0000000000):0.0000023802,ASV522:0.0000023802)75:0.0000023802)96:0.0029808330,FJ901115.1.1381:0.0089262528)61:0.0028051747)62:0.0000021763,KC682198.1.1478:0.0028754561)18:0.0000023802,(((((JX391660.1.1485:0.0000000000,ASV4621:0.0000000000):0.0000000000,JX391668.1.1479:0.0000000000):0.0000000000,JX391694.1.1483:0.0000000000):0.0000000000,KC682366.1.1483:0.0000000000):0.0000023802,EF999357.1.1405:0.0000023802)70:0.0000023802)33:0.0000023802,FJ664785.1.1320:0.0058226325)44:0.0000023802)71:0.0028804632,ASV165:0.0000023802)71:0.0058266648)64:0.0058185646,((((FJ959781.1.1385:0.0088080579,((ASV5382:0.0029087075,(ASV7112:0.0029103498,ASV8860:0.0029104210)73:0.0000023802)99:0.0094252490,ASV9725:0.0529072201)96:0.0099224362)85:0.0000023802,JQ216693.1.1343:0.0000023802)92:0.0058933559,JQ214780.1.1346:0.0000023802)93:0.0058320889,JN397809.1.1439:0.0028777585)57:0.0000023802)66:0.0028873838,ASV1664:0.0000023802)69:0.0028726704,((((AM084124.1.1453:0.0000000000,ASV849:0.0000000000):0.0000023802,JF497852.1.1469:0.0000023802)91:0.0000023802,LK393052.1.1379:0.0028640389)91:0.0000023802,(KX422127.1.1475:0.0091707140,ASV4041:0.0033401150)80:0.0055387938)83:0.0088050222)62:0.0000023802,(((((((((((AP012047.791244.792758:0.0000000000,JX393002.1.1430:0.0000000000):0.0000000000,CP000361.847461.848975:0.0000000000):0.0000000000,CP000361.2003610.2005124:0.0000000000):0.0000000000,CP000361.2274813.2276327:0.0000000000):0.0000000000,LT906455.2281175.2282679:0.0000000000):0.0000000000,LT906455.1918668.1920172:0.0000000000):0.0000000000,CP006615.2184913.2186417:0.0000000000):0.0000000000,FJ612319.1.1470:0.0000000000):0.0000000000,JQ743025.1.1413:0.0000000000):0.0000000000,CP006615.1882920.1884424:0.0000000000):0.0000023802,AP012047.1881956.1883470:0.0000023802)94:0.0000023802)81:0.0060179312,((((JQ213174.1.1347:0.0000000000,JQ214547.1.1346:0.0000000000):0.0000000000,JQ213296.1.1350:0.0000000000):0.0000023802,JQ212073.1.1346:0.0000023802)92:0.0000023802,JQ215863.1.1346:0.0058536072)97:0.0089054942)86:0.0029644275,((((((((AY314753.1.1410:0.0000000000,AJ607392.1.1468:0.0000000000):0.0000000000,FJ660508.1.1459:0.0000000000):0.0000000000,LK392738.1.1211:0.0000000000):0.0000000000,LK392700.1.1386:0.0000000000):0.0000000000,JARS01000027.280.1777:0.0000000000):0.0000000000,AY314754.1.1483:0.0000000000):0.0000000000,ASV2384:0.0000000000):0.0000023802,AJ607391.1.1460:0.0000023802)92:0.0000023802)84:0.0028747015,((((((((((((((((((((((((((((CP031367.1764819.1766324:0.0000000000,CP031367.1837400.1838905:0.0000000000):0.0000000000,ASV897:0.0000000000):0.0000000000,GU300770.1.1377:0.0000000000):0.0000000000,AF324539.1.1486:0.0000000000):0.0000000000,JX392996.1.1417:0.0000000000):0.0000000000,DQ234115.1.1547:0.0000000000):0.0000000000,CP032825.1264110.1265615:0.0000000000):0.0000000000,ASV55:0.0000000000):0.0000000000,CP032825.83730.85235:0.0000000000):0.0000000000,CU925531.1.1345:0.0000000000):0.0000000000,CP032823.568634.570139:0.0000000000):0.0000000000,KM668178.1.1489:0.0000000000):0.0000000000,L14624.1.1462:0.0000000000):0.0000000000,CP032825.302516.304021:0.0000000000):0.0000000000,FN650333.1.1309:0.0000000000):0.0000000000,CP032823.785256.786761:0.0000000000):0.0000000000,CU926906.2.1345:0.0000000000):0.0000000000,CP031367.1626402.1627907:0.0000000000):0.0000000000,CP032825.540386.541891:0.0000000000):0.0000000000,EF064151.1.1390:0.0000000000):0.0000000000,FR682113.1.1402:0.0000000000):0.0000000000,CP032825.56100.57605:0.0000000000):0.0000000000,CP032823.69871.71376:0.0000000000):0.0000000000,KJ862122.1.1382:0.0000000000):0.0000000000,CP032823.303648.305153:0.0000000000):0.0000000000,CP031367.506253.507758:0.0000000000):0.0000000000,CP031367.1403197.1404702:0.0000000000):0.0000023802,CP032823.102401.103906:0.0000023802)95:0.0000023802)42:0.0000023802,(ASV32:0.0000023802,ASV1537:0.0028846236)95:0.0058532347)86:0.0028720417,EF111153.1.1268:0.0000023802)86:0.0028761209,((((((((((AY922182.1.1381:0.0028650420,KX177620.1.1482:0.0028625213)25:0.0000023802,((AY922205.1.1380:0.0028624995,KX177624.1.1478:0.0028624961)14:0.0000023802,(((KX176915.1.1484:0.0000000000,KX177125.1.1485:0.0000000000):0.0000000000,JX521734.1.1489:0.0000000000):0.0000023802,KX177630.1.1483:0.0000023802)64:0.0000023802)8:0.0000023802)4:0.0000023802,KX177047.1.1484:0.0028625624)37:0.0057945943,HG513895.1.1486:0.0000023858)72:0.0029166269,(KU242456.1.1394:0.0056902063,((KX422126.1.1475:0.0000023802,ASV685:0.0000023802)100:0.0060002231,JQ611225.1.1361:0.0028655765)97:0.0000023858)90:0.0119927456)64:0.0029650016,ASV2516:0.0057653220)54:0.0000028538,ASV2057:0.0057880121)46:0.0028995651,((FR666867.1.1476:0.0000023802,AB530236.1.1479:0.0000023802)87:0.0000023858,((JF344171.1.1476:0.0128455751,(EF123613.1.1496:0.0000020434,EU245155.1.1478:0.0167497195)74:0.0148539958)85:0.0000023433,(ASV2528:0.0000023802,ASV3335:0.0000023802)94:0.0000023858)86:0.0058115891)82:0.0000023858)63:0.0088450133,(((((((((((((((((((FR683719.1.1479:0.0000000000,ASV2880:0.0000000000):0.0000000000,KF799695.1.1483:0.0000000000):0.0000000000,KY235925.1.1411:0.0000000000):0.0000000000,KF799568.1.1479:0.0000000000):0.0000000000,ASV7711:0.0000000000):0.0000023802,JF268371.1.1474:0.0000023802)76:0.0000023802,(KY235971.1.1476:0.0028646333,KM873116.1.1478:0.0028644970)27:0.0000023802)17:0.0000023802,KY236000.1.1476:0.0028645310)17:0.0000023802,KT257834.1.1480:0.0028645945)48:0.0000023802,(ASV1357:0.0000023802,ASV5487:0.0057931549)68:0.0028650944)75:0.0028740939,KY969129.1.1481:0.0028508710)50:0.0000023997,(((KY235946.1.1476:0.0000000000,ASV4212:0.0000000000):0.0000000000,ASV5247:0.0000000000):0.0000023802,ASV782:0.0000023802)91:0.0000023802)44:0.0000023802,KY235939.1.1203:0.0057697246)89:0.0057699028,((((((JX521798.1.1496:0.0000000000,ASV2197:0.0000000000):0.0000000000,HQ729100.1.1479:0.0000000000):0.0000023802,LLEK01000564.3498.4995:0.0000023802)89:0.0000023802,JX521786.1.1491:0.0028497793)49:0.0000023802,KX422118.1.1476:0.0028501143)67:0.0000023802,ASV1485:0.0088623595)72:0.0057693265)48:0.0000023802,ASV3051:0.0000023802)54:0.0028738631,(((((((GQ261829.1.1477:0.0000000000,KX581190.1.1516:0.0000000000):0.0000000000,KY235977.1.1474:0.0000000000):0.0000000000,KT257856.1.1480:0.0000000000):0.0000000000,FR666869.1.1474:0.0000000000):0.0000000000,FR666864.1.1474:0.0000000000):0.0000000000,ASV1887:0.0000000000):0.0000023802,FR666861.1.1474:0.0000023802)92:0.0000023802)52:0.0000023802,JX391518.1.1481:0.0118579919)92:0.0058012372,ASV3494:0.0028999601)28:0.0000023802,(((AB189374.1.1478:0.0057798769,((FR666862.1.1474:0.0000023802,JQ712383.1.1385:0.0000023802)92:0.0000023802,((JQ712417.1.1381:0.0028544504,(JQ712382.1.1383:0.0093836933,ASV7034:0.0228130930)77:0.0124095208)44:0.0000023802,((KT257771.1.1479:0.0028636642,JQ712391.1.1392:0.0000023802)99:0.0059531117,ASV4375:0.0058050475)73:0.0029608582)32:0.0000023802)35:0.0000023802)79:0.0058962784,KP994483.1.1382:0.0028644040)19:0.0000023802,(((((((GQ357014.1.1479:0.0000000000,KY235976.1.1491:0.0000000000):0.0000000000,JX016315.1.1478:0.0000000000):0.0000000000,HQ203962.1.1486:0.0000000000):0.0000000000,ASV267:0.0000000000):0.0000000000,KY235965.1.1476:0.0000000000):0.0000000000,ASV155:0.0000000000):0.0000023802,JQ199082.1.1345:0.0000023802)69:0.0000023802)13:0.0000023802)20:0.0000023802)68:0.0058734616,HM057704.1.1488:0.0000023802)77:0.0059271816)89:0.0029649666,FJ820447.1.1476:0.0000023802)95:0.0057748469,KY235963.1.1468:0.0058887203)71:0.0000023802,HQ538624.1.1477:0.0028517357)30:0.0000023802,(DQ676345.1.1410:0.0028521237,AB030594.1.1454:0.0028517571)29:0.0000023802)78:0.0000023802,EU662492.1.1477:0.0000023802):0.0000023802,ASV2344:0.0000000000):0.0000000000,ASV1248:0.0000000000):0.0000000000,EU662330.1.1487:0.0000000000):0.0000000000,AB030599.1.1452:0.0000000000):0.0000000000,DQ676433.1.1407:0.0000000000):0.0000000000,EU800814.1.1277:0.0000000000):0.0000000000,JFJP01051705.322.1797:0.0000000000):0.0000000000,DQ133925.1.1482:0.0000000000):0.0000000000,EF467560.1.1480:0.0000000000):0.0000000000,AB294336.1.1439:0.0000000000);
+
+TIME STAMP
+----------
+
+Date and time: Mon Dec 21 06:03:06 2020
+Total CPU time used: 13388.01593 seconds (3h:43m:8s)
+Total wall-clock time used: 1989.344403 seconds (0h:33m:9s)
+
