@@ -217,48 +217,6 @@ heatmap
 ggsave("./output_graphs/MicrobialIndicatorsHeatmap.pdf", last_plot())
 
 
-
-ps_Mic_Ind_ra.melt2<- ps_Mic_Ind_ra.melt[ps_Mic_Ind_ra.melt$Abundance>0,]
-
-ps_Mic_Ind_all <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date, ps_Mic_Ind_ra.melt2,
-                                                  FUN = function(x) c(sum = sum(x), count=length(x)))))
-ps_Mic_Ind_allSamples <- as.data.frame(as.list(aggregate(Abundance~Class+Order+Family, ps_Mic_Ind_ra.melt2,
-                                                         FUN = function(x) c(mean = mean(x), count=length(x)))))
-ps_Mic_Ind_all2 <- as.data.frame(as.list(aggregate(Abundance.count~Location+Depth, ps_Mic_Ind_all,
-                                                  FUN = function(x) c(mean = mean(x)))))
-ps_Mic_Ind_all3 <- as.data.frame(as.list(aggregate(Abundance.sum~Location+Depth, ps_Mic_Ind_all,
-                                                   FUN = function(x) c(mean = mean(x)))))
-
-ps_Mic_Ind_ra.melt.agg.family2<- ps_Mic_Ind_ra.melt.agg.family[ps_Mic_Ind_ra.melt.agg.family$Abundance.sum>0,]
-ps_Mic_Ind_allF <- as.data.frame(as.list(aggregate(Abundance.sum~Location+Depth+Season+Date, ps_Mic_Ind_ra.melt.agg.family2,
-                                                  FUN = function(x) c(sum = sum(x), count=length(x)))))
-ps_Mic_Ind_allSamplesF <- as.data.frame(as.list(aggregate(Abundance.sum~Class+Order+Family, ps_Mic_Ind_ra.melt.agg.family2,
-                                                         FUN = function(x) c(mean = mean(x), count=length(x)))))
-p
-
-
-phy_obj3.melt <- psmelt(phy_obj3_20)
-sum(phy_obj3.melt$Abundance)
-
-ps_Mic_Ind <- subset_taxa(phy_obj3_20, Family %in% c(Mic_Ind$Family))
-
-#Melt data
-ps_Mic_Ind.melt <- psmelt(ps_Mic_Ind)
-
-sum(ps_Mic_Ind.melt$Abundance)
-sum(ps_Mic_Ind.melt$Abundance)/sum(phy_obj3.melt$Abundance)
-sum(phy_obj3_melt.agg.family$Abundance.count)
-
-
-
-
-ps_Mic_Ind_all2 <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date, ps_Mic_Ind_ra.melt2,
-                                                   FUN = function(x) c(sum = sum(x), count=length(x)))))
-ps_Mic_Ind_all2$Abundance.ra <- ps_Mic_Ind_ra.melt.agg.family$Abundance.sum*100
-
-
-
-
 #################
 #Plot nMDS 
 #################
