@@ -9,6 +9,7 @@ library(phyloseq)
 library(RColorBrewer)
 library(DESeq2)
 library(vegan)
+library(ggpubr)
 
 #Set theme
 theme_set(theme_bw())
@@ -58,6 +59,7 @@ phy_obj3_melt.agg.family <- as.data.frame(as.list(aggregate(Abundance~Location+D
                                                             FUN = function(x) c(sum = sum(x), count=length(x)))))
 phy_obj3_melt.agg.family$Abundance <- phy_obj3_melt.agg.family$Abundance.sum*100
 phy_obj3_melt.agg.family<- phy_obj3_melt.agg.family[phy_obj3_melt.agg.family$Abundance>0,]
+
 
 #Calculate abundance for each taxa
 phy_obj3_melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family+Genus, phy_obj3ra.melt,
@@ -170,15 +172,12 @@ ps_Mic_Ind_ra <- subset_taxa(phy_obj3ra_20, Family %in% c(Mic_Ind$Family))
 ps_Mic_Ind_ra.melt <- psmelt(ps_Mic_Ind_ra)
 
 #Calculate abundance for each taxa
-ps_Mic_Ind_ra.melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, ps_Mic_Ind_ra.melt,
+ps_Mic_Ind_ra.melt.agg.family <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, ps_Mic_Ind_ra.melt,
                                                                 FUN = function(x) c(sum = sum(x), count=length(x)))))
-ps_Mic_Ind_ra.melt.agg.genus$Abundance <- ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum*100
-ps_Mic_Ind_ra.melt.agg.genus<- ps_Mic_Ind_ra.melt.agg.genus[ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum>0,]
+ps_Mic_Ind_ra.melt.agg.family$Season = factor(ps_Mic_Ind_ra.melt.agg.family$Season, levels=c('winter','spring','summer','autumn'))
+ps_Mic_Ind_ra.melt.agg.family$Location = factor(ps_Mic_Ind_ra.melt.agg.family$Location, levels=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1'))
 
-ps_Mic_Ind_ra.melt.agg.genus$Season = factor(ps_Mic_Ind_ra.melt.agg.genus$Season, levels=c('winter','spring','summer','autumn'))
-ps_Mic_Ind_ra.melt.agg.genus$Location = factor(ps_Mic_Ind_ra.melt.agg.genus$Location, levels=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1'))
-
-ggplot(ps_Mic_Ind_ra.melt.agg.genus, aes(x = Abundance, y = Location, fill = Family))+
+ggplot(ps_Mic_Ind_ra.melt.agg.family, aes(x = Abundance.sum, y = Location, fill = Family))+
   facet_grid(Season~Depth, space= "fixed")+
   geom_bar(stat = "identity", position="stack")+
   scale_fill_manual(values=indicators.col)
@@ -186,9 +185,78 @@ ggplot(ps_Mic_Ind_ra.melt.agg.genus, aes(x = Abundance, y = Location, fill = Fam
 ggsave("./output_graphs/MicrobialIndicators.pdf", last_plot())
 
 # Heatmap
-ps_Mic_Ind_ra_glom = tax_glom(ps_Mic_Ind_ra, taxrank="Family")
-fig <- plot_heatmap(ps_Mic_Ind_ra_glom, "Family", taxa.label = "Family", sample.label="Location", taxa.order="Class", sample.order="Location")
-fig
+library(rstatix)
+
+
+ps_Mic_Ind_ra.melt.agg.family$Abundance.multip <- ps_Mic_Ind_ra.melt.agg.family$Abundance.sum*10000
+ps_Mic_Ind_ra.melt.agg.family$Log.RA <- log(ps_Mic_Ind_ra.melt.agg.family$Abundance.multip)
+ps_Mic_Ind_ra.melt.agg.family$Location = factor(ps_Mic_Ind_ra.melt.agg.family$Location, levels=c('R-Estuary-1', 'R-Estuary-2', 'NS-Marine', 'OS-Marine','SM-Outfall'))
+ps_Mic_Ind_ra.melt.agg.family$Depth = factor(ps_Mic_Ind_ra.melt.agg.family$Depth, levels=c('surface', 'bottom'))
+ps_Mic_Ind_ra.melt.agg.family$Season = factor(ps_Mic_Ind_ra.melt.agg.family$Season, levels=c('winter', 'spring', 'summer', 'autumn'))
+
+
+heatmap <- ggplot(ps_Mic_Ind_ra.melt.agg.family, aes(Season, Family, fill= Log.RA)) + 
+  geom_tile() +
+  xlab(label = "Sample") +
+  theme_bw()+
+  facet_grid (Depth~Location, switch = "both", scales = "free", space = "free") +
+  scale_fill_gradient2(name = element_blank(),
+                       high = "red",
+                       mid = "navyblue",
+                       na.value = "white") +
+  theme(strip.text.y = element_text(angle=0),
+        strip.placement = "outside",
+        plot.title = element_text(hjust = 0.5),
+        axis.title.x=element_blank(), 
+        axis.title.y=element_blank(),
+        axis.text.x = element_text(angle=90),
+        strip.background = element_rect(fill = "#EEEEEE", color = "#FFFFFF"),
+        panel.grid = element_blank())
+heatmap
+
+ggsave("./output_graphs/MicrobialIndicatorsHeatmap.pdf", last_plot())
+
+
+
+ps_Mic_Ind_ra.melt2<- ps_Mic_Ind_ra.melt[ps_Mic_Ind_ra.melt$Abundance>0,]
+
+ps_Mic_Ind_all <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date, ps_Mic_Ind_ra.melt2,
+                                                  FUN = function(x) c(sum = sum(x), count=length(x)))))
+ps_Mic_Ind_allSamples <- as.data.frame(as.list(aggregate(Abundance~Class+Order+Family, ps_Mic_Ind_ra.melt2,
+                                                         FUN = function(x) c(mean = mean(x), count=length(x)))))
+ps_Mic_Ind_all2 <- as.data.frame(as.list(aggregate(Abundance.count~Location+Depth, ps_Mic_Ind_all,
+                                                  FUN = function(x) c(mean = mean(x)))))
+ps_Mic_Ind_all3 <- as.data.frame(as.list(aggregate(Abundance.sum~Location+Depth, ps_Mic_Ind_all,
+                                                   FUN = function(x) c(mean = mean(x)))))
+
+ps_Mic_Ind_ra.melt.agg.family2<- ps_Mic_Ind_ra.melt.agg.family[ps_Mic_Ind_ra.melt.agg.family$Abundance.sum>0,]
+ps_Mic_Ind_allF <- as.data.frame(as.list(aggregate(Abundance.sum~Location+Depth+Season+Date, ps_Mic_Ind_ra.melt.agg.family2,
+                                                  FUN = function(x) c(sum = sum(x), count=length(x)))))
+ps_Mic_Ind_allSamplesF <- as.data.frame(as.list(aggregate(Abundance.sum~Class+Order+Family, ps_Mic_Ind_ra.melt.agg.family2,
+                                                         FUN = function(x) c(mean = mean(x), count=length(x)))))
+p
+
+
+phy_obj3.melt <- psmelt(phy_obj3_20)
+sum(phy_obj3.melt$Abundance)
+
+ps_Mic_Ind <- subset_taxa(phy_obj3_20, Family %in% c(Mic_Ind$Family))
+
+#Melt data
+ps_Mic_Ind.melt <- psmelt(ps_Mic_Ind)
+
+sum(ps_Mic_Ind.melt$Abundance)
+sum(ps_Mic_Ind.melt$Abundance)/sum(phy_obj3.melt$Abundance)
+sum(phy_obj3_melt.agg.family$Abundance.count)
+
+
+
+
+ps_Mic_Ind_all2 <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date, ps_Mic_Ind_ra.melt2,
+                                                   FUN = function(x) c(sum = sum(x), count=length(x)))))
+ps_Mic_Ind_all2$Abundance.ra <- ps_Mic_Ind_ra.melt.agg.family$Abundance.sum*100
+
+
 
 
 #################
