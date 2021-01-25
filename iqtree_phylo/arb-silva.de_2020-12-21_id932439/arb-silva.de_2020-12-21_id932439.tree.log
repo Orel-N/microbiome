@@ -1,0 +1,172 @@
+Warning, you specified a working directory via "-w"
+Keep in mind that RAxML only accepts absolute path names, not relative ones!
+
+RAxML can't, parse the alignment file as phylip file 
+it will now try to parse it as FASTA file
+
+
+IMPORTANT WARNING: Alignment validation warnings have been suppressed. Found 49 duplicate sequences and 13 undetermined columns
+
+Just in case you might need it, an alignment file with 
+sequence duplicates and undetermined columns removed is printed to file /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/arb-silva.de_2020-12-21_id932439_sr.fasta.reduced
+
+
+Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
+
+
+Alignment has 13 completely undetermined sites that will be automatically removed from the input data
+
+
+
+This is RAxML version 8.2.9 released by Alexandros Stamatakis on July 20 2016.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Sarah Lutteropp   (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+Charlie Taylor    (UF)
+
+
+Alignment has 653 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 4.23%
+
+RAxML rapid hill-climbing mode
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+Executing 1 inferences on the original alignment using 1 distinct randomized MP trees
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 653
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+/bioinf/software/RAxML/RAxML-8.2.9/raxmlHPC -s /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/arb-silva.de_2020-12-21_id932439_sr.fasta -n EXEC -w /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba -p 123456 --silent -m GTRGAMMA 
+
+
+Partition: 0 with name: No Name Provided
+Base frequencies: 0.287 0.212 0.300 0.201 
+
+Inference[0]: Time 252.960617 GAMMA-based likelihood -16801.574037, best rearrangement setting 25
+
+
+Conducting final model optimizations on all 1 trees under GAMMA-based models ....
+
+Inference[0] final GAMMA-based Likelihood: -16801.562803 tree written to file /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/RAxML_result.EXEC
+
+
+Starting final GAMMA-based thorough Optimization on tree 0 likelihood -16801.562803 .... 
+
+Final GAMMA-based Score of best tree -16799.850530
+
+Program execution info written to /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/RAxML_info.EXEC
+Best-scoring ML tree written to: /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/RAxML_bestTree.EXEC
+
+Overall execution time: 327.246291 secs or 0.090902 hours or 0.003788 days
+
+Warning, you specified a working directory via "-w"
+Keep in mind that RAxML only accepts absolute path names, not relative ones!
+
+RAxML can't, parse the alignment file as phylip file 
+it will now try to parse it as FASTA file
+
+
+IMPORTANT WARNING: Alignment validation warnings have been suppressed. Found 69 duplicate sequences and 12 undetermined columns
+
+Just in case you might need it, an alignment file with 
+sequence duplicates and undetermined columns removed is printed to file /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/arb-silva.de_2020-12-21_id932439_merged.fasta.reduced
+
+
+Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
+
+
+Alignment has 12 completely undetermined sites that will be automatically removed from the input data
+
+Found a total of 343 taxa in tree file /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/arb-silva.de_2020-12-21_id932439_ref.tree
+
+
+This is RAxML version 8.2.9 released by Alexandros Stamatakis on July 20 2016.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Sarah Lutteropp   (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+Charlie Taylor    (UF)
+
+
+Alignment has 696 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 18.20%
+
+RAxML likelihood-based placement algorithm
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+Partition: 0
+Alignment Patterns: 696
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+/bioinf/software/RAxML/RAxML-8.2.9/raxmlHPC -f v -s /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/arb-silva.de_2020-12-21_id932439_merged.fasta -n EXEC2 -w /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba -p 123456 --silent -t /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/arb-silva.de_2020-12-21_id932439_ref.tree -m GTRGAMMA 
+
+
+RAxML placement algorithm: You provided a reference tree with 343 taxa; alignmnet has 436 taxa
+93 query taxa will be placed using maximum likelihood
+
+RAxML Evolutionary Placement Algorithm
+
+Likelihood of reference tree: -16803.164058
+
+RAxML will place 93 Query Sequences into the 683 branches of the reference tree with 343 taxa
+
+Overall Classification time: 83.631616
+
+
+
+Labelled reference tree including branch labels and query sequences written to file: /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/RAxML_labelledTree.EXEC2
+
+Labelled reference tree with branch labels (without query sequences) written to file: /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/RAxML_originalLabelledTree.EXEC2
+
+Labelled reference tree with branch labels in portable pplacer/EPA format (without query sequences) written to file: /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/RAxML_portableTree.EXEC2.jplace
+
+Classification result file written to file: /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/RAxML_classification.EXEC2
+
+Classification result file using likelihood weights written to file: /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/RAxML_classificationLikelihoodWeights.EXEC2
+
+Classification entropy result file using likelihood weights written to file: /bioinf/software/silva-dispatcher/_main/var/tmp/silva-dispatcher/932439.64050d1228b0bce75404f6cfd4bdc4bcd7f591ba/RAxML_entropy.EXEC2
+

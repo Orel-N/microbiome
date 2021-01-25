@@ -23,7 +23,7 @@ source("./scripts/Color_palettes.R")
 ############
 
 #Import Sample Data - "metadata", filter only 2020 dataset and edit table
-metadata.raw <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ",")
+metadata.raw <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ";")
 
 metadata.raw <- filter(metadata.raw, Dataset == "2020")
 metadata.raw$Season <- factor(metadata.raw$Season, levels = c("winter", "spring", "summer", "autumn"))
@@ -34,7 +34,7 @@ metadata.raw$Depth <- factor(metadata.raw$Depth, levels = c("surface", "bottom")
 phy_obj3 <- readRDS("./data/phyloseqVarStab_20.RDS")
 
 #Import phyloseq (total abundance), calculate relative abundance and subset 2020 dataset
-phy_obj <- readRDS("./data/phyloseqFiltered.RDS")
+phy_obj <- readRDS("./data/phyloseqPrevFiltered.RDS")
 
 phy_obj <- subset_samples(phy_obj, Dataset == "2020")
 phy_obj <- prune_taxa(taxa_sums(phy_obj)>0, phy_obj)
@@ -45,19 +45,10 @@ Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
 ps.ind.vst <- subset_taxa(phy_obj3, Family %in% c(Mic_Ind$Family))
 ps.ind.vst
 
-#Explore most abundant bacterial indicators
-ps.ind <- subset_taxa(phy_obj.ra, Family %in% c(Mic_Ind$Family))
-ind <- psmelt(ps.ind)
-ps_Mic_Ind_ra.melt.agg.genus <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, ind,
-                                                                FUN = function(x) c(sum = sum(x), count=length(x)))))
-ps_Mic_Ind_ra.melt.agg.genus$Abundance <- ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum*100
-ps_Mic_Ind_ra.melt.agg.genus<- ps_Mic_Ind_ra.melt.agg.genus[ps_Mic_Ind_ra.melt.agg.genus$Abundance.sum>0,]
-top<-aggregate(Abundance~Family, ps_Mic_Ind_ra.melt.agg.genus, FUN=sum)
 
-
-###############################################################
-#Correlation between env. parameters - BEFORE FORWARD SELECTION
-###############################################################
+#######################################################
+#Correlation between env. parameters - BEFORE SELECTION
+#######################################################
 
 #define scale function
 scale_par <- function(x) scale(x, center = FALSE, scale = TRUE)[,1]
@@ -87,9 +78,9 @@ envpar_corr %>%
 ggsave("./output_graphs/CorrelationEnvPar.pdf", last_plot())
 
 
-###########################################
-#RDA ordination - BEFORE FORWARD SELECTION
-###########################################
+##################################
+#RDA ordination - BEFORE SELECTION
+##################################
 
 #subset by fraction and remove NAs in metadata
 BAC_20.no.na <- phy_obj3 %>% 
@@ -102,12 +93,11 @@ BAC_20.no.na <- phy_obj3 %>%
       !is.na(NO2_NO3) &
       !is.na(PO4) &
       !is.na(C_N) &
-      !is.na(NH4) &
-      !is.na(SiO3))
+      !is.na(NH4)) 
 BAC_20.no.na
 
 #extract and scale the env. parameters (without Chl A)
-BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity", "Dissolved_Oxygen", "DOC", "TDN", "PO4", "NO2_NO3", "NH4", "C_N", "SiO3")]  
+BAC_20.env <- data.frame(sample_data(BAC_20.no.na))[c("Temperature_sea","Salinity", "Dissolved_Oxygen", "DOC", "TDN", "PO4", "NO2_NO3", "NH4", "C_N")]  
 BAC_20.env <- as.data.frame(scale(BAC_20.env,center = FALSE, scale = TRUE))
 
 #extract OTU tables from Phyloseq object
@@ -118,7 +108,7 @@ BAC_20.rda.all <- rda (BAC_20.otu ~ ., data = BAC_20.env) # model including all 
 
 
 ###########################################
-#Forward selection of explanatory variables
+#Selection of explanatory variables
 ###########################################
 
 #based on the tutorial from David Zeleny Lab
@@ -129,11 +119,14 @@ BAC_20.rda.sel.os <- ordistep (BAC_20.rda.0, scope = formula (BAC_20.rda.all), d
 
 #Summary
 BAC_20.rda.sel.os$anova
+BAC_20.rda.sel.os
 
+#variance partitioning 
+varpart(BAC_20.otu, ~Temperature_sea, ~Dissolved_Oxygen, ~DOC, ~PO4,  data = BAC_20.env[,c("Temperature_sea", "Dissolved_Oxygen", "DOC", "PO4")])
 
-###############################################################
-#Correlation between env. parameters - ONLY FORWARD SELECTED
-###############################################################
+####################################################
+#Correlation between env. parameters - ONLY SELECTED
+####################################################
 
 #select env.par.
 env.par <- c("Temperature_sea","Salinity", "Dissolved_Oxygen", "DOC", "NO2_NO3", "NH4", "PO4")
@@ -162,7 +155,7 @@ ggsave("./output_graphs/CorrelationEnvPar_ForwardSel.pdf", last_plot())
 
 ##########################################################################
 #RDA ordination of the fitted model of bacterial composition data 
-#constrained by environmental variables - ONLY FORWARD SELECTED ENV. VAR
+#constrained by environmental variables - ONLY SELECTED ENV. VAR
 ########################################################################
 
 #subset by fraction and remove NAs in metadata
@@ -178,14 +171,14 @@ BAC_20.no.na <- phy_obj3 %>%
 BAC_20.no.na
 
 #extract and scale the env. parameters - only forward selected
-BAC_20.env <- data.frame(sample_data(BAC_20.no.na)) [c("Temperature_sea","Dissolved_Oxygen", "Salinity", "NO2_NO3", "DOC", "PO4", "NH4")]
+BAC_20.env <- data.frame(sample_data(BAC_20.no.na)) [c("Temperature_sea","Salinity", "Dissolved_Oxygen", "DOC", "NO2_NO3", "NH4", "PO4")]
 BAC_20.env <- as.data.frame(scale(BAC_20.env,center = FALSE, scale = TRUE))
 
 #extract OTU tables from Phyloseq object
 BAC_20.otu <- t(otu_table(BAC_20.no.na))
 
 #RDA analysis
-BAC_20.rda.all <- rda (BAC_20.otu ~ ., data = BAC_20.env) # model including all variables
+BAC_20.rda.all <- rda (BAC_20.otu ~ ., data = BAC_20.env) 
 
 #The summary of RDA
 summary(BAC_20.rda.all, display = NULL)
@@ -218,7 +211,7 @@ BAC_20.rda.species <- BAC_20.rda.species %>%
 MIC_20.rda.species <- filter(BAC_20.rda.species, Family %in% c(Mic_Ind$Family))
 
 #Biplot arrows
-BAC_20.rda.arrows<- BAC_20.rda.scores$biplot*10
+BAC_20.rda.arrows<- BAC_20.rda.scores$biplot*8
 colnames(BAC_20.rda.arrows)<-c("x","y")
 BAC_20.rda.arrows <- as.data.frame(BAC_20.rda.arrows)
 BAC_20.rda.evals <- 100 * summary(BAC_20.rda.all)$cont$importance[2, c("RDA1","RDA2")]
@@ -226,90 +219,21 @@ BAC_20.rda.evals <- 100 * summary(BAC_20.rda.all)$cont$importance[2, c("RDA1","R
 #Plot A: Sites and env.par
 BAC_20.rda.plot <- ggplot() +
   geom_point(data = BAC_20.rda.sites, aes(x = RDA1, y = RDA2, colour = Season, shape = Depth), 
-            size = 4) +
-  geom_text(data = BAC_20.rda.sites,aes(x = RDA1, y = RDA2,label = Location), 
-            nudge_y= -0.3,size=2) +
+            size = 3) +
   scale_colour_manual(values=season.col) +
   labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
        y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
   theme_classic()+
-  theme(legend.position = "top")+
+  theme(legend.position = "top", legend.title = element_text(size=10), legend.text = element_text(size=10))+
   geom_segment(data=BAC_20.rda.arrows, aes(x = 0, y = 0, xend = x, yend = y),
                arrow = arrow(length = unit(0.2, "cm")),color="black",alpha=0.5)+
   geom_text(data=as.data.frame(BAC_20.rda.arrows*1.2),
-            aes(x, y, label = rownames(BAC_20.rda.arrows)),color="black",alpha=0.5)
+            aes(x, y, label = rownames(BAC_20.rda.arrows)),color="black",alpha=1, size = 4)+
+  guides(color = guide_legend(override.aes = list(size = 3)) )
 BAC_20.rda.plot
+BAC_20.rda.plot2 <- BAC_20.rda.plot + scale_shape(guide=FALSE)
 
-#Plot B: Mic_ind
-Mic_ind.plot <- ggplot() +
-  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
-             size=2) +
-  geom_point(data=MIC_20.rda.species, aes(x = RDA1*15, y = RDA2*15, fill = "Microbial indicators"), color="red", #show.legend = FALSE,
-          size=2) +
-  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
-       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
-  theme_classic() +
-  theme(legend.position = "top", legend.title = element_blank())
-Mic_ind.plot
-
-#Plot C: Vibrionaceae
-m.1.plot <- ggplot() +
-  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
-             size=2) +
-  geom_point(data=subset(BAC_20.rda.species, Family == "Vibrionaceae"), aes(x = RDA1*15, y = RDA2*15, color = Family),
-             size=2) +
-  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
-       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
-  theme_classic() +
-  theme(legend.position = "top") +
-  scale_colour_manual(values=indicators.col)
-m.1.plot
-
-#Plot D: Arcobacteraceae
-m.2.plot <- ggplot() +
-  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
-             size=2) +
-  geom_point(data=subset(BAC_20.rda.species, Family == "Arcobacteraceae"), aes(x = RDA1*15, y = RDA2*15, color = Family),
-             size=2) +
-  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
-       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
-  theme_classic() +
-  theme(legend.position = "top")+
-  scale_colour_manual(values=indicators.col)
-m.2.plot
-
-#Plot E: Lacthnospiraceae
-m.3.plot <- ggplot() +
-  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
-             size=2) +
-  geom_point(data=subset(BAC_20.rda.species, Family == "Lachnospiraceae"), aes(x = RDA1*15, y = RDA2*15, color = Family),
-             size=2) +
-  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
-       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
-  theme_classic() +
-  theme(legend.position = "top")+
-  scale_colour_manual(values=indicators.col)
-m.3.plot
-
-#Plot F: Enterobacteriaceae
-m.4.plot <- ggplot() +
-  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
-             size=2) +
-  geom_point(data=subset(BAC_20.rda.species, Family == "Enterobacteriaceae"), aes(x = RDA1*15, y = RDA2*15, color = Family),
-             size=2) +
-  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
-       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
-  theme_classic() +
-  theme(legend.position = "top")+
-  scale_colour_manual(values=indicators.col)
-m.4.plot
-
-ggarrange(BAC_20.rda.plot, Mic_ind.plot, m.1.plot, m.2.plot, m.3.plot, m.4.plot, labels = c("A", "B", "C", "D", "E", "F"), ncol=2, nrow=3)
-
-ggsave("./output_graphs/RDA_MicInd.pdf", last_plot())
-
-###############################################
-#Plot B2:
+#Plot B:
 c.1.plot <- ggplot() +
   geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
              size=2) +
@@ -318,11 +242,11 @@ c.1.plot <- ggplot() +
   labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
        y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
   theme_classic() +
-  theme(legend.position = "top")+
+  theme(legend.position = "top") +
   scale_colour_manual(values=phyla.col)
 c.1.plot
 
-#Plot C2:
+#Plot C:
 c.2.plot <- ggplot() +
   geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
              size=2) +
@@ -335,7 +259,7 @@ c.2.plot <- ggplot() +
   scale_colour_manual(values=phyla.col)
 c.2.plot
 
-#Plot D2:
+#Plot D:
 c.3.plot <- ggplot() +
   geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
              size=2) +
@@ -348,7 +272,7 @@ c.3.plot <- ggplot() +
   scale_colour_manual(values=phyla.col)
 c.3.plot
 
-#Plot E2:
+#Plot E:
 c.4.plot <- ggplot() +
   geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
              size=2) +
@@ -361,7 +285,7 @@ c.4.plot <- ggplot() +
   scale_colour_manual(values=phyla.col)
 c.4.plot
 
-#Plot F2:
+#Plot F:
 c.5.plot <- ggplot() +
   geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
              size=2) +
@@ -374,9 +298,95 @@ c.5.plot <- ggplot() +
   scale_colour_manual(values=phyla.col)
 c.5.plot
 
-ggarrange(BAC_20.rda.plot, c.1.plot, c.2.plot, c.3.plot, c.4.plot, c.5.plot, ncol=2, nrow=3, labels = c("A", "B", "C", "D", "E", "F"))
+ggsave("./output_graphs/RDA_samples.pdf", BAC_20.rda.plot)
+ggarrange(c.1.plot, c.2.plot, c.3.plot, c.4.plot, c.5.plot, ncol=2, nrow=3, labels = c("B", "C", "D", "E", "F"))
 
 ggsave("./output_graphs/RDA_DominantClass.pdf", last_plot())
+
+
+###############################################################
+
+#Plot B2: Mic_ind
+Mic_ind.plot <- ggplot() +
+  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
+             size=2) +
+  geom_point(data=MIC_20.rda.species, aes(x = RDA1*15, y = RDA2*15, fill = "Microbial indicators"), color="red", #show.legend = FALSE,
+          size=2) +
+  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
+       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
+  theme_classic() +
+  theme(legend.position = "top", legend.title = element_blank())
+Mic_ind.plot
+
+#Plot C2: Enterobacteriaceae
+m.1.plot <- ggplot() +
+  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
+             size=2) +
+  geom_point(data=subset(BAC_20.rda.species, Family == "Enterobacteriaceae"), aes(x = RDA1*15, y = RDA2*15, color = Family),
+             size=2) +
+  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
+       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
+  theme_classic() +
+  theme(legend.position = "top")+
+  scale_colour_manual(values=indicators.col)
+m.1.plot
+
+#Plot C2: Bacteroidaceae
+m.2.plot <- ggplot() +
+  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
+             size=2) +
+  geom_point(data=subset(BAC_20.rda.species, Family == "Bacteroidaceae"), aes(x = RDA1*15, y = RDA2*15, color = Family),
+             size=2) +
+  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
+       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
+  theme_classic() +
+  theme(legend.position = "top") +
+  scale_colour_manual(values=indicators.col)
+m.2.plot
+
+#Plot C2: Lachnospiraceae
+m.3.plot <- ggplot() +
+  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
+             size=2) +
+  geom_point(data=subset(BAC_20.rda.species, Family == "Lachnospiraceae"), aes(x = RDA1*15, y = RDA2*15, color = Family),
+             size=2) +
+  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
+       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
+  theme_classic() +
+  theme(legend.position = "top") +
+  scale_colour_manual(values=indicators.col)
+m.3.plot
+
+#Plot D2: Vibrionaceae
+m.4.plot <- ggplot() +
+  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
+             size=2) +
+  geom_point(data=subset(BAC_20.rda.species, Family == "Vibrionaceae"), aes(x = RDA1*15, y = RDA2*15, color = Family),
+             size=2) +
+  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
+       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
+  theme_classic() +
+  theme(legend.position = "top") +
+  scale_colour_manual(values=indicators.col)
+m.4.plot
+
+#Plot E2: Arcobacteraceae
+m.5.plot <- ggplot() +
+  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
+             size=2) +
+  geom_point(data=subset(BAC_20.rda.species, Family == "Arcobacteraceae"), aes(x = RDA1*15, y = RDA2*15, color = Family),
+             size=2) +
+  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
+       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
+  theme_classic() +
+  theme(legend.position = "top")+
+  scale_colour_manual(values=indicators.col)
+m.5.plot
+
+ggarrange(Mic_ind.plot, m.1.plot, m.2.plot, m.3.plot, m.4.plot, m.5.plot, labels = c("B", "C", "D", "E", "F", "G"), ncol=2, nrow=3)
+
+ggsave("./output_graphs/RDA_MicInd.pdf", last_plot())
+
 
 # CLEAN UP #################################################
 
