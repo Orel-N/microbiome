@@ -4,8 +4,9 @@ library("reshape2")
 library("tidyr")
 library("ggplot2")
 
-source('./scripts/SourceTracker_EF.R')
+#source('./scripts/SourceTracker_EF.R')
 source('./scripts/Color_palettes.R')
+source('./scripts/SourceTracker.r')
 
 phy_obj3<- readRDS("./data/phyloseqPrevFiltered.RDS")
 
@@ -78,11 +79,11 @@ resluts_merged_plot <- ggplot() +
   labs(y="Average source contribution")+
   scale_fill_manual(values = sample(tol21rainbow))+
   theme_bw() + 
-  theme(panel.grid.major = element_blank(),
+  theme(panel.grid.major = element_blank(), axis.text.x = element_text(angle=90),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
         text=element_text(size=14),legend.position = "bottom")
 
-ggsave("./Figures/mic_sourcetracker.pdf", 
+ggsave("./Figures/mic_sourcetracker.png", 
        plot = resluts_merged_plot,
        units = "cm",
        width = 30, height = 30, 
@@ -108,20 +109,20 @@ taxa_sourcetracker <- cbind(taxatable,ASV.source.prob) #%>% melt() %>% filter(va
 #check which and how many ASVs were affiliated to each source
 taxa_sourcetracker_WW <- taxa_sourcetracker %>% 
   select(Phylum,Class,Order,Family,Genus,Species,WW) %>% 
-  filter(WW> 0.75) %>% 
+  filter(WW> 0.99) %>% 
   group_by(Phylum,Class,Order,Family) %>% 
   summarise(ASVs=n())
 
 taxa_sourcetracker_SM <- taxa_sourcetracker %>% 
   select(Phylum,Class,Order,Family,Genus,Species,SM) %>% 
-  filter(SM> 0.75) %>% 
+  filter(SM> 0.99) %>% 
   group_by(Phylum,Class,Order,Family) %>% 
   summarise(ASVs=n())
 
 taxa_sourcetracker_ASVs<- merge(taxa_sourcetracker_WW,taxa_sourcetracker_SM, by =c("Phylum","Class","Order","Family"), all = TRUE) %>% 
                             plyr::rename(c("ASVs.x" = "WW","ASVs.y" = "SM"))
 
-write.csv(taxa_sourcetracker_ASVs,"./data/taxa_sourcetracker_ASVs.csv", h=T)
+write.csv(taxa_sourcetracker_ASVs,"./Tables/taxa_sourcetracker_ASVs.csv")
 
 #Select microbial indicators
 Mic_Ind <- read.table("./data/Microbial_Indicators.txt", h=T, sep="\t")
@@ -129,3 +130,4 @@ sourcetracker_mic_indicators <- taxa_sourcetracker %>% filter(Family %in% c(Mic_
 
 taxa_sourcetracker_ASVs_indicators<- taxa_sourcetracker_ASVs %>% filter(Family %in% c(Mic_Ind$Family))
 
+write.csv(taxa_sourcetracker_ASVs_indicators,"./Tables/taxa_sourcetracker_mic_ind.csv")
