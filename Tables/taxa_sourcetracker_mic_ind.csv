@@ -1,0 +1,13 @@
+"","Phylum","Class","Order","Family","WW","SM"
+"1","Actinobacteriota","Actinobacteria","Corynebacteriales","Mycobacteriaceae",2,NA
+"2","Bacteroidota","Bacteroidia","Bacteroidales","Bacteroidaceae",2,NA
+"3","Bdellovibrionota","Bdellovibrionia","Bdellovibrionales","Bdellovibrionaceae",2,3
+"4","Campilobacterota","Campylobacteria","Campylobacterales","Arcobacteraceae",18,NA
+"5","Firmicutes","Clostridia","Lachnospirales","Lachnospiraceae",1,NA
+"6","Firmicutes","Clostridia","Oscillospirales","Ruminococcaceae",1,1
+"7","Proteobacteria","Gammaproteobacteria","Aeromonadales","Aeromonadaceae",5,NA
+"8","Proteobacteria","Gammaproteobacteria","Enterobacterales","Enterobacteriaceae",1,NA
+"9","Proteobacteria","Gammaproteobacteria","Pseudomonadales","Moraxellaceae",7,NA
+"10","Proteobacteria","Gammaproteobacteria","Pseudomonadales","Pseudomonadaceae",1,NA
+"11","Proteobacteria","Gammaproteobacteria","Vibrionales","Vibrionaceae",4,5
+"12","Spirochaetota","Leptospirae","Leptospirales","Leptospiraceae",1,NA
