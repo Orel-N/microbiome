@@ -63,10 +63,10 @@ location.col <- c("R-Estuary-1" = "#FC8D62",
                   "SM-Outfall" = "#66C2A5", 
                   "R-Mouth" = "#E41A1C")
 
-season.col <- c("winter" = "#377EB8", 
-                "spring" = "#4cbb30", 
-                "summer" = "#E41A1C", 
-                "autumn" = "#A65628")
+season.col <- c("winter" = "#8960b3", 
+                "spring" = "#56ae6c", 
+                "summer" = "#ba495b", 
+                "autumn" = "#b0923b")
 
 tol21rainbow<- c("#771155",
                  "#AA4488",

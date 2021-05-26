@@ -11,6 +11,7 @@ library(DESeq2)
 library(vegan)
 library(ggpubr)
 
+
 #Set theme
 theme_set(theme_bw())
 
@@ -173,37 +174,58 @@ ps_Mic_Ind_ra.melt <- psmelt(ps_Mic_Ind_ra)
 
 #Calculate abundance for each taxa
 ps_Mic_Ind_ra.melt.agg.family <- as.data.frame(as.list(aggregate(Abundance~Location+Depth+Season+Date+Class+Order+Family, ps_Mic_Ind_ra.melt,
-                                                                FUN = function(x) c(sum = sum(x), count=length(x)))))
+                                                                FUN = function(x) c(sum = sum(x), count=length(which(x!=0))))))
 ps_Mic_Ind_ra.melt.agg.family$Season = factor(ps_Mic_Ind_ra.melt.agg.family$Season, levels=c('winter','spring','summer','autumn'))
 ps_Mic_Ind_ra.melt.agg.family$Location = factor(ps_Mic_Ind_ra.melt.agg.family$Location, levels=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1'))
 
-ggplot(ps_Mic_Ind_ra.melt.agg.family, aes(x = Abundance.sum, y = Location, fill = Family))+
+#Explore data on RA level
+ps_Mic_Ind_ra.melt.agg.family.mean <- aggregate (Abundance.sum~Family+Location+Season+Depth, ps_Mic_Ind_ra.melt.agg.family, FUN="sum")
+ps_Mic_Ind_ra.melt.agg.sampling <- aggregate (Abundance.sum~Location+Season+Depth, ps_Mic_Ind_ra.melt.agg.family, FUN="sum")
+ps_Mic_Ind_ra.melt.agg.location.average <- aggregate (Abundance.sum~Location+Depth, ps_Mic_Ind_ra.melt.agg.sampling, FUN="mean")
+
+#Explore data on ASV level
+ps_Mic_Ind_ra.melt.agg.family.mean2 <- aggregate (Abundance.count~Family+Location+Season+Depth, ps_Mic_Ind_ra.melt.agg.family, FUN="sum")
+ps_Mic_Ind_ra.melt.agg.sampling2 <- aggregate (Abundance.count~Location+Season+Depth, ps_Mic_Ind_ra.melt.agg.family, FUN="sum")
+ps_Mic_Ind_ra.melt.agg.location.average2 <- aggregate (Abundance.sum~Location+Depth, ps_Mic_Ind_ra.melt.agg.sampling, FUN="mean")
+
+
+#Plot
+  ggplot(ps_Mic_Ind_ra.melt.agg.family, aes(x = Abundance.sum, y = Location, fill = Family))+
   facet_grid(Season~Depth, space= "fixed")+
   geom_bar(stat = "identity", position="stack")+
   scale_fill_manual(values=indicators.col)
 
 ggsave("./output_graphs/MicrobialIndicators.pdf", last_plot())
 
+
 # Heatmap
 library(rstatix)
 
 
-ps_Mic_Ind_ra.melt.agg.family$Abundance.multip <- ps_Mic_Ind_ra.melt.agg.family$Abundance.sum*10000
-ps_Mic_Ind_ra.melt.agg.family$Log.RA <- log(ps_Mic_Ind_ra.melt.agg.family$Abundance.multip)
+ps_Mic_Ind_ra.melt.agg.family$Abundance.perc <- ps_Mic_Ind_ra.melt.agg.family$Abundance.sum*100
+
+
 ps_Mic_Ind_ra.melt.agg.family$Location = factor(ps_Mic_Ind_ra.melt.agg.family$Location, levels=c('R-Estuary-1', 'R-Estuary-2', 'NS-Marine', 'OS-Marine','SM-Outfall'))
 ps_Mic_Ind_ra.melt.agg.family$Depth = factor(ps_Mic_Ind_ra.melt.agg.family$Depth, levels=c('surface', 'bottom'))
 ps_Mic_Ind_ra.melt.agg.family$Season = factor(ps_Mic_Ind_ra.melt.agg.family$Season, levels=c('winter', 'spring', 'summer', 'autumn'))
+ps_Mic_Ind_ra.melt.agg.family$Abundance.class <- ifelse(ps_Mic_Ind_ra.melt.agg.family$Abundance.perc == "0", "0", ifelse(ps_Mic_Ind_ra.melt.agg.family$Abundance.perc < "0.01", "1", 
+                                                        ifelse(ps_Mic_Ind_ra.melt.agg.family$Abundance.perc < "0.1", "2", 
+                                                               ifelse(ps_Mic_Ind_ra.melt.agg.family$Abundance.perc < "0.5", "3", 
+                                                                      ifelse(ps_Mic_Ind_ra.melt.agg.family$Abundance.perc < "1", "4", "5")))))
+                                                                            # ifelse(ps_Mic_Ind_ra.melt.agg.family$Abundance.perc < "1", "5","6"))))))
+ps_Mic_Ind_ra.melt.agg.family$Abundance.class <- as.numeric(ps_Mic_Ind_ra.melt.agg.family$Abundance.class)
 
 
-heatmap <- ggplot(ps_Mic_Ind_ra.melt.agg.family, aes(Season, Family, fill= Log.RA)) + 
+heatmap <- ggplot(ps_Mic_Ind_ra.melt.agg.family, aes(Season, Family, fill= Abundance.class)) + 
   geom_tile() +
   xlab(label = "Sample") +
   theme_bw()+
   facet_grid (Depth~Location, switch = "both", scales = "free", space = "free") +
-  scale_fill_gradient2(name = element_blank(),
+  scale_fill_gradient2(name = "Relative abundance",
                        high = "red",
-                       mid = "navyblue",
-                       na.value = "white") +
+                       mid = "white",
+                       na.value = "white",
+                       labels = c("0", "<0.01%", "0.01%-0.1%", "0.1%-0.5%", "0.5%-1%", ">1%")) +
   theme(strip.text.y = element_text(angle=0),
         strip.placement = "outside",
         plot.title = element_text(hjust = 0.5),
@@ -215,6 +237,30 @@ heatmap <- ggplot(ps_Mic_Ind_ra.melt.agg.family, aes(Season, Family, fill= Log.R
 heatmap
 
 ggsave("./output_graphs/MicrobialIndicatorsHeatmap.pdf", last_plot())
+
+#Only ASV55 - Both datasets
+#Import data
+
+phy_obj3
+
+
+#Abundance value transformation
+phy_obj3ra_15_20 = transform_sample_counts(phy_obj3, function (otu) {otu/sum(otu)})
+
+#Melt data
+phy_obj3ra.melt_15_20 <- psmelt(phy_obj3ra_15_20)
+
+
+
+phy_obj3ra.melt_15_20$Season = factor(phy_obj3ra.melt_15_20$Season, levels=c('winter','spring','summer','autumn'))
+phy_obj3ra.melt_15_20$Location = factor(phy_obj3ra.melt_15_20$Location, levels=c('SM-Outfall','OS-Marine','NS-Marine','R-Estuary-2','R-Estuary-1', 'R-Mouth'))
+phy_obj3ra.melt_15_20$Date = factor(phy_obj3ra.melt_15_20$Date, levels=c('4.12.2018','25.04.2019','18.06.2019','15.10.2019','4.02.2016', '24.03.2015', '15.07.2015', '25.11.2015'))
+
+ggplot(data=subset(phy_obj3ra.melt_15_20, OTU == "ASV55"), aes(x = Abundance*100, y = Location, fill = as.factor(Dataset)))+
+  facet_grid(Date~Depth, space= "fixed")+
+  geom_bar(stat = "identity", position="stack")+
+  xlab("Relative seq. abundance [%]")+
+  labs(fill = "Dataset")
 
 
 #################
@@ -269,6 +315,12 @@ mod.HSD <- TukeyHSD(mod)
 mod.HSD
 plot(mod.HSD)
 
+groups <- df[["Location"]]
+mod <- betadisper(d, groups)
+permutest(mod)
+
+T_Location <- as.data.frame(mod.HSD$group)
+write.csv(T_Location, "./output_tables/t_Location.csv")
 
 # CLEAN UP #################################################
 

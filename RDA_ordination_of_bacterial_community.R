@@ -23,7 +23,7 @@ source("./scripts/Color_palettes.R")
 ############
 
 #Import Sample Data - "metadata", filter only 2020 dataset and edit table
-metadata.raw <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ";")
+metadata.raw <- read.csv("./data/Metadata_2015_2020.csv", h=T, sep = ",")
 
 metadata.raw <- filter(metadata.raw, Dataset == "2020")
 metadata.raw$Season <- factor(metadata.raw$Season, levels = c("winter", "spring", "summer", "autumn"))
@@ -230,8 +230,11 @@ BAC_20.rda.plot <- ggplot() +
   geom_text(data=as.data.frame(BAC_20.rda.arrows*1.2),
             aes(x, y, label = rownames(BAC_20.rda.arrows)),color="black",alpha=1, size = 4)+
   guides(color = guide_legend(override.aes = list(size = 3)) )
-BAC_20.rda.plot
-BAC_20.rda.plot2 <- BAC_20.rda.plot + scale_shape(guide=FALSE)
+
+BAC_20.rda.plot2 <- BAC_20.rda.plot + scale_shape(guide=FALSE) + coord_fixed() + xlim(-10, 10)
+BAC_20.rda.plot2
+
+ggsave("./output_graphs/RDA_samples.pdf", BAC_20.rda.plot)
 
 #Plot B:
 c.1.plot <- ggplot() +
@@ -243,7 +246,7 @@ c.1.plot <- ggplot() +
        y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
   theme_classic() +
   theme(legend.position = "top") +
-  scale_colour_manual(values=phyla.col)
+  scale_colour_manual(values=phyla.col) + coord_fixed() 
 c.1.plot
 
 #Plot C:
@@ -256,7 +259,7 @@ c.2.plot <- ggplot() +
        y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
   theme_classic() +
   theme(legend.position = "top")+
-  scale_colour_manual(values=phyla.col)
+  scale_colour_manual(values=phyla.col) + coord_fixed() 
 c.2.plot
 
 #Plot D:
@@ -269,7 +272,7 @@ c.3.plot <- ggplot() +
        y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
   theme_classic() +
   theme(legend.position = "top")+
-  scale_colour_manual(values=phyla.col)
+  scale_colour_manual(values=phyla.col) + coord_fixed()
 c.3.plot
 
 #Plot E:
@@ -282,7 +285,7 @@ c.4.plot <- ggplot() +
        y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
   theme_classic() +
   theme(legend.position = "top")+
-  scale_colour_manual(values=phyla.col)
+  scale_colour_manual(values=phyla.col) + coord_fixed()
 c.4.plot
 
 #Plot F:
@@ -295,28 +298,27 @@ c.5.plot <- ggplot() +
        y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
   theme_classic() +
   theme(legend.position = "top") +
-  scale_colour_manual(values=phyla.col)
+  scale_colour_manual(values=phyla.col) + coord_fixed() 
 c.5.plot
 
-ggsave("./output_graphs/RDA_samples.pdf", BAC_20.rda.plot)
-ggarrange(c.1.plot, c.2.plot, c.3.plot, c.4.plot, c.5.plot, ncol=2, nrow=3, labels = c("B", "C", "D", "E", "F"))
+#Plot G: Mic_ind
+Mic_ind.plot <- ggplot() +
+  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
+             size=2) +
+  geom_point(data=MIC_20.rda.species, aes(x = RDA1*15, y = RDA2*15, fill = "Microbial indicators"), color="orange", #show.legend = FALSE,
+             size=2) +
+  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
+       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
+  theme_classic() +
+  theme(legend.position = "top", legend.title = element_blank()) + coord_fixed() 
+Mic_ind.plot
 
+ggarrange(c.1.plot, c.2.plot, c.3.plot, c.4.plot, c.5.plot, Mic_ind.plot, ncol=2, nrow=3, labels = c("B", "C", "D", "E", "F", "G"))
 ggsave("./output_graphs/RDA_DominantClass.pdf", last_plot())
 
 
 ###############################################################
 
-#Plot B2: Mic_ind
-Mic_ind.plot <- ggplot() +
-  geom_point(data=BAC_20.rda.species, aes(x = RDA1*15, y = RDA2*15), alpha = 1/15,
-             size=2) +
-  geom_point(data=MIC_20.rda.species, aes(x = RDA1*15, y = RDA2*15, fill = "Microbial indicators"), color="red", #show.legend = FALSE,
-          size=2) +
-  labs(x = sprintf("RDA1 [%s%%]", round(BAC_20.rda.evals[1], 2)), 
-       y = sprintf("RDA2 [%s%%]", round(BAC_20.rda.evals[2], 2))) +
-  theme_classic() +
-  theme(legend.position = "top", legend.title = element_blank())
-Mic_ind.plot
 
 #Plot C2: Enterobacteriaceae
 m.1.plot <- ggplot() +
